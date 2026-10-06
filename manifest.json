@@ -1,0 +1,11 @@
+{
+    "name": "Graduate Group Tracking System",
+    "short_name": "Graduate Tracker",
+    "description": "Graduate Student Group Tracking System",
+    "start_url": "./",
+    "display": "standalone",
+    "background_color": "#f4f6f9",
+    "theme_color": "#073b72",
+    "orientation": "landscape",
+    "icons": []
+}
