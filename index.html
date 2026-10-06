@@ -1,17 +1,33 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<meta
+    name="viewport"
+    content="width=device-width, initial-scale=1.0"
+>
 
 <title>Graduate Group Tracking System</title>
 
-<link rel="manifest" href="manifest.json">
-<meta name="theme-color" content="#073b72">
+<link
+    rel="manifest"
+    href="manifest.json"
+>
+
+<meta
+    name="theme-color"
+    content="#073b72"
+>
 
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 
 <style>
+
+/* =====================================================
+   RESET
+===================================================== */
 
 *{
     box-sizing:border-box;
@@ -20,465 +36,1558 @@
     font-family:Arial,Helvetica,sans-serif;
 }
 
-body{
-    background:#f4f6f9;
-    color:#222;
+
+/* =====================================================
+   ROOT
+===================================================== */
+
+:root{
+
+    --primary:#073b72;
+
+    --primary-light:#e8f0f8;
+
+    --background:#f4f6f9;
+
+    --white:#ffffff;
+
+    --text:#222;
+
+    --muted:#6c757d;
+
+    --border:#e3e7eb;
+
+    --danger:#dc3545;
+
+    --success:#198754;
+
+    --warning:#f0ad4e;
+
 }
+
+
+/* =====================================================
+   BODY
+===================================================== */
+
+body{
+
+    background:var(--background);
+
+    color:var(--text);
+
+    min-height:100vh;
+
+}
+
+
+/* =====================================================
+   HEADER
+===================================================== */
 
 header{
-    background:#073b72;
+
+    background:var(--primary);
+
     color:white;
-    padding:18px 25px;
+
+    padding:17px 25px;
+
     display:flex;
+
     justify-content:space-between;
+
     align-items:center;
+
+    box-shadow:0 2px 8px rgba(0,0,0,.12);
+
+    position:sticky;
+
+    top:0;
+
+    z-index:100;
+
 }
 
-header h1{
-    font-size:23px;
+
+.header-left h1{
+
+    font-size:22px;
+
+    margin-bottom:4px;
+
 }
 
-header small{
-    opacity:.85;
+
+.header-left small{
+
+    opacity:.82;
+
+    font-size:12px;
+
 }
+
 
 .connection{
+
     font-size:13px;
+
     font-weight:bold;
+
 }
+
+
+/* =====================================================
+   OFFLINE BANNER
+===================================================== */
+
+.offline-banner{
+
+    display:none;
+
+    background:#fff3cd;
+
+    color:#664d03;
+
+    padding:10px;
+
+    text-align:center;
+
+    font-weight:bold;
+
+    font-size:13px;
+
+}
+
+
+.offline-banner.show{
+
+    display:block;
+
+}
+
+
+/* =====================================================
+   MAIN LAYOUT
+===================================================== */
+
+.main-layout{
+
+    display:flex;
+
+    min-height:calc(100vh - 70px);
+
+}
+
+
+/* =====================================================
+   SIDEBAR
+===================================================== */
+
+.sidebar{
+
+    width:245px;
+
+    background:white;
+
+    border-right:1px solid var(--border);
+
+    padding:20px 14px;
+
+    flex-shrink:0;
+
+    position:sticky;
+
+    top:70px;
+
+    height:calc(100vh - 70px);
+
+    overflow-y:auto;
+
+}
+
+
+.sidebar-title{
+
+    font-size:11px;
+
+    font-weight:bold;
+
+    color:#8a9299;
+
+    text-transform:uppercase;
+
+    letter-spacing:.7px;
+
+    padding:5px 12px 10px;
+
+}
+
+
+.group-button{
+
+    width:100%;
+
+    border:0;
+
+    background:transparent;
+
+    color:#39424e;
+
+    padding:12px 13px;
+
+    margin-bottom:5px;
+
+    border-radius:8px;
+
+    display:flex;
+
+    align-items:center;
+
+    gap:11px;
+
+    text-align:left;
+
+    cursor:pointer;
+
+    font-size:13px;
+
+    font-weight:bold;
+
+    transition:.2s;
+
+}
+
+
+.group-button:hover{
+
+    background:#f0f4f8;
+
+}
+
+
+.group-button.active{
+
+    background:var(--primary);
+
+    color:white;
+
+}
+
+
+.group-icon{
+
+    width:28px;
+
+    height:28px;
+
+    border-radius:7px;
+
+    display:flex;
+
+    align-items:center;
+
+    justify-content:center;
+
+    background:#e8f0f8;
+
+    color:var(--primary);
+
+    font-size:13px;
+
+    flex-shrink:0;
+
+}
+
+
+.group-button.active .group-icon{
+
+    background:rgba(255,255,255,.18);
+
+    color:white;
+
+}
+
+
+.group-name{
+
+    flex:1;
+
+}
+
+
+.group-count{
+
+    min-width:25px;
+
+    text-align:center;
+
+    padding:3px 6px;
+
+    border-radius:20px;
+
+    background:#eef1f4;
+
+    color:#555;
+
+    font-size:11px;
+
+}
+
+
+.group-button.active .group-count{
+
+    background:rgba(255,255,255,.2);
+
+    color:white;
+
+}
+
+
+.sidebar-divider{
+
+    border:0;
+
+    border-top:1px solid var(--border);
+
+    margin:17px 5px;
+
+}
+
+
+.archive-button{
+
+    width:100%;
+
+    border:0;
+
+    background:#f8f9fa;
+
+    color:#555;
+
+    padding:12px 13px;
+
+    border-radius:8px;
+
+    display:flex;
+
+    align-items:center;
+
+    gap:11px;
+
+    cursor:pointer;
+
+    font-weight:bold;
+
+    font-size:13px;
+
+}
+
+
+.archive-button:hover{
+
+    background:#f0f2f4;
+
+}
+
+
+.archive-button.active{
+
+    background:#fff3cd;
+
+    color:#664d03;
+
+}
+
+
+/* =====================================================
+   CONTENT
+===================================================== */
+
+.content{
+
+    flex:1;
+
+    min-width:0;
+
+    padding:24px;
+
+}
+
 
 .container{
-    max-width:1500px;
+
+    max-width:1600px;
+
     margin:auto;
-    padding:25px;
+
 }
+
+
+/* =====================================================
+   MESSAGE
+===================================================== */
+
+.message{
+
+    display:none;
+
+    padding:12px 15px;
+
+    margin-bottom:15px;
+
+    border-radius:7px;
+
+    font-weight:bold;
+
+    font-size:13px;
+
+}
+
+
+.message.show{
+
+    display:block;
+
+}
+
+
+.error{
+
+    background:#f8d7da;
+
+    color:#842029;
+
+}
+
+
+.success-message{
+
+    background:#d1e7dd;
+
+    color:#0f5132;
+
+}
+
+
+/* =====================================================
+   DASHBOARD
+===================================================== */
 
 .dashboard{
+
     display:grid;
-    grid-template-columns:repeat(4,1fr);
+
+    grid-template-columns:
+        repeat(4,1fr);
+
     gap:15px;
+
     margin-bottom:20px;
+
 }
+
 
 .card{
+
     background:white;
-    padding:20px;
+
+    padding:19px;
+
     border-radius:10px;
-    box-shadow:0 2px 8px rgba(0,0,0,.08);
+
+    box-shadow:0 2px 8px rgba(0,0,0,.06);
+
+    border:1px solid #edf0f3;
+
 }
+
 
 .card h3{
-    font-size:14px;
-    color:#666;
-    margin-bottom:8px;
+
+    font-size:13px;
+
+    color:#68717a;
+
+    margin-bottom:9px;
+
 }
+
 
 .number{
-    font-size:30px;
+
+    font-size:29px;
+
     font-weight:bold;
-    color:#073b72;
+
+    color:var(--primary);
+
 }
+
+
+/* =====================================================
+   CONTROLS
+===================================================== */
 
 .controls{
+
     background:white;
-    padding:18px;
+
+    padding:16px;
+
     border-radius:10px;
+
     margin-bottom:20px;
-    box-shadow:0 2px 8px rgba(0,0,0,.08);
+
+    box-shadow:0 2px 8px rgba(0,0,0,.06);
+
+    border:1px solid #edf0f3;
+
 }
 
+
 .controls-row{
+
     display:flex;
+
     flex-wrap:wrap;
-    gap:10px;
+
+    gap:9px;
+
 }
+
 
 input,
 select{
+
     padding:10px 12px;
-    border:1px solid #ccc;
+
+    border:1px solid #ccd2d8;
+
     border-radius:6px;
-    font-size:14px;
+
+    font-size:13px;
+
     background:white;
+
+    outline:none;
+
 }
+
+
+input:focus,
+select:focus{
+
+    border-color:var(--primary);
+
+    box-shadow:0 0 0 2px rgba(7,59,114,.08);
+
+}
+
 
 .search{
+
     flex:1;
-    min-width:230px;
+
+    min-width:220px;
+
 }
+
 
 button{
+
     border:0;
+
     border-radius:6px;
-    padding:10px 15px;
+
+    padding:10px 14px;
+
     cursor:pointer;
+
     font-weight:bold;
+
+    font-size:13px;
+
 }
+
 
 button:hover{
+
     opacity:.9;
+
 }
+
 
 .primary{
-    background:#073b72;
+
+    background:var(--primary);
+
     color:white;
+
 }
+
 
 .success{
-    background:#198754;
+
+    background:var(--success);
+
     color:white;
+
 }
+
 
 .warning{
-    background:#f0ad4e;
+
+    background:var(--warning);
+
     color:white;
+
 }
+
 
 .danger{
-    background:#dc3545;
+
+    background:var(--danger);
+
     color:white;
+
 }
+
 
 .secondary{
+
     background:#6c757d;
+
     color:white;
+
 }
+
+
+.archive-selected{
+
+    display:none;
+
+    background:#dc3545;
+
+    color:white;
+
+}
+
+
+.archive-selected.show{
+
+    display:block;
+
+}
+
+
+/* =====================================================
+   TABLE BOX
+===================================================== */
 
 .table-box{
+
     background:white;
+
     border-radius:10px;
+
     overflow:hidden;
-    box-shadow:0 2px 8px rgba(0,0,0,.08);
+
+    box-shadow:0 2px 8px rgba(0,0,0,.06);
+
+    border:1px solid #edf0f3;
+
 }
+
 
 .table-header{
-    padding:18px;
+
+    padding:17px 18px;
+
     display:flex;
+
     justify-content:space-between;
+
     align-items:center;
+
+    border-bottom:1px solid var(--border);
+
 }
+
 
 .table-header h2{
-    color:#073b72;
+
+    color:var(--primary);
+
+    font-size:19px;
+
 }
+
+
+.table-header-right{
+
+    display:flex;
+
+    align-items:center;
+
+    gap:10px;
+
+    color:#6c757d;
+
+    font-size:12px;
+
+}
+
 
 .table-wrap{
+
     overflow-x:auto;
+
 }
+
 
 table{
+
     width:100%;
+
     border-collapse:collapse;
-    min-width:1100px;
+
+    min-width:1150px;
+
 }
+
 
 th{
-    background:#073b72;
+
+    background:var(--primary);
+
     color:white;
-    padding:12px;
+
+    padding:11px 12px;
+
     text-align:left;
-    font-size:13px;
+
+    font-size:12px;
+
+    white-space:nowrap;
+
 }
+
 
 td{
-    padding:11px;
-    border-bottom:1px solid #eee;
-    font-size:14px;
+
+    padding:11px 12px;
+
+    border-bottom:1px solid #edf0f2;
+
+    font-size:13px;
+
+    vertical-align:middle;
+
 }
+
 
 tr:hover{
+
     background:#f8fbff;
+
 }
 
-.badge{
-    display:inline-block;
-    padding:5px 9px;
-    border-radius:15px;
-    font-size:12px;
+
+.checkbox-cell{
+
+    width:42px;
+
+    text-align:center;
+
+}
+
+
+.student-checkbox,
+#selectAll{
+
+    width:16px;
+
+    height:16px;
+
+    cursor:pointer;
+
+}
+
+
+.student-name{
+
     font-weight:bold;
+
+    min-width:170px;
+
 }
 
-.complete{
-    background:#d1e7dd;
-    color:#0f5132;
+
+.thesis-cell{
+
+    width:280px;
+
+    max-width:280px;
+
+    white-space:normal;
+
+    word-break:break-word;
+
+    overflow-wrap:anywhere;
+
+    line-height:1.45;
+
+    color:#454b52;
+
 }
 
-.pending{
-    background:#f8d7da;
-    color:#842029;
-}
-
-.progress{
-    background:#fff3cd;
-    color:#664d03;
-}
-
-.phd{
-    background:#1976d2;
-    color:white;
-}
-
-.maed{
-    background:#8ecae6;
-    color:#123;
-}
-
-.mba{
-    background:#8e6bbf;
-    color:white;
-}
-
-.mpa{
-    background:#176b3a;
-    color:white;
-}
-
-.mscj{
-    background:#f5a6a6;
-    color:#333;
-}
-
-.group{
-    background:#e8f0f8;
-    color:#073b72;
-    padding:5px 8px;
-    border-radius:5px;
-    font-size:12px;
-    font-weight:bold;
-}
 
 .actions{
+
     display:flex;
+
     gap:5px;
+
+    white-space:nowrap;
+
 }
+
 
 .actions button{
+
     padding:7px 9px;
-    font-size:12px;
+
+    font-size:11px;
+
 }
+
+
+/* =====================================================
+   BADGES
+===================================================== */
+
+.badge{
+
+    display:inline-block;
+
+    padding:5px 9px;
+
+    border-radius:15px;
+
+    font-size:11px;
+
+    font-weight:bold;
+
+    white-space:nowrap;
+
+}
+
+
+.complete{
+
+    background:#d1e7dd;
+
+    color:#0f5132;
+
+}
+
+
+.pending{
+
+    background:#f8d7da;
+
+    color:#842029;
+
+}
+
+
+.progress{
+
+    background:#fff3cd;
+
+    color:#664d03;
+
+}
+
+
+.phd{
+
+    background:#1976d2;
+
+    color:white;
+
+}
+
+
+.maed{
+
+    background:#8ecae6;
+
+    color:#123;
+
+}
+
+
+.mba{
+
+    background:#8e6bbf;
+
+    color:white;
+
+}
+
+
+.mpa{
+
+    background:#176b3a;
+
+    color:white;
+
+}
+
+
+.mscj{
+
+    background:#f5a6a6;
+
+    color:#333;
+
+}
+
+
+.group{
+
+    background:#e8f0f8;
+
+    color:#073b72;
+
+    padding:5px 8px;
+
+    border-radius:5px;
+
+    font-size:11px;
+
+    font-weight:bold;
+
+    white-space:nowrap;
+
+}
+
+
+/* =====================================================
+   EMPTY
+===================================================== */
+
+.empty{
+
+    text-align:center;
+
+    padding:50px 20px;
+
+    color:#777;
+
+}
+
+
+/* =====================================================
+   MODAL
+===================================================== */
 
 .modal{
+
     position:fixed;
+
     inset:0;
+
     background:rgba(0,0,0,.5);
+
     display:none;
+
     justify-content:center;
+
     align-items:center;
+
     padding:20px;
+
     z-index:999;
+
 }
+
 
 .modal.show{
+
     display:flex;
+
 }
+
 
 .modal-content{
+
     background:white;
+
     width:600px;
+
     max-width:100%;
+
     max-height:90vh;
+
     overflow-y:auto;
+
     border-radius:10px;
+
     padding:25px;
+
 }
+
 
 .modal-content h2{
-    color:#073b72;
+
+    color:var(--primary);
+
     margin-bottom:20px;
+
 }
+
 
 .form-group{
+
     margin-bottom:15px;
+
 }
 
+
 .form-group label{
+
     display:block;
+
     font-weight:bold;
+
     margin-bottom:6px;
-    font-size:14px;
+
+    font-size:13px;
+
 }
+
 
 .form-group input,
 .form-group select{
+
     width:100%;
+
 }
+
 
 .modal-buttons{
+
     display:flex;
+
     justify-content:flex-end;
+
     gap:10px;
+
     margin-top:20px;
+
 }
 
-.message{
-    display:none;
-    padding:12px;
-    margin-bottom:15px;
-    border-radius:6px;
-    font-weight:bold;
+
+/* =====================================================
+   ARCHIVED MODE
+===================================================== */
+
+.archived-row{
+
+    background:#fafafa;
+
 }
 
-.message.show{
-    display:block;
+
+.archived-row:hover{
+
+    background:#f3f3f3;
+
 }
 
-.error{
-    background:#f8d7da;
-    color:#842029;
+
+.restore-button{
+
+    background:#198754;
+
+    color:white;
+
 }
 
-.success-message{
-    background:#d1e7dd;
-    color:#0f5132;
-}
 
-.offline-banner{
-    display:none;
-    background:#fff3cd;
-    color:#664d03;
-    padding:10px;
-    text-align:center;
-    font-weight:bold;
-}
+/* =====================================================
+   RESPONSIVE
+===================================================== */
 
-.offline-banner.show{
-    display:block;
-}
-
-.empty{
-    text-align:center;
-    padding:40px;
-    color:#777;
-}
-
-@media(max-width:900px){
+@media(max-width:1100px){
 
     .dashboard{
-        grid-template-columns:repeat(2,1fr);
+
+        grid-template-columns:
+            repeat(2,1fr);
+
     }
 
 }
+
+
+@media(max-width:800px){
+
+    .sidebar{
+
+        width:190px;
+
+    }
+
+    .content{
+
+        padding:15px;
+
+    }
+
+}
+
 
 @media(max-width:600px){
 
     header{
-        padding:15px;
+
+        padding:14px;
+
     }
 
-    header h1{
-        font-size:18px;
+    .header-left h1{
+
+        font-size:17px;
+
     }
 
-    .container{
-        padding:12px;
+    .connection{
+
+        font-size:11px;
+
+    }
+
+    .main-layout{
+
+        display:block;
+
+    }
+
+    .sidebar{
+
+        position:static;
+
+        width:100%;
+
+        height:auto;
+
+        border-right:0;
+
+        border-bottom:1px solid var(--border);
+
+        padding:10px;
+
+    }
+
+    .sidebar-title{
+
+        display:none;
+
+    }
+
+    .group-button{
+
+        display:inline-flex;
+
+        width:auto;
+
+        margin-right:4px;
+
+    }
+
+    .sidebar-divider{
+
+        display:none;
+
+    }
+
+    .archive-button{
+
+        width:auto;
+
+        display:inline-flex;
+
+        margin-top:5px;
+
     }
 
     .dashboard{
-        grid-template-columns:1fr 1fr;
+
+        grid-template-columns:
+            1fr 1fr;
+
+        gap:9px;
+
+    }
+
+    .card{
+
+        padding:14px;
+
+    }
+
+    .number{
+
+        font-size:24px;
+
+    }
+
+    .content{
+
+        padding:10px;
+
     }
 
 }
 
 </style>
+
 </head>
+
 
 <body>
 
+
+<!-- =====================================================
+     HEADER
+===================================================== -->
+
 <header>
 
-    <div>
-        <h1>Graduate Group Tracking System</h1>
-        <small>Graduate Student Monitoring System</small>
+    <div class="header-left">
+
+        <h1>
+            Graduate Group Tracking System
+        </h1>
+
+        <small>
+            Graduate Student Monitoring System
+        </small>
+
     </div>
 
-    <div class="connection" id="connectionStatus">
+
+    <div
+        class="connection"
+        id="connectionStatus"
+    >
         Connecting...
     </div>
 
 </header>
 
-<div id="offlineBanner" class="offline-banner">
+
+<div
+    id="offlineBanner"
+    class="offline-banner"
+>
     OFFLINE MODE — Changes will be saved on this device and synchronized when internet returns.
 </div>
 
+
+<!-- =====================================================
+     MAIN LAYOUT
+===================================================== -->
+
+<div class="main-layout">
+
+
+<!-- =====================================================
+     SIDEBAR
+===================================================== -->
+
+<aside class="sidebar">
+
+
+    <div class="sidebar-title">
+        Groups
+    </div>
+
+
+    <button
+        class="group-button active"
+        id="groupBtnAll"
+        onclick="selectGroup('ALL')"
+    >
+
+        <span class="group-icon">
+            ☰
+        </span>
+
+        <span class="group-name">
+            All Groups
+        </span>
+
+        <span
+            class="group-count"
+            id="countAll"
+        >
+            0
+        </span>
+
+    </button>
+
+
+    <button
+        class="group-button"
+        id="groupBtnTagaytay"
+        onclick="selectGroup('TAGAYTAY GROUP')"
+    >
+
+        <span class="group-icon">
+            T
+        </span>
+
+        <span class="group-name">
+            TAGAYTAY GROUP
+        </span>
+
+        <span
+            class="group-count"
+            id="countTagaytay"
+        >
+            0
+        </span>
+
+    </button>
+
+
+    <button
+        class="group-button"
+        id="groupBtnGeline"
+        onclick="selectGroup('GELINE GROUP')"
+    >
+
+        <span class="group-icon">
+            G
+        </span>
+
+        <span class="group-name">
+            GELINE GROUP
+        </span>
+
+        <span
+            class="group-count"
+            id="countGeline"
+        >
+            0
+        </span>
+
+    </button>
+
+
+    <button
+        class="group-button"
+        id="groupBtnBoracay"
+        onclick="selectGroup('BORACAY GROUP')"
+    >
+
+        <span class="group-icon">
+            B
+        </span>
+
+        <span class="group-name">
+            BORACAY GROUP
+        </span>
+
+        <span
+            class="group-count"
+            id="countBoracay"
+        >
+            0
+        </span>
+
+    </button>
+
+
+    <hr class="sidebar-divider">
+
+
+    <button
+        class="archive-button"
+        id="archiveViewButton"
+        onclick="showArchived()"
+    >
+
+        <span class="group-icon">
+            ▣
+        </span>
+
+        <span class="group-name">
+            Archived Students
+        </span>
+
+        <span
+            class="group-count"
+            id="archiveCount"
+        >
+            0
+        </span>
+
+    </button>
+
+
+</aside>
+
+
+<!-- =====================================================
+     CONTENT
+===================================================== -->
+
+<main class="content">
+
 <div class="container">
 
-    <div id="message" class="message"></div>
+
+    <div
+        id="message"
+        class="message"
+    ></div>
+
+
+    <!-- =================================================
+         DASHBOARD
+    ================================================= -->
 
     <div class="dashboard">
 
-        <div class="card">
-            <h3>Total Students</h3>
-            <div class="number" id="totalCount">0</div>
-        </div>
 
         <div class="card">
-            <h3>Files Complete</h3>
-            <div class="number" id="filesComplete">0</div>
+
+            <h3>
+                Total Students
+            </h3>
+
+            <div
+                class="number"
+                id="totalCount"
+            >
+                0
+            </div>
+
         </div>
 
-        <div class="card">
-            <h3>Thesis Complete</h3>
-            <div class="number" id="thesisComplete">0</div>
-        </div>
 
         <div class="card">
-            <h3>Overall Complete</h3>
-            <div class="number" id="overallComplete">0</div>
+
+            <h3>
+                Files Complete
+            </h3>
+
+            <div
+                class="number"
+                id="filesComplete"
+            >
+                0
+            </div>
+
         </div>
+
+
+        <div class="card">
+
+            <h3>
+                Thesis Complete
+            </h3>
+
+            <div
+                class="number"
+                id="thesisComplete"
+            >
+                0
+            </div>
+
+        </div>
+
+
+        <div class="card">
+
+            <h3>
+                Overall Complete
+            </h3>
+
+            <div
+                class="number"
+                id="overallComplete"
+            >
+                0
+            </div>
+
+        </div>
+
 
     </div>
 
 
+    <!-- =================================================
+         CONTROLS
+    ================================================= -->
+
     <div class="controls">
 
+
         <div class="controls-row">
+
 
             <input
                 type="text"
                 id="searchInput"
                 class="search"
-                placeholder="Search student name or thesis..."
+                placeholder="Search student name or thesis title..."
                 oninput="renderTable()"
             >
 
-            <select id="groupFilter" onchange="renderTable()">
 
-                <option value="ALL">
-                    All Groups
-                </option>
-
-                <option value="TAGAYTAY GROUP">
-                    TAGAYTAY GROUP
-                </option>
-
-                <option value="GELINE GROUP">
-                    GELINE GROUP
-                </option>
-
-                <option value="BORACAY GROUP">
-                    BORACAY GROUP
-                </option>
-
-            </select>
-
-
-            <select id="programFilter" onchange="renderTable()">
+            <select
+                id="programFilter"
+                onchange="renderTable()"
+            >
 
                 <option value="ALL">
                     All Programs
                 </option>
 
-                <option value="MAEd">MAEd</option>
-                <option value="PhD">PhD</option>
-                <option value="MBA">MBA</option>
-                <option value="MPA">MPA</option>
-                <option value="MSCJ">MSCJ</option>
+                <option value="MAEd">
+                    MAEd
+                </option>
+
+                <option value="PhD">
+                    PhD
+                </option>
+
+                <option value="MBA">
+                    MBA
+                </option>
+
+                <option value="MPA">
+                    MPA
+                </option>
+
+                <option value="MSCJ">
+                    MSCJ
+                </option>
 
             </select>
 
 
-            <select id="fileFilter" onchange="renderTable()">
+            <select
+                id="fileFilter"
+                onchange="renderTable()"
+            >
 
                 <option value="ALL">
                     All File Status
@@ -495,7 +1604,10 @@ tr:hover{
             </select>
 
 
-            <select id="thesisFilter" onchange="renderTable()">
+            <select
+                id="thesisFilter"
+                onchange="renderTable()"
+            >
 
                 <option value="ALL">
                     All Thesis Status
@@ -512,72 +1624,167 @@ tr:hover{
             </select>
 
 
-            <button class="primary" onclick="openAddModal()">
+            <button
+                class="primary"
+                onclick="openAddModal()"
+            >
                 + Add Student
             </button>
 
 
-            <button class="secondary" onclick="loadData()">
+            <button
+                class="secondary"
+                onclick="loadData()"
+            >
                 ↻ Refresh
             </button>
 
+
+            <button
+                class="archive-selected"
+                id="archiveSelectedButton"
+                onclick="archiveSelected()"
+            >
+                Archive Selected
+            </button>
+
+
         </div>
+
 
     </div>
 
 
+    <!-- =================================================
+         TABLE
+    ================================================= -->
+
     <div class="table-box">
+
 
         <div class="table-header">
 
-            <h2>Student Records</h2>
 
-            <span id="recordCount">
-                0 records
-            </span>
+            <h2 id="tableTitle">
+                Student Records
+            </h2>
+
+
+            <div class="table-header-right">
+
+                <span id="selectedCount">
+                    0 selected
+                </span>
+
+                <span>
+                    |
+                </span>
+
+                <span id="recordCount">
+                    0 records
+                </span>
+
+            </div>
+
 
         </div>
 
 
         <div class="table-wrap">
 
+
             <table>
+
 
                 <thead>
 
                     <tr>
 
-                        <th>#</th>
-                        <th>Student Name</th>
-                        <th>Group</th>
-                        <th>Program</th>
-                        <th>Files</th>
-                        <th>Thesis</th>
-                        <th>Overall</th>
-                        <th>Thesis Title</th>
-                        <th>Actions</th>
+                        <th class="checkbox-cell">
+
+                            <input
+                                type="checkbox"
+                                id="selectAll"
+                                onchange="toggleSelectAll()"
+                                title="Select all"
+                            >
+
+                        </th>
+
+                        <th>
+                            #
+                        </th>
+
+                        <th>
+                            Student Name
+                        </th>
+
+                        <th>
+                            Group
+                        </th>
+
+                        <th>
+                            Program
+                        </th>
+
+                        <th>
+                            Files
+                        </th>
+
+                        <th>
+                            Thesis
+                        </th>
+
+                        <th>
+                            Overall
+                        </th>
+
+                        <th>
+                            Thesis Title
+                        </th>
+
+                        <th>
+                            Actions
+                        </th>
 
                     </tr>
 
                 </thead>
 
+
                 <tbody id="studentTableBody">
+
                 </tbody>
+
 
             </table>
 
+
         </div>
 
+
     </div>
+
+
+</div>
+
+</main>
 
 </div>
 
 
-<!-- MODAL -->
+<!-- =====================================================
+     MODAL
+===================================================== -->
 
-<div class="modal" id="studentModal">
+<div
+    class="modal"
+    id="studentModal"
+>
+
 
     <div class="modal-content">
+
 
         <h2 id="modalTitle">
             Add Student
@@ -638,11 +1845,25 @@ tr:hover{
 
             <select id="studentProgram">
 
-                <option value="MAEd">MAEd</option>
-                <option value="PhD">PhD</option>
-                <option value="MBA">MBA</option>
-                <option value="MPA">MPA</option>
-                <option value="MSCJ">MSCJ</option>
+                <option value="MAEd">
+                    MAEd
+                </option>
+
+                <option value="PhD">
+                    PhD
+                </option>
+
+                <option value="MBA">
+                    MBA
+                </option>
+
+                <option value="MPA">
+                    MPA
+                </option>
+
+                <option value="MSCJ">
+                    MSCJ
+                </option>
 
             </select>
 
@@ -733,12 +1954,14 @@ tr:hover{
 
         <div class="modal-buttons">
 
+
             <button
                 class="secondary"
                 onclick="closeModal()"
             >
                 Cancel
             </button>
+
 
             <button
                 class="primary"
@@ -747,7 +1970,9 @@ tr:hover{
                 Save Student
             </button>
 
+
         </div>
+
 
     </div>
 
@@ -761,16 +1986,18 @@ tr:hover{
 ===================================================== */
 
 const SUPABASE_URL =
-"https://yiruvpikzntyiijapknt.supabase.co";
+    "https://yiruvpikzntyiijapknt.supabase.co";
+
 
 const SUPABASE_KEY =
-"sb_publishable_Z95aVweBRCPDWo1XH54GFQ_rrV9GIvk";
+    "sb_publishable_Z95aVweBRCPDWo1XH54GFQ_rrV9GIvk";
+
 
 const supabaseClient =
-window.supabase.createClient(
-    SUPABASE_URL,
-    SUPABASE_KEY
-);
+    window.supabase.createClient(
+        SUPABASE_URL,
+        SUPABASE_KEY
+    );
 
 
 /* =====================================================
@@ -778,18 +2005,31 @@ window.supabase.createClient(
 ===================================================== */
 
 const LOCAL_KEY =
-"graduateGroupStudents";
+    "graduateGroupStudents";
+
 
 const PENDING_KEY =
-"graduatePendingChanges";
+    "graduatePendingChanges";
 
 
 let students = [];
 
+
 let pendingChanges =
-JSON.parse(
-    localStorage.getItem(PENDING_KEY) || "[]"
-);
+    JSON.parse(
+        localStorage.getItem(
+            PENDING_KEY
+        ) || "[]"
+    );
+
+
+let selectedIds = new Set();
+
+
+let selectedGroup = "ALL";
+
+
+let showingArchived = false;
 
 
 /* =====================================================
@@ -803,6 +2043,7 @@ document.addEventListener(
         updateConnection();
 
         await loadData();
+
 
         window.addEventListener(
             "online",
@@ -849,7 +2090,7 @@ document.addEventListener(
 
 
 /* =====================================================
-   CONNECTION STATUS
+   CONNECTION
 ===================================================== */
 
 function updateConnection(){
@@ -858,6 +2099,7 @@ function updateConnection(){
         document.getElementById(
             "connectionStatus"
         );
+
 
     const banner =
         document.getElementById(
@@ -914,20 +2156,26 @@ async function loadData(){
 
 
 /* =====================================================
-   LOAD FROM SUPABASE
+   LOAD ONLINE
 ===================================================== */
 
 async function loadOnlineData(){
 
     try{
 
-        const { data, error } =
+        const {
+            data,
+            error
+        } =
             await supabaseClient
                 .from("students")
                 .select("*")
-                .order("name", {
-                    ascending:true
-                });
+                .order(
+                    "name",
+                    {
+                        ascending:true
+                    }
+                );
 
 
         if(error){
@@ -944,7 +2192,13 @@ async function loadOnlineData(){
         saveLocalData();
 
 
+        selectedIds.clear();
+
+
         renderTable();
+
+
+        updateSidebarCounts();
 
 
         await syncPendingChanges();
@@ -995,6 +2249,8 @@ function loadLocalData(){
 
     renderTable();
 
+    updateSidebarCounts();
+
 }
 
 
@@ -1029,12 +2285,14 @@ function savePending(){
 
 
 /* =====================================================
-   ADD PENDING CHANGE
+   ADD PENDING
 ===================================================== */
 
 function addPendingChange(change){
 
-    pendingChanges.push(change);
+    pendingChanges.push(
+        change
+    );
 
     savePending();
 
@@ -1048,14 +2306,18 @@ function addPendingChange(change){
 async function syncPendingChanges(){
 
     if(!navigator.onLine){
+
         return;
+
     }
 
 
     if(
         pendingChanges.length === 0
     ){
+
         return;
+
     }
 
 
@@ -1069,9 +2331,15 @@ async function syncPendingChanges(){
 
         try{
 
-            if(change.type === "insert"){
 
-                const { error } =
+            if(
+                change.type ===
+                "insert"
+            ){
+
+                const {
+                    error
+                } =
                     await supabaseClient
                         .from("students")
                         .insert([
@@ -1080,17 +2348,22 @@ async function syncPendingChanges(){
 
 
                 if(error){
+
                     throw error;
+
                 }
 
             }
 
 
             else if(
-                change.type === "update"
+                change.type ===
+                "update"
             ){
 
-                const { error } =
+                const {
+                    error
+                } =
                     await supabaseClient
                         .from("students")
                         .update(
@@ -1103,31 +2376,13 @@ async function syncPendingChanges(){
 
 
                 if(error){
+
                     throw error;
+
                 }
 
             }
 
-
-            else if(
-                change.type === "delete"
-            ){
-
-                const { error } =
-                    await supabaseClient
-                        .from("students")
-                        .delete()
-                        .eq(
-                            "id",
-                            change.id
-                        );
-
-
-                if(error){
-                    throw error;
-                }
-
-            }
 
         }catch(error){
 
@@ -1135,6 +2390,7 @@ async function syncPendingChanges(){
                 "Sync failed:",
                 error
             );
+
 
             remaining.push(
                 change
@@ -1155,6 +2411,164 @@ async function syncPendingChanges(){
 
 
 /* =====================================================
+   GROUP SELECT
+===================================================== */
+
+function selectGroup(group){
+
+    selectedGroup =
+        group;
+
+    showingArchived =
+        false;
+
+    selectedIds.clear();
+
+    updateSidebarButtons();
+
+    renderTable();
+
+}
+
+
+/* =====================================================
+   SHOW ARCHIVED
+===================================================== */
+
+function showArchived(){
+
+    showingArchived =
+        true;
+
+    selectedIds.clear();
+
+    updateSidebarButtons();
+
+    renderTable();
+
+}
+
+
+/* =====================================================
+   SIDEBAR BUTTONS
+===================================================== */
+
+function updateSidebarButtons(){
+
+    const buttons = [
+
+        "groupBtnAll",
+
+        "groupBtnTagaytay",
+
+        "groupBtnGeline",
+
+        "groupBtnBoracay"
+
+    ];
+
+
+    buttons.forEach(
+        id => {
+
+            document
+                .getElementById(id)
+                .classList.remove(
+                    "active"
+                );
+
+        }
+    );
+
+
+    document
+        .getElementById(
+            "archiveViewButton"
+        )
+        .classList.remove(
+            "active"
+        );
+
+
+    if(showingArchived){
+
+        document
+            .getElementById(
+                "archiveViewButton"
+            )
+            .classList.add(
+                "active"
+            );
+
+        return;
+
+    }
+
+
+    if(
+        selectedGroup ===
+        "ALL"
+    ){
+
+        document
+            .getElementById(
+                "groupBtnAll"
+            )
+            .classList.add(
+                "active"
+            );
+
+    }
+
+    else if(
+        selectedGroup ===
+        "TAGAYTAY GROUP"
+    ){
+
+        document
+            .getElementById(
+                "groupBtnTagaytay"
+            )
+            .classList.add(
+                "active"
+            );
+
+    }
+
+    else if(
+        selectedGroup ===
+        "GELINE GROUP"
+    ){
+
+        document
+            .getElementById(
+                "groupBtnGeline"
+            )
+            .classList.add(
+                "active"
+            );
+
+    }
+
+    else if(
+        selectedGroup ===
+        "BORACAY GROUP"
+    ){
+
+        document
+            .getElementById(
+                "groupBtnBoracay"
+            )
+            .classList.add(
+                "active"
+            );
+
+    }
+
+}
+
+
+/* =====================================================
    RENDER TABLE
 ===================================================== */
 
@@ -1169,15 +2583,10 @@ function renderTable(){
     const search =
         document.getElementById(
             "searchInput"
-        ).value
+        )
+        .value
         .toLowerCase()
         .trim();
-
-
-    const group =
-        document.getElementById(
-            "groupFilter"
-        ).value;
 
 
     const program =
@@ -1202,90 +2611,183 @@ function renderTable(){
         students.filter(
             student => {
 
+
+                /* ARCHIVE */
+
+                if(showingArchived){
+
+                    if(
+                        !student.archived
+                    ){
+
+                        return false;
+
+                    }
+
+                }else{
+
+                    if(
+                        student.archived
+                    ){
+
+                        return false;
+
+                    }
+
+                }
+
+
+                /* GROUP */
+
+                if(
+                    !showingArchived &&
+                    selectedGroup !==
+                    "ALL"
+                ){
+
+                    if(
+                        student.group !==
+                        selectedGroup
+                    ){
+
+                        return false;
+
+                    }
+
+                }
+
+
+                /* SEARCH */
+
                 const name =
                     (
-                        student.name || ""
-                    ).toLowerCase();
+                        student.name ||
+                        ""
+                    )
+                    .toLowerCase();
 
 
                 const title =
                     (
-                        student.thesis_title || ""
-                    ).toLowerCase();
-
-
-                return (
-
-                    (
-                        !search ||
-                        name.includes(search) ||
-                        title.includes(search)
+                        student.thesis_title ||
+                        ""
                     )
+                    .toLowerCase();
 
-                    &&
 
-                    (
-                        group === "ALL" ||
-                        student.group === group
+                if(
+                    search &&
+                    !name.includes(
+                        search
+                    ) &&
+                    !title.includes(
+                        search
                     )
+                ){
 
-                    &&
+                    return false;
 
-                    (
-                        program === "ALL" ||
-                        student.program === program
-                    )
+                }
 
-                    &&
 
-                    (
-                        file === "ALL" ||
-                        student.file_status === file
-                    )
+                /* PROGRAM */
 
-                    &&
+                if(
+                    program !== "ALL" &&
+                    student.program !==
+                    program
+                ){
 
-                    (
-                        thesis === "ALL" ||
-                        student.thesis_status === thesis
-                    )
+                    return false;
 
-                );
+                }
+
+
+                /* FILE */
+
+                if(
+                    file !== "ALL" &&
+                    student.file_status !==
+                    file
+                ){
+
+                    return false;
+
+                }
+
+
+                /* THESIS */
+
+                if(
+                    thesis !== "ALL" &&
+                    student.thesis_status !==
+                    thesis
+                ){
+
+                    return false;
+
+                }
+
+
+                return true;
 
             }
         );
 
 
+    /* SORT */
+
     filtered.sort(
         (a,b) =>
-            (a.name || "")
+            (
+                a.name || ""
+            )
             .localeCompare(
                 b.name || "",
                 undefined,
                 {
-                    sensitivity:"base"
+                    sensitivity:
+                        "base"
                 }
             )
     );
 
 
-    tbody.innerHTML = "";
+    tbody.innerHTML =
+        "";
 
 
-    if(filtered.length === 0){
+    if(
+        filtered.length === 0
+    ){
 
         tbody.innerHTML = `
+
             <tr>
-                <td colspan="9" class="empty">
-                    No student records found.
+
+                <td
+                    colspan="10"
+                    class="empty"
+                >
+
+                    ${
+                        showingArchived
+                        ? "No archived students found."
+                        : "No student records found."
+                    }
+
                 </td>
+
             </tr>
+
         `;
 
     }else{
 
+
         filtered.forEach(
             (student,index) => {
+
 
                 const row =
                     document.createElement(
@@ -1293,75 +2795,171 @@ function renderTable(){
                     );
 
 
+                if(
+                    student.archived
+                ){
+
+                    row.classList.add(
+                        "archived-row"
+                    );
+
+                }
+
+
+                const checked =
+                    selectedIds.has(
+                        String(
+                            student.id
+                        )
+                    )
+                    ? "checked"
+                    : "";
+
+
+                let actionButton = "";
+
+
+                if(
+                    showingArchived
+                ){
+
+                    actionButton = `
+
+                        <button
+                            class="restore-button"
+                            onclick="restoreStudent('${escapeAttribute(student.id)}')"
+                        >
+                            Restore
+                        </button>
+
+                    `;
+
+                }else{
+
+                    actionButton = `
+
+                        <button
+                            class="warning"
+                            onclick="editStudent('${escapeAttribute(student.id)}')"
+                        >
+                            Edit
+                        </button>
+
+                        <button
+                            class="danger"
+                            onclick="archiveStudent('${escapeAttribute(student.id)}')"
+                        >
+                            Archive
+                        </button>
+
+                    `;
+
+                }
+
+
                 row.innerHTML = `
+
+                    <td
+                        class="checkbox-cell"
+                    >
+
+                        <input
+                            type="checkbox"
+                            class="student-checkbox"
+                            value="${escapeAttribute(student.id)}"
+                            ${checked}
+                            onchange="toggleStudentSelection('${escapeAttribute(student.id)}')"
+                        >
+
+                    </td>
+
 
                     <td>
                         ${index + 1}
                     </td>
 
-                    <td>
-                        <strong>
-                            ${escapeHtml(
-                                student.name || ""
-                            )}
-                        </strong>
+
+                    <td
+                        class="student-name"
+                    >
+
+                        ${escapeHtml(
+                            student.name ||
+                            ""
+                        )}
+
                     </td>
 
+
                     <td>
+
                         <span class="group">
+
                             ${escapeHtml(
-                                student.group || ""
+                                student.group ||
+                                ""
                             )}
+
                         </span>
+
                     </td>
 
+
                     <td>
+
                         ${programBadge(
                             student.program
                         )}
+
                     </td>
 
+
                     <td>
+
                         ${statusBadge(
                             student.file_status
                         )}
+
                     </td>
 
+
                     <td>
+
                         ${statusBadge(
                             student.thesis_status
                         )}
+
                     </td>
 
+
                     <td>
+
                         ${statusBadge(
                             student.overall_status
                         )}
+
                     </td>
 
-                    <td>
+
+                    <td
+                        class="thesis-cell"
+                    >
+
                         ${escapeHtml(
-                            student.thesis_title || "-"
+                            student.thesis_title ||
+                            "-"
                         )}
+
                     </td>
+
 
                     <td>
 
-                        <div class="actions">
+                        <div
+                            class="actions"
+                        >
 
-                            <button
-                                class="warning"
-                                onclick="editStudent(${student.id})"
-                            >
-                                Edit
-                            </button>
-
-                            <button
-                                class="danger"
-                                onclick="deleteStudent(${student.id})"
-                            >
-                                Delete
-                            </button>
+                            ${actionButton}
 
                         </div>
 
@@ -1386,12 +2984,784 @@ function renderTable(){
         filtered.length +
         (
             filtered.length === 1
-                ? " record"
-                : " records"
+            ? " record"
+            : " records"
         );
 
 
+    updateSelectAllState();
+
     updateDashboard();
+
+    updateSelectedCount();
+
+}
+
+
+/* =====================================================
+   SELECT ALL
+===================================================== */
+
+function toggleSelectAll(){
+
+    const checkbox =
+        document.getElementById(
+            "selectAll"
+        );
+
+
+    const search =
+        document.getElementById(
+            "searchInput"
+        )
+        .value
+        .toLowerCase()
+        .trim();
+
+
+    const program =
+        document.getElementById(
+            "programFilter"
+        ).value;
+
+
+    const file =
+        document.getElementById(
+            "fileFilter"
+        ).value;
+
+
+    const thesis =
+        document.getElementById(
+            "thesisFilter"
+        ).value;
+
+
+    const visible =
+        students.filter(
+            student => {
+
+
+                if(
+                    showingArchived
+                ){
+
+                    if(
+                        !student.archived
+                    ){
+
+                        return false;
+
+                    }
+
+                }else{
+
+                    if(
+                        student.archived
+                    ){
+
+                        return false;
+
+                    }
+
+                }
+
+
+                if(
+                    !showingArchived &&
+                    selectedGroup !==
+                    "ALL" &&
+                    student.group !==
+                    selectedGroup
+                ){
+
+                    return false;
+
+                }
+
+
+                const name =
+                    (
+                        student.name ||
+                        ""
+                    ).toLowerCase();
+
+
+                const title =
+                    (
+                        student.thesis_title ||
+                        ""
+                    ).toLowerCase();
+
+
+                if(
+                    search &&
+                    !name.includes(
+                        search
+                    ) &&
+                    !title.includes(
+                        search
+                    )
+                ){
+
+                    return false;
+
+                }
+
+
+                if(
+                    program !== "ALL" &&
+                    student.program !==
+                    program
+                ){
+
+                    return false;
+
+                }
+
+
+                if(
+                    file !== "ALL" &&
+                    student.file_status !==
+                    file
+                ){
+
+                    return false;
+
+                }
+
+
+                if(
+                    thesis !== "ALL" &&
+                    student.thesis_status !==
+                    thesis
+                ){
+
+                    return false;
+
+                }
+
+
+                return true;
+
+            }
+        );
+
+
+    if(checkbox.checked){
+
+        visible.forEach(
+            student => {
+
+                selectedIds.add(
+                    String(
+                        student.id
+                    )
+                );
+
+            }
+        );
+
+    }else{
+
+        visible.forEach(
+            student => {
+
+                selectedIds.delete(
+                    String(
+                        student.id
+                    )
+                );
+
+            }
+        );
+
+    }
+
+
+    renderTable();
+
+}
+
+
+/* =====================================================
+   INDIVIDUAL SELECTION
+===================================================== */
+
+function toggleStudentSelection(id){
+
+    id =
+        String(id);
+
+
+    if(
+        selectedIds.has(id)
+    ){
+
+        selectedIds.delete(id);
+
+    }else{
+
+        selectedIds.add(id);
+
+    }
+
+
+    updateSelectAllState();
+
+    updateSelectedCount();
+
+}
+
+
+/* =====================================================
+   SELECT ALL STATE
+===================================================== */
+
+function updateSelectAllState(){
+
+    const checkbox =
+        document.getElementById(
+            "selectAll"
+        );
+
+
+    if(!checkbox){
+
+        return;
+
+    }
+
+
+    const visibleCheckboxes =
+        document.querySelectorAll(
+            ".student-checkbox"
+        );
+
+
+    if(
+        visibleCheckboxes.length === 0
+    ){
+
+        checkbox.checked = false;
+
+        checkbox.indeterminate =
+            false;
+
+        return;
+
+    }
+
+
+    const checked =
+        Array.from(
+            visibleCheckboxes
+        )
+        .filter(
+            cb => cb.checked
+        )
+        .length;
+
+
+    checkbox.checked =
+        checked ===
+        visibleCheckboxes.length;
+
+
+    checkbox.indeterminate =
+        checked > 0 &&
+        checked <
+        visibleCheckboxes.length;
+
+}
+
+
+/* =====================================================
+   SELECTED COUNT
+===================================================== */
+
+function updateSelectedCount(){
+
+    const count =
+        selectedIds.size;
+
+
+    document.getElementById(
+        "selectedCount"
+    ).textContent =
+        count +
+        (
+            count === 1
+            ? " selected"
+            : " selected"
+        );
+
+
+    const button =
+        document.getElementById(
+            "archiveSelectedButton"
+        );
+
+
+    if(
+        count > 0 &&
+        !showingArchived
+    ){
+
+        button.classList.add(
+            "show"
+        );
+
+    }else{
+
+        button.classList.remove(
+            "show"
+        );
+
+    }
+
+}
+
+
+/* =====================================================
+   ARCHIVE SELECTED
+===================================================== */
+
+async function archiveSelected(){
+
+    const ids =
+        Array.from(
+            selectedIds
+        );
+
+
+    if(
+        ids.length === 0
+    ){
+
+        return;
+
+    }
+
+
+    const names =
+        students
+            .filter(
+                student =>
+                    ids.includes(
+                        String(
+                            student.id
+                        )
+                    )
+            )
+            .map(
+                student =>
+                    student.name
+            );
+
+
+    if(
+        !confirm(
+            "Archive " +
+            ids.length +
+            " selected student" +
+            (
+                ids.length === 1
+                ? ""
+                : "s"
+            ) +
+            "?"
+        )
+    ){
+
+        return;
+
+    }
+
+
+    for(
+        const id of ids
+    ){
+
+        await archiveStudent(
+            id,
+            true
+        );
+
+    }
+
+
+    selectedIds.clear();
+
+    renderTable();
+
+    showMessage(
+        names.length +
+        " student" +
+        (
+            names.length === 1
+            ? ""
+            : "s"
+        ) +
+        " archived successfully.",
+        "success"
+    );
+
+}
+
+
+/* =====================================================
+   ARCHIVE ONE STUDENT
+===================================================== */
+
+async function archiveStudent(
+    id,
+    bulk = false
+){
+
+    const student =
+        students.find(
+            s =>
+                String(s.id) ===
+                String(id)
+        );
+
+
+    if(!student){
+
+        return;
+
+    }
+
+
+    if(!bulk){
+
+        if(
+            !confirm(
+                "Archive " +
+                student.name +
+                "?"
+            )
+        ){
+
+            return;
+
+        }
+
+    }
+
+
+    const index =
+        students.findIndex(
+            s =>
+                String(s.id) ===
+                String(id)
+        );
+
+
+    if(index === -1){
+
+        return;
+
+    }
+
+
+    students[index] = {
+
+        ...students[index],
+
+        archived:true
+
+    };
+
+
+    saveLocalData();
+
+    selectedIds.delete(
+        String(id)
+    );
+
+
+    if(
+        String(id).startsWith(
+            "offline-"
+        )
+    ){
+
+        if(!bulk){
+
+            showMessage(
+                "Student archived.",
+                "success"
+            );
+
+        }
+
+        renderTable();
+
+        return;
+
+    }
+
+
+    if(navigator.onLine){
+
+        try{
+
+            const {
+                error
+            } =
+                await supabaseClient
+                    .from("students")
+                    .update({
+                        archived:true
+                    })
+                    .eq(
+                        "id",
+                        id
+                    );
+
+
+            if(error){
+
+                throw error;
+
+            }
+
+
+            if(!bulk){
+
+                showMessage(
+                    "Student archived successfully.",
+                    "success"
+                );
+
+            }
+
+
+        }catch(error){
+
+            console.log(
+                "Archive failed:",
+                error
+            );
+
+
+            addPendingChange({
+
+                type:"update",
+
+                id:id,
+
+                data:{
+                    archived:true
+                }
+
+            });
+
+
+            if(!bulk){
+
+                showMessage(
+                    "Archived locally. It will sync when internet returns.",
+                    "success"
+                );
+
+            }
+
+        }
+
+    }else{
+
+        addPendingChange({
+
+            type:"update",
+
+            id:id,
+
+            data:{
+                archived:true
+            }
+
+        });
+
+
+        if(!bulk){
+
+            showMessage(
+                "Archived offline. It will sync when internet returns.",
+                "success"
+            );
+
+        }
+
+    }
+
+
+    renderTable();
+
+    updateSidebarCounts();
+
+}
+
+
+/* =====================================================
+   RESTORE
+===================================================== */
+
+async function restoreStudent(id){
+
+    const student =
+        students.find(
+            s =>
+                String(s.id) ===
+                String(id)
+        );
+
+
+    if(!student){
+
+        return;
+
+    }
+
+
+    if(
+        !confirm(
+            "Restore " +
+            student.name +
+            "?"
+        )
+    ){
+
+        return;
+
+    }
+
+
+    const index =
+        students.findIndex(
+            s =>
+                String(s.id) ===
+                String(id)
+        );
+
+
+    if(index !== -1){
+
+        students[index] = {
+
+            ...students[index],
+
+            archived:false
+
+        };
+
+    }
+
+
+    saveLocalData();
+
+
+    if(
+        String(id).startsWith(
+            "offline-"
+        )
+    ){
+
+        showMessage(
+            "Student restored.",
+            "success"
+        );
+
+        renderTable();
+
+        updateSidebarCounts();
+
+        return;
+
+    }
+
+
+    if(navigator.onLine){
+
+        try{
+
+            const {
+                error
+            } =
+                await supabaseClient
+                    .from("students")
+                    .update({
+                        archived:false
+                    })
+                    .eq(
+                        "id",
+                        id
+                    );
+
+
+            if(error){
+
+                throw error;
+
+            }
+
+
+            showMessage(
+                "Student restored successfully.",
+                "success"
+            );
+
+
+        }catch(error){
+
+            addPendingChange({
+
+                type:"update",
+
+                id:id,
+
+                data:{
+                    archived:false
+                }
+
+            });
+
+
+            showMessage(
+                "Restored locally. It will sync when internet returns.",
+                "success"
+            );
+
+        }
+
+    }else{
+
+        addPendingChange({
+
+            type:"update",
+
+            id:id,
+
+            data:{
+                archived:false
+            }
+
+        });
+
+
+        showMessage(
+            "Restored offline. It will sync when internet returns.",
+            "success"
+        );
+
+    }
+
+
+    renderTable();
+
+    updateSidebarCounts();
 
 }
 
@@ -1406,32 +3776,48 @@ function programBadge(program){
 
 
     if(program === "PhD"){
+
         cls = "phd";
+
     }
 
     else if(program === "MAEd"){
+
         cls = "maed";
+
     }
 
     else if(program === "MBA"){
+
         cls = "mba";
+
     }
 
     else if(program === "MPA"){
+
         cls = "mpa";
+
     }
 
     else if(program === "MSCJ"){
+
         cls = "mscj";
+
     }
 
 
     return `
-        <span class="badge ${cls}">
+
+        <span
+            class="badge ${cls}"
+        >
+
             ${escapeHtml(
                 program || ""
             )}
+
         </span>
+
     `;
 
 }
@@ -1443,30 +3829,44 @@ function programBadge(program){
 
 function statusBadge(status){
 
-    let cls = "pending";
+    let cls =
+        "pending";
 
 
-    if(status === "Complete"){
+    if(
+        status ===
+        "Complete"
+    ){
 
-        cls = "complete";
+        cls =
+            "complete";
 
     }
 
     else if(
-        status === "In Progress"
+        status ===
+        "In Progress"
     ){
 
-        cls = "progress";
+        cls =
+            "progress";
 
     }
 
 
     return `
-        <span class="badge ${cls}">
+
+        <span
+            class="badge ${cls}"
+        >
+
             ${escapeHtml(
-                status || "Pending"
+                status ||
+                "Pending"
             )}
+
         </span>
+
     `;
 
 }
@@ -1478,19 +3878,26 @@ function statusBadge(status){
 
 function updateDashboard(){
 
-    const group =
-        document.getElementById(
-            "groupFilter"
-        ).value;
+    let data =
+        students.filter(
+            student =>
+                !student.archived
+        );
 
 
-    const data =
-        group === "ALL"
-            ? students
-            : students.filter(
+    if(
+        selectedGroup !==
+        "ALL"
+    ){
+
+        data =
+            data.filter(
                 student =>
-                    student.group === group
+                    student.group ===
+                    selectedGroup
             );
+
+    }
 
 
     document.getElementById(
@@ -1532,7 +3939,67 @@ function updateDashboard(){
 
 
 /* =====================================================
-   ADD
+   SIDEBAR COUNTS
+===================================================== */
+
+function updateSidebarCounts(){
+
+    const active =
+        students.filter(
+            s =>
+                !s.archived
+        );
+
+
+    document.getElementById(
+        "countAll"
+    ).textContent =
+        active.length;
+
+
+    document.getElementById(
+        "countTagaytay"
+    ).textContent =
+        active.filter(
+            s =>
+                s.group ===
+                "TAGAYTAY GROUP"
+        ).length;
+
+
+    document.getElementById(
+        "countGeline"
+    ).textContent =
+        active.filter(
+            s =>
+                s.group ===
+                "GELINE GROUP"
+        ).length;
+
+
+    document.getElementById(
+        "countBoracay"
+    ).textContent =
+        active.filter(
+            s =>
+                s.group ===
+                "BORACAY GROUP"
+        ).length;
+
+
+    document.getElementById(
+        "archiveCount"
+    ).textContent =
+        students.filter(
+            s =>
+                s.archived
+        ).length;
+
+}
+
+
+/* =====================================================
+   ADD MODAL
 ===================================================== */
 
 function openAddModal(){
@@ -1545,18 +4012,22 @@ function openAddModal(){
 
     document.getElementById(
         "studentId"
-    ).value = "";
+    ).value =
+        "";
 
 
     document.getElementById(
         "studentName"
-    ).value = "";
+    ).value =
+        "";
 
 
     document.getElementById(
         "studentGroup"
     ).value =
-        "TAGAYTAY GROUP";
+        selectedGroup !== "ALL"
+        ? selectedGroup
+        : "TAGAYTAY GROUP";
 
 
     document.getElementById(
@@ -1585,7 +4056,8 @@ function openAddModal(){
 
     document.getElementById(
         "studentThesisTitle"
-    ).value = "";
+    ).value =
+        "";
 
 
     document.getElementById(
@@ -1606,13 +4078,15 @@ function editStudent(id){
     const student =
         students.find(
             s =>
-                Number(s.id) ===
-                Number(id)
+                String(s.id) ===
+                String(id)
         );
 
 
     if(!student){
+
         return;
+
     }
 
 
@@ -1672,7 +4146,8 @@ function editStudent(id){
     document.getElementById(
         "studentThesisTitle"
     ).value =
-        student.thesis_title || "";
+        student.thesis_title ||
+        "";
 
 
     document.getElementById(
@@ -1685,7 +4160,7 @@ function editStudent(id){
 
 
 /* =====================================================
-   SAVE
+   SAVE STUDENT
 ===================================================== */
 
 async function saveStudent(){
@@ -1699,7 +4174,8 @@ async function saveStudent(){
     const name =
         document.getElementById(
             "studentName"
-        ).value.trim();
+        ).value
+        .trim();
 
 
     if(!name){
@@ -1746,30 +4222,34 @@ async function saveStudent(){
         thesis_title:
             document.getElementById(
                 "studentThesisTitle"
-            ).value.trim()
+            ).value
+            .trim()
 
     };
 
 
-    /* ==========================================
+    /* =================================================
        UPDATE
-    ========================================== */
+    ================================================= */
 
     if(id){
 
         const index =
             students.findIndex(
                 s =>
-                    Number(s.id) ===
-                    Number(id)
+                    String(s.id) ===
+                    String(id)
             );
 
 
         if(index !== -1){
 
             students[index] = {
+
                 ...students[index],
+
                 ...data
+
             };
 
         }
@@ -1777,26 +4257,49 @@ async function saveStudent(){
 
         saveLocalData();
 
-
         renderTable();
 
+        updateSidebarCounts();
 
         closeModal();
+
+
+        if(
+            String(id).startsWith(
+                "offline-"
+            )
+        ){
+
+            showMessage(
+                "Student updated successfully.",
+                "success"
+            );
+
+            return;
+
+        }
 
 
         if(navigator.onLine){
 
             try{
 
-                const { error } =
+                const {
+                    error
+                } =
                     await supabaseClient
                         .from("students")
                         .update(data)
-                        .eq("id",id);
+                        .eq(
+                            "id",
+                            id
+                        );
 
 
                 if(error){
+
                     throw error;
+
                 }
 
 
@@ -1820,7 +4323,7 @@ async function saveStudent(){
 
 
                 showMessage(
-                    "Saved offline. It will sync when internet returns.",
+                    "Saved locally. It will sync when internet returns.",
                     "success"
                 );
 
@@ -1852,9 +4355,9 @@ async function saveStudent(){
     }
 
 
-    /* ==========================================
+    /* =================================================
        INSERT
-    ========================================== */
+    ================================================= */
 
     const temporaryId =
         "offline-" +
@@ -1867,7 +4370,10 @@ async function saveStudent(){
 
     const newStudent = {
 
-        id:temporaryId,
+        id:
+            temporaryId,
+
+        archived:false,
 
         ...data
 
@@ -1881,9 +4387,9 @@ async function saveStudent(){
 
     saveLocalData();
 
-
     renderTable();
 
+    updateSidebarCounts();
 
     closeModal();
 
@@ -1892,7 +4398,10 @@ async function saveStudent(){
 
         try{
 
-            const { data:inserted, error } =
+            const {
+                data:inserted,
+                error
+            } =
                 await supabaseClient
                     .from("students")
                     .insert([
@@ -1903,11 +4412,11 @@ async function saveStudent(){
 
 
             if(error){
+
                 throw error;
+
             }
 
-
-            /* Replace temporary record */
 
             const index =
                 students.findIndex(
@@ -1927,8 +4436,9 @@ async function saveStudent(){
 
             saveLocalData();
 
-
             renderTable();
+
+            updateSidebarCounts();
 
 
             showMessage(
@@ -1977,127 +4487,6 @@ async function saveStudent(){
 
 
 /* =====================================================
-   DELETE
-===================================================== */
-
-async function deleteStudent(id){
-
-    const student =
-        students.find(
-            s =>
-                String(s.id) ===
-                String(id)
-        );
-
-
-    if(!student){
-        return;
-    }
-
-
-    if(
-        !confirm(
-            "Delete " +
-            student.name +
-            "?"
-        )
-    ){
-        return;
-    }
-
-
-    students =
-        students.filter(
-            s =>
-                String(s.id) !==
-                String(id)
-        );
-
-
-    saveLocalData();
-
-
-    renderTable();
-
-
-    if(
-        String(id).startsWith(
-            "offline-"
-        )
-    ){
-
-        showMessage(
-            "Offline record deleted.",
-            "success"
-        );
-
-        return;
-
-    }
-
-
-    if(navigator.onLine){
-
-        try{
-
-            const { error } =
-                await supabaseClient
-                    .from("students")
-                    .delete()
-                    .eq("id",id);
-
-
-            if(error){
-                throw error;
-            }
-
-
-            showMessage(
-                "Student deleted successfully.",
-                "success"
-            );
-
-
-        }catch(error){
-
-            addPendingChange({
-
-                type:"delete",
-
-                id:id
-
-            });
-
-
-            showMessage(
-                "Deleted locally. Server deletion will sync later.",
-                "success"
-            );
-
-        }
-
-    }else{
-
-        addPendingChange({
-
-            type:"delete",
-
-            id:id
-
-        });
-
-
-        showMessage(
-            "Deleted offline. It will sync when internet returns.",
-            "success"
-        );
-
-    }
-
-}
-
-
-/* =====================================================
    CLOSE MODAL
 ===================================================== */
 
@@ -2135,8 +4524,8 @@ function showMessage(
         "message show " +
         (
             type === "error"
-                ? "error"
-                : "success-message"
+            ? "error"
+            : "success-message"
         );
 
 
@@ -2186,26 +4575,82 @@ function escapeHtml(value){
 
 
 /* =====================================================
+   ESCAPE ATTRIBUTE
+===================================================== */
+
+function escapeAttribute(value){
+
+    return String(value)
+        .replace(
+            /\\/g,
+            "\\\\"
+        )
+        .replace(
+            /'/g,
+            "\\'"
+        )
+        .replace(
+            /"/g,
+            "&quot;"
+        );
+
+}
+
+
+/* =====================================================
    CLOSE MODAL OUTSIDE
 ===================================================== */
 
-document.getElementById(
-    "studentModal"
-).addEventListener(
-    "click",
-    function(event){
+document
+    .getElementById(
+        "studentModal"
+    )
+    .addEventListener(
+        "click",
+        function(event){
 
-        if(
-            event.target ===
-            this
-        ){
+            if(
+                event.target ===
+                this
+            ){
 
-            closeModal();
+                closeModal();
+
+            }
 
         }
+    );
 
-    }
-);
+
+/* =====================================================
+   SERVICE WORKER
+===================================================== */
+
+if(
+    "serviceWorker"
+    in navigator
+){
+
+    window.addEventListener(
+        "load",
+        function(){
+
+            navigator.serviceWorker
+                .register(
+                    "service-worker.js"
+                )
+                .catch(
+                    error =>
+                        console.log(
+                            "Service Worker:",
+                            error
+                        )
+                );
+
+        }
+    );
+
+}
 
 </script>
 
