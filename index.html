@@ -1,34 +1,26 @@
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
 <title>Graduate Group Tracking System</title>
 
-<!-- SUPABASE -->
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 
 <style>
-
 *{
     box-sizing:border-box;
     margin:0;
     padding:0;
-    font-family:Arial, Helvetica, sans-serif;
+    font-family:Arial,Helvetica,sans-serif;
 }
 
 body{
-    background:#f3f6fa;
+    background:#f4f6f9;
     color:#222;
 }
 
-/* =========================
-   HEADER
-========================= */
-
-.header{
+header{
     background:#073b72;
     color:white;
     padding:20px 30px;
@@ -37,18 +29,14 @@ body{
     align-items:center;
 }
 
-.header h1{
+header h1{
     font-size:24px;
 }
 
-.header p{
-    font-size:13px;
-    opacity:.85;
+header span{
+    font-size:14px;
+    opacity:.9;
 }
-
-/* =========================
-   CONTAINER
-========================= */
 
 .container{
     padding:25px;
@@ -56,91 +44,38 @@ body{
     margin:auto;
 }
 
-/* =========================
-   GROUP CARDS
-========================= */
-
-.group-container{
-    display:grid;
-    grid-template-columns:repeat(3,1fr);
-    gap:18px;
-    margin-bottom:25px;
-}
-
-.group-card{
-    background:white;
-    border-radius:10px;
-    padding:22px;
-    box-shadow:0 2px 8px rgba(0,0,0,.08);
-    cursor:pointer;
-    border:2px solid transparent;
-    transition:.2s;
-}
-
-.group-card:hover{
-    transform:translateY(-2px);
-}
-
-.group-card.active{
-    border-color:#073b72;
-}
-
-.group-card h2{
-    color:#073b72;
-    margin-bottom:8px;
-}
-
-.group-card p{
-    color:#666;
-    font-size:14px;
-}
-
-.group-count{
-    font-size:30px;
-    font-weight:bold;
-    margin-top:15px;
-}
-
-/* =========================
-   DASHBOARD
-========================= */
-
 .dashboard{
     display:grid;
-    grid-template-columns:repeat(6,1fr);
-    gap:12px;
+    grid-template-columns:repeat(4,1fr);
+    gap:15px;
     margin-bottom:25px;
 }
 
-.stat{
+.card{
     background:white;
-    padding:18px;
-    border-radius:8px;
-    box-shadow:0 2px 7px rgba(0,0,0,.07);
+    border-radius:10px;
+    padding:20px;
+    box-shadow:0 2px 8px rgba(0,0,0,.08);
 }
 
-.stat-title{
-    font-size:12px;
-    color:#777;
+.card h3{
+    color:#555;
+    font-size:14px;
     margin-bottom:8px;
 }
 
-.stat-number{
-    font-size:25px;
+.card .number{
+    font-size:30px;
     font-weight:bold;
     color:#073b72;
 }
-
-/* =========================
-   CONTROLS
-========================= */
 
 .controls{
     background:white;
     padding:18px;
     border-radius:10px;
-    box-shadow:0 2px 8px rgba(0,0,0,.08);
     margin-bottom:20px;
+    box-shadow:0 2px 8px rgba(0,0,0,.08);
 }
 
 .controls-row{
@@ -149,17 +84,12 @@ body{
     flex-wrap:wrap;
 }
 
-input,
-select{
+input,select{
     padding:10px 12px;
     border:1px solid #ccc;
     border-radius:6px;
-    outline:none;
-}
-
-input:focus,
-select:focus{
-    border-color:#073b72;
+    font-size:14px;
+    background:white;
 }
 
 .search{
@@ -169,15 +99,10 @@ select:focus{
 
 button{
     border:none;
-    padding:10px 15px;
     border-radius:6px;
+    padding:10px 16px;
     cursor:pointer;
     font-weight:bold;
-}
-
-button:disabled{
-    opacity:.6;
-    cursor:not-allowed;
 }
 
 .btn-primary{
@@ -187,11 +112,6 @@ button:disabled{
 
 .btn-success{
     background:#198754;
-    color:white;
-}
-
-.btn-warning{
-    background:#f0ad4e;
     color:white;
 }
 
@@ -205,143 +125,125 @@ button:disabled{
     color:white;
 }
 
-/* =========================
-   CONNECTION STATUS
-========================= */
-
-.connection-status{
-    font-size:12px;
-    margin-top:8px;
-    font-weight:bold;
+.btn-warning{
+    background:#f0ad4e;
+    color:white;
 }
 
-.connection-online{
-    color:#198754;
-}
-
-.connection-error{
-    color:#dc3545;
-}
-
-/* =========================
-   TABLE
-========================= */
-
-.table-container{
+.table-box{
     background:white;
     border-radius:10px;
     box-shadow:0 2px 8px rgba(0,0,0,.08);
-    overflow:auto;
+    overflow:hidden;
+}
+
+.table-header{
+    padding:18px;
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    gap:10px;
+    flex-wrap:wrap;
+}
+
+.table-header h2{
+    color:#073b72;
+    font-size:20px;
+}
+
+.table-wrap{
+    overflow-x:auto;
 }
 
 table{
     width:100%;
     border-collapse:collapse;
-    min-width:1250px;
+    min-width:1050px;
 }
 
-thead{
+th{
     background:#073b72;
     color:white;
-}
-
-th,
-td{
-    padding:12px 10px;
-    border-bottom:1px solid #eee;
+    padding:12px;
     text-align:left;
     font-size:13px;
 }
 
-th{
-    white-space:nowrap;
+td{
+    padding:11px 12px;
+    border-bottom:1px solid #eee;
+    font-size:14px;
+    vertical-align:middle;
 }
 
-tbody tr:hover{
-    background:#f7f9fb;
+tr:hover{
+    background:#f8fbff;
 }
-
-/* =========================
-   BADGES
-========================= */
 
 .badge{
     display:inline-block;
     padding:5px 9px;
-    border-radius:20px;
-    font-size:11px;
+    border-radius:15px;
+    font-size:12px;
     font-weight:bold;
 }
 
-.program-maed{
-    background:#d9f0ff;
-    color:#0875b1;
-}
-
-.program-phd{
-    background:#d9e8ff;
-    color:#1555a5;
-}
-
-.program-mba{
-    background:#eadfff;
-    color:#6941a5;
-}
-
-.program-mpa{
-    background:#d9f2e2;
-    color:#176b3a;
-}
-
-.program-mscj{
-    background:#ffe0e0;
-    color:#b52b2b;
-}
-
+.status-paid,
 .status-complete{
-    background:#d9f2df;
-    color:#18743a;
+    background:#d1e7dd;
+    color:#0f5132;
 }
 
 .status-pending{
-    background:#ffe5b5;
-    color:#9a6100;
-}
-
-.status-not{
-    background:#ffdcdc;
-    color:#b42318;
+    background:#f8d7da;
+    color:#842029;
 }
 
 .status-progress{
-    background:#dcecff;
-    color:#145da0;
+    background:#fff3cd;
+    color:#664d03;
 }
 
-/* =========================
-   FILE / THESIS
-========================= */
+.program-badge{
+    padding:5px 9px;
+    border-radius:15px;
+    font-weight:bold;
+    font-size:12px;
+}
 
-.file-ok{
-    color:#198754;
+.phd{
+    background:#1976d2;
+    color:white;
+}
+
+.maed{
+    background:#8ecae6;
+    color:#123;
+}
+
+.mba{
+    background:#8e6bbf;
+    color:white;
+}
+
+.mpa{
+    background:#176b3a;
+    color:white;
+}
+
+.mscj{
+    background:#f5a6a6;
+    color:#333;
+}
+
+.group-badge{
+    background:#e8f0f8;
+    color:#073b72;
+    padding:5px 8px;
+    border-radius:5px;
+    font-size:12px;
     font-weight:bold;
 }
-
-.file-missing{
-    color:#dc3545;
-    font-weight:bold;
-}
-
-.thesis-title{
-    max-width:260px;
-    white-space:nowrap;
-    overflow:hidden;
-    text-overflow:ellipsis;
-}
-
-/* =========================
-   ACTIONS
-========================= */
 
 .actions{
     display:flex;
@@ -350,94 +252,70 @@ tbody tr:hover{
 
 .actions button{
     padding:7px 9px;
-    font-size:11px;
+    font-size:12px;
 }
-
-/* =========================
-   MODAL
-========================= */
 
 .modal{
     display:none;
     position:fixed;
     z-index:1000;
-    inset:0;
+    left:0;
+    top:0;
+    width:100%;
+    height:100%;
     background:rgba(0,0,0,.5);
-    align-items:center;
     justify-content:center;
+    align-items:center;
+    padding:20px;
 }
 
 .modal.show{
     display:flex;
 }
 
-.modal-box{
+.modal-content{
     background:white;
-    width:95%;
-    max-width:750px;
+    width:600px;
+    max-width:100%;
     max-height:90vh;
-    overflow:auto;
+    overflow-y:auto;
     border-radius:10px;
     padding:25px;
 }
 
-.modal-header{
-    display:flex;
-    justify-content:space-between;
-    align-items:center;
+.modal-content h2{
+    color:#073b72;
     margin-bottom:20px;
 }
 
-.modal-header h2{
-    color:#073b72;
-}
-
-.close{
-    background:#eee;
-    font-size:18px;
-    padding:5px 10px;
-}
-
-.form-grid{
-    display:grid;
-    grid-template-columns:1fr 1fr;
-    gap:15px;
-}
-
 .form-group{
-    display:flex;
-    flex-direction:column;
-    gap:6px;
-}
-
-.form-group.full{
-    grid-column:1 / -1;
+    margin-bottom:15px;
 }
 
 .form-group label{
+    display:block;
+    margin-bottom:6px;
     font-weight:bold;
-    font-size:13px;
+    font-size:14px;
 }
 
-textarea{
-    resize:vertical;
-    min-height:100px;
-    padding:10px;
-    border:1px solid #ccc;
-    border-radius:6px;
-    font-family:Arial;
+.form-group input,
+.form-group select{
+    width:100%;
 }
 
-.modal-footer{
-    margin-top:20px;
+.modal-buttons{
     display:flex;
     justify-content:flex-end;
     gap:10px;
+    margin-top:20px;
 }
 
-/* =========================
-   EMPTY
-========================= */
+.loading{
+    text-align:center;
+    padding:30px;
+    color:#666;
+}
 
 .empty{
     text-align:center;
@@ -445,110 +323,183 @@ textarea{
     color:#777;
 }
 
-/* =========================
-   LOADING
-========================= */
-
-.loading{
-    text-align:center;
-    padding:40px;
-    color:#073b72;
-    font-weight:bold;
+.error-box{
+    background:#f8d7da;
+    color:#842029;
+    padding:12px;
+    border-radius:6px;
+    margin-bottom:15px;
+    display:none;
 }
 
-/* =========================
-   RESPONSIVE
-========================= */
+.success-box{
+    background:#d1e7dd;
+    color:#0f5132;
+    padding:12px;
+    border-radius:6px;
+    margin-bottom:15px;
+    display:none;
+}
 
 @media(max-width:900px){
-
-    .group-container{
-        grid-template-columns:1fr;
-    }
-
     .dashboard{
         grid-template-columns:repeat(2,1fr);
     }
-
-    .form-grid{
-        grid-template-columns:1fr;
-    }
-
 }
 
+@media(max-width:600px){
+    header{
+        padding:15px;
+    }
+
+    header h1{
+        font-size:18px;
+    }
+
+    .container{
+        padding:12px;
+    }
+
+    .dashboard{
+        grid-template-columns:1fr 1fr;
+    }
+
+    .card{
+        padding:15px;
+    }
+}
 </style>
 </head>
 
 <body>
 
-<!-- =========================
-     HEADER
-========================= -->
-
-<div class="header">
-
+<header>
     <div>
         <h1>Graduate Group Tracking System</h1>
-        <p>Graduate Students • Groups • Programs • Files • Thesis</p>
-
-        <div id="connectionStatus"
-             class="connection-status">
-            Connecting to database...
-        </div>
+        <span>Graduate Student Monitoring System</span>
     </div>
 
-    <button class="btn-success" onclick="openModal()">
-        + Add Student
-    </button>
-
-</div>
-
+    <div>
+        <span id="connectionStatus">Connecting...</span>
+    </div>
+</header>
 
 <div class="container">
 
-<!-- =========================
-     GROUP CARDS
-========================= -->
+    <div id="errorBox" class="error-box"></div>
+    <div id="successBox" class="success-box"></div>
 
-<div class="group-container">
+    <div class="dashboard">
 
-    <div class="group-card active"
-         id="card-TAGAYTAY"
-         onclick="selectGroup('TAGAYTAY GROUP')">
+        <div class="card">
+            <h3>Total Students</h3>
+            <div class="number" id="totalCount">0</div>
+        </div>
 
-        <h2>TAGAYTAY GROUP</h2>
-        <p>Tagaytay Graduate Students</p>
+        <div class="card">
+            <h3>Files Complete</h3>
+            <div class="number" id="filesComplete">0</div>
+        </div>
 
-        <div class="group-count" id="count-TAGAYTAY">
-            0
+        <div class="card">
+            <h3>Thesis Complete</h3>
+            <div class="number" id="thesisComplete">0</div>
+        </div>
+
+        <div class="card">
+            <h3>Overall Complete</h3>
+            <div class="number" id="overallComplete">0</div>
         </div>
 
     </div>
 
+    <div class="controls">
 
-    <div class="group-card"
-         id="card-GELINE"
-         onclick="selectGroup('GELINE GROUP')">
+        <div class="controls-row">
 
-        <h2>GELINE GROUP</h2>
-        <p>Geline Graduate Students</p>
+            <input
+                type="text"
+                id="searchInput"
+                class="search"
+                placeholder="Search student name or thesis title..."
+                oninput="renderTable()"
+            >
 
-        <div class="group-count" id="count-GELINE">
-            0
+            <select id="groupFilter" onchange="renderTable()">
+                <option value="ALL">All Groups</option>
+                <option value="TAGAYTAY GROUP">TAGAYTAY GROUP</option>
+                <option value="GELINE GROUP">GELINE GROUP</option>
+                <option value="BORACAY GROUP">BORACAY GROUP</option>
+            </select>
+
+            <select id="programFilter" onchange="renderTable()">
+                <option value="ALL">All Programs</option>
+                <option value="MAEd">MAEd</option>
+                <option value="PhD">PhD</option>
+                <option value="MBA">MBA</option>
+                <option value="MPA">MPA</option>
+                <option value="MSCJ">MSCJ</option>
+            </select>
+
+            <select id="fileFilter" onchange="renderTable()">
+                <option value="ALL">All File Status</option>
+                <option value="Complete">Complete</option>
+                <option value="Pending">Pending</option>
+            </select>
+
+            <select id="thesisFilter" onchange="renderTable()">
+                <option value="ALL">All Thesis Status</option>
+                <option value="Complete">Complete</option>
+                <option value="Pending">Pending</option>
+            </select>
+
+            <button class="btn-primary" onclick="openAddModal()">
+                + Add Student
+            </button>
+
+            <button class="btn-secondary" onclick="loadStudents()">
+                ↻ Refresh
+            </button>
+
         </div>
 
     </div>
 
+    <div class="table-box">
 
-    <div class="group-card"
-         id="card-BORACAY"
-         onclick="selectGroup('BORACAY GROUP')">
+        <div class="table-header">
 
-        <h2>BORACAY GROUP</h2>
-        <p>Boracay Graduate Students</p>
+            <h2>Student Records</h2>
 
-        <div class="group-count" id="count-BORACAY">
-            0
+            <div>
+                <span id="recordCount">0 records</span>
+            </div>
+
+        </div>
+
+        <div class="table-wrap">
+
+            <table>
+
+                <thead>
+                    <tr>
+                        <th>#</th>
+                        <th>Student Name</th>
+                        <th>Group</th>
+                        <th>Program</th>
+                        <th>Files</th>
+                        <th>Thesis</th>
+                        <th>Overall</th>
+                        <th>Thesis Title</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+
+                <tbody id="studentTableBody">
+                </tbody>
+
+            </table>
+
         </div>
 
     </div>
@@ -556,343 +507,142 @@ textarea{
 </div>
 
 
-<!-- =========================
-     DASHBOARD
-========================= -->
-
-<div class="dashboard">
-
-    <div class="stat">
-        <div class="stat-title">TOTAL STUDENTS</div>
-        <div class="stat-number" id="totalStudents">0</div>
-    </div>
-
-    <div class="stat">
-        <div class="stat-title">MAEd</div>
-        <div class="stat-number" id="maedCount">0</div>
-    </div>
-
-    <div class="stat">
-        <div class="stat-title">PhD</div>
-        <div class="stat-number" id="phdCount">0</div>
-    </div>
-
-    <div class="stat">
-        <div class="stat-title">MBA</div>
-        <div class="stat-number" id="mbaCount">0</div>
-    </div>
-
-    <div class="stat">
-        <div class="stat-title">MPA</div>
-        <div class="stat-number" id="mpaCount">0</div>
-    </div>
-
-    <div class="stat">
-        <div class="stat-title">MSCJ</div>
-        <div class="stat-number" id="mscjCount">0</div>
-    </div>
-
-</div>
-
-
-<!-- =========================
-     CONTROLS
-========================= -->
-
-<div class="controls">
-
-    <div class="controls-row">
-
-        <input
-            type="text"
-            id="searchInput"
-            class="search"
-            placeholder="Search student name or thesis title..."
-            oninput="renderTable()"
-        >
-
-        <select id="programFilter" onchange="renderTable()">
-
-            <option value="">All Programs</option>
-            <option value="MAEd">MAEd</option>
-            <option value="PhD">PhD</option>
-            <option value="MBA">MBA</option>
-            <option value="MPA">MPA</option>
-            <option value="MSCJ">MSCJ</option>
-
-        </select>
-
-
-        <select id="fileFilter" onchange="renderTable()">
-
-            <option value="">All File Status</option>
-            <option value="Complete">Files Complete</option>
-            <option value="Pending">Files Pending</option>
-
-        </select>
-
-
-        <select id="thesisFilter" onchange="renderTable()">
-
-            <option value="">All Thesis Status</option>
-            <option value="Complete">Thesis Complete</option>
-            <option value="Pending">Thesis Pending</option>
-
-        </select>
-
-
-        <button
-            class="btn-secondary"
-            onclick="clearFilters()">
-            Clear
-        </button>
-
-        <button
-            class="btn-primary"
-            onclick="loadStudents()">
-            ↻ Refresh
-        </button>
-
-    </div>
-
-</div>
-
-
-<!-- =========================
-     TABLE
-========================= -->
-
-<div class="table-container">
-
-<table>
-
-<thead>
-
-<tr>
-
-    <th>#</th>
-    <th>Student Name</th>
-    <th>Group</th>
-    <th>Program</th>
-    <th>Files</th>
-    <th>Thesis Title</th>
-    <th>Thesis Status</th>
-    <th>Overall Status</th>
-    <th>Actions</th>
-
-</tr>
-
-</thead>
-
-<tbody id="studentTableBody">
-
-    <tr>
-        <td colspan="9" class="loading">
-            Loading students...
-        </td>
-    </tr>
-
-</tbody>
-
-</table>
-
-</div>
-
-</div>
-
-
-<!-- =========================
-     MODAL
-========================= -->
+<!-- ADD / EDIT MODAL -->
 
 <div class="modal" id="studentModal">
 
-<div class="modal-box">
+    <div class="modal-content">
 
-<div class="modal-header">
+        <h2 id="modalTitle">Add Student</h2>
 
-    <h2 id="modalTitle">
-        Add Student
-    </h2>
+        <input type="hidden" id="studentId">
 
-    <button
-        class="close"
-        onclick="closeModal()">
-        ×
-    </button>
+        <div class="form-group">
+            <label>Student Name</label>
+            <input
+                type="text"
+                id="studentName"
+                placeholder="Enter student name"
+            >
+        </div>
 
-</div>
+        <div class="form-group">
+            <label>Group</label>
 
+            <select id="studentGroup">
 
-<div class="form-grid">
+                <option value="TAGAYTAY GROUP">
+                    TAGAYTAY GROUP
+                </option>
 
-    <!-- NAME -->
+                <option value="GELINE GROUP">
+                    GELINE GROUP
+                </option>
 
-    <div class="form-group">
+                <option value="BORACAY GROUP">
+                    BORACAY GROUP
+                </option>
 
-        <label>Student Name</label>
+            </select>
 
-        <input
-            type="text"
-            id="studentName"
-            placeholder="Enter student name">
+        </div>
 
-    </div>
+        <div class="form-group">
 
+            <label>Program</label>
 
-    <!-- GROUP -->
+            <select id="studentProgram">
 
-    <div class="form-group">
+                <option value="MAEd">MAEd</option>
+                <option value="PhD">PhD</option>
+                <option value="MBA">MBA</option>
+                <option value="MPA">MPA</option>
+                <option value="MSCJ">MSCJ</option>
 
-        <label>Group</label>
+            </select>
 
-        <select id="studentGroup">
+        </div>
 
-            <option value="TAGAYTAY GROUP">
-                TAGAYTAY GROUP
-            </option>
+        <div class="form-group">
 
-            <option value="GELINE GROUP">
-                GELINE GROUP
-            </option>
+            <label>File Status</label>
 
-            <option value="BORACAY GROUP">
-                BORACAY GROUP
-            </option>
+            <select id="studentFileStatus">
 
-        </select>
+                <option value="Pending">Pending</option>
+                <option value="Complete">Complete</option>
 
-    </div>
+            </select>
 
+        </div>
 
-    <!-- PROGRAM -->
+        <div class="form-group">
 
-    <div class="form-group">
+            <label>Thesis Status</label>
 
-        <label>Program</label>
+            <select id="studentThesisStatus">
 
-        <select id="studentProgram">
+                <option value="Pending">Pending</option>
+                <option value="Complete">Complete</option>
 
-            <option value="MAEd">MAEd</option>
-            <option value="PhD">PhD</option>
-            <option value="MBA">MBA</option>
-            <option value="MPA">MPA</option>
-            <option value="MSCJ">MSCJ</option>
+            </select>
 
-        </select>
+        </div>
 
-    </div>
+        <div class="form-group">
 
+            <label>Overall Status</label>
 
-    <!-- FILE STATUS -->
+            <select id="studentOverallStatus">
 
-    <div class="form-group">
+                <option value="Pending">Pending</option>
+                <option value="In Progress">In Progress</option>
+                <option value="Complete">Complete</option>
 
-        <label>Files Status</label>
+            </select>
 
-        <select id="fileStatus">
+        </div>
 
-            <option value="Complete">
-                Complete
-            </option>
+        <div class="form-group">
 
-            <option value="Pending">
-                Pending
-            </option>
+            <label>Thesis Title</label>
 
-        </select>
+            <input
+                type="text"
+                id="studentThesisTitle"
+                placeholder="Enter thesis title"
+            >
 
-    </div>
+        </div>
 
+        <div class="modal-buttons">
 
-    <!-- THESIS STATUS -->
+            <button
+                class="btn-secondary"
+                onclick="closeModal()"
+            >
+                Cancel
+            </button>
 
-    <div class="form-group">
+            <button
+                class="btn-primary"
+                onclick="saveStudent()"
+            >
+                Save Student
+            </button>
 
-        <label>Thesis Status</label>
-
-        <select id="thesisStatus">
-
-            <option value="Complete">
-                Complete
-            </option>
-
-            <option value="Pending">
-                Pending
-            </option>
-
-        </select>
-
-    </div>
-
-
-    <!-- OVERALL STATUS -->
-
-    <div class="form-group">
-
-        <label>Overall Status</label>
-
-        <select id="overallStatus">
-
-            <option value="Complete">
-                Complete
-            </option>
-
-            <option value="In Progress">
-                In Progress
-            </option>
-
-            <option value="Pending">
-                Pending
-            </option>
-
-        </select>
+        </div>
 
     </div>
-
-
-    <!-- THESIS -->
-
-    <div class="form-group full">
-
-        <label>Title of Thesis</label>
-
-        <textarea
-            id="thesisTitle"
-            placeholder="Enter title of thesis"></textarea>
-
-    </div>
-
-</div>
-
-
-<div class="modal-footer">
-
-    <button
-        class="btn-secondary"
-        onclick="closeModal()">
-        Cancel
-    </button>
-
-    <button
-        class="btn-primary"
-        id="saveButton"
-        onclick="saveStudent()">
-        Save Student
-    </button>
-
-</div>
-
-</div>
 
 </div>
 
 
 <script>
 
-/* =====================================================
+/* =========================================================
    SUPABASE CONNECTION
-===================================================== */
+   ========================================================= */
 
 const SUPABASE_URL =
     "https://yiruvpikzntyiijapknt.supabase.co";
@@ -907,52 +657,40 @@ const supabaseClient =
     );
 
 
-/* =====================================================
+/* =========================================================
    DATA
-===================================================== */
+   ========================================================= */
 
 let students = [];
 
-let selectedGroup = "TAGAYTAY GROUP";
 
-let editingId = null;
+/* =========================================================
+   START
+   ========================================================= */
+
+document.addEventListener(
+    "DOMContentLoaded",
+    function(){
+        loadStudents();
+    }
+);
 
 
-/* =====================================================
-   CONNECTION STATUS
-===================================================== */
+/* =========================================================
+   LOAD STUDENTS
+   ========================================================= */
 
-function setConnectionStatus(online, message){
+async function loadStudents(){
 
-    const element =
+    const connectionStatus =
         document.getElementById(
             "connectionStatus"
         );
 
-    element.textContent = message;
-
-    element.className =
-        "connection-status " +
-        (online
-            ? "connection-online"
-            : "connection-error");
-
-}
-
-
-/* =====================================================
-   LOAD STUDENTS FROM SUPABASE
-===================================================== */
-
-async function loadStudents(){
+    connectionStatus.textContent =
+        "Loading...";
 
     try{
-
-        setConnectionStatus(
-            true,
-            "Connecting to database..."
-        );
-
 
         const { data, error } =
             await supabaseClient
@@ -962,479 +700,26 @@ async function loadStudents(){
                     ascending:true
                 });
 
-
         if(error){
-
-            console.error(error);
-
-            setConnectionStatus(
-                false,
-                "Database connection error"
-            );
-
-            alert(
-                "Unable to load students.\n\n" +
-                error.message
-            );
-
-            return;
-
+            throw error;
         }
 
+        students = data || [];
 
-        students =
-            (data || []).map(student => ({
-
-                id:student.id,
-
-                name:student.name,
-
-                group:student.group,
-
-                program:student.program,
-
-                fileStatus:student.file_status,
-
-                thesisStatus:student.thesis_status,
-
-                overallStatus:student.overall_status,
-
-                thesisTitle:student.thesis_title || ""
-
-            }));
-
-
-        setConnectionStatus(
-            true,
-            "● Online • Database connected"
-        );
-
-
-        updateDashboard();
+        connectionStatus.textContent =
+            "● Online";
 
         renderTable();
 
-    }
-
-    catch(error){
+    }catch(error){
 
         console.error(error);
 
-        setConnectionStatus(
-            false,
-            "Database connection error"
-        );
-
-        alert(
-            "Database connection failed."
-        );
-
-    }
-
-}
-
-
-/* =====================================================
-   SELECT GROUP
-===================================================== */
-
-function selectGroup(group){
-
-    selectedGroup = group;
-
-
-    document
-        .querySelectorAll(".group-card")
-        .forEach(card => {
-
-            card.classList.remove("active");
-
-        });
-
-
-    if(group === "TAGAYTAY GROUP"){
-
-        document
-            .getElementById("card-TAGAYTAY")
-            .classList.add("active");
-
-    }
-
-    else if(group === "GELINE GROUP"){
-
-        document
-            .getElementById("card-GELINE")
-            .classList.add("active");
-
-    }
-
-    else if(group === "BORACAY GROUP"){
-
-        document
-            .getElementById("card-BORACAY")
-            .classList.add("active");
-
-    }
-
-
-    updateDashboard();
-
-    renderTable();
-
-}
-
-
-/* =====================================================
-   OPEN MODAL
-===================================================== */
-
-function openModal(id = null){
-
-    editingId = id;
-
-    document
-        .getElementById("studentModal")
-        .classList.add("show");
-
-
-    if(id === null){
-
-        document.getElementById("modalTitle")
-            .textContent = "Add Student";
-
-
-        document.getElementById("studentName")
-            .value = "";
-
-
-        document.getElementById("studentGroup")
-            .value = selectedGroup;
-
-
-        document.getElementById("studentProgram")
-            .value = "MAEd";
-
-
-        document.getElementById("fileStatus")
-            .value = "Pending";
-
-
-        document.getElementById("thesisStatus")
-            .value = "Pending";
-
-
-        document.getElementById("overallStatus")
-            .value = "Pending";
-
-
-        document.getElementById("thesisTitle")
-            .value = "";
-
-    }
-
-    else{
-
-        const student =
-            students.find(
-                s => String(s.id) === String(id)
-            );
-
-
-        if(!student){
-
-            closeModal();
-
-            return;
-
-        }
-
-
-        document.getElementById("modalTitle")
-            .textContent = "Edit Student";
-
-
-        document.getElementById("studentName")
-            .value = student.name;
-
-
-        document.getElementById("studentGroup")
-            .value = student.group;
-
-
-        document.getElementById("studentProgram")
-            .value = student.program;
-
-
-        document.getElementById("fileStatus")
-            .value = student.fileStatus;
-
-
-        document.getElementById("thesisStatus")
-            .value = student.thesisStatus;
-
-
-        document.getElementById("overallStatus")
-            .value = student.overallStatus;
-
-
-        document.getElementById("thesisTitle")
-            .value = student.thesisTitle;
-
-    }
-
-}
-
-
-/* =====================================================
-   CLOSE MODAL
-===================================================== */
-
-function closeModal(){
-
-    document
-        .getElementById("studentModal")
-        .classList.remove("show");
-
-    editingId = null;
-
-}
-
-
-/* =====================================================
-   SAVE STUDENT
-===================================================== */
-
-async function saveStudent(){
-
-    const name =
-        document
-            .getElementById("studentName")
-            .value
-            .trim();
-
-
-    const group =
-        document
-            .getElementById("studentGroup")
-            .value;
-
-
-    const program =
-        document
-            .getElementById("studentProgram")
-            .value;
-
-
-    const fileStatus =
-        document
-            .getElementById("fileStatus")
-            .value;
-
-
-    const thesisStatus =
-        document
-            .getElementById("thesisStatus")
-            .value;
-
-
-    const overallStatus =
-        document
-            .getElementById("overallStatus")
-            .value;
-
-
-    const thesisTitle =
-        document
-            .getElementById("thesisTitle")
-            .value
-            .trim();
-
-
-    if(name === ""){
-
-        alert(
-            "Please enter the student name."
-        );
-
-        return;
-
-    }
-
-
-    const saveButton =
-        document.getElementById(
-            "saveButton"
-        );
-
-
-    saveButton.disabled = true;
-
-    saveButton.textContent =
-        "Saving...";
-
-
-    try{
-
-        /* =========================
-           EDIT
-        ========================= */
-
-        if(editingId !== null){
-
-            const { error } =
-                await supabaseClient
-                    .from("students")
-                    .update({
-
-                        name:name,
-
-                        group:group,
-
-                        program:program,
-
-                        file_status:fileStatus,
-
-                        thesis_status:thesisStatus,
-
-                        overall_status:overallStatus,
-
-                        thesis_title:thesisTitle
-
-                    })
-                    .eq(
-                        "id",
-                        editingId
-                    );
-
-
-            if(error){
-
-                throw error;
-
-            }
-
-        }
-
-
-        /* =========================
-           ADD
-        ========================= */
-
-        else{
-
-            const { error } =
-                await supabaseClient
-                    .from("students")
-                    .insert({
-
-                        name:name,
-
-                        group:group,
-
-                        program:program,
-
-                        file_status:fileStatus,
-
-                        thesis_status:thesisStatus,
-
-                        overall_status:overallStatus,
-
-                        thesis_title:thesisTitle
-
-                    });
-
-
-            if(error){
-
-                throw error;
-
-            }
-
-        }
-
-
-        closeModal();
-
-        await loadStudents();
-
-
-    }
-
-    catch(error){
-
-        console.error(error);
-
-        alert(
-            "Unable to save student.\n\n" +
-            error.message
-        );
-
-    }
-
-    finally{
-
-        saveButton.disabled = false;
-
-        saveButton.textContent =
-            "Save Student";
-
-    }
-
-}
-
-
-/* =====================================================
-   DELETE STUDENT
-===================================================== */
-
-async function deleteStudent(id){
-
-    const student =
-        students.find(
-            s => String(s.id) === String(id)
-        );
-
-
-    if(!student) return;
-
-
-    const confirmDelete =
-        confirm(
-            "Delete " +
-            student.name +
-            "?"
-        );
-
-
-    if(!confirmDelete) return;
-
-
-    try{
-
-        const { error } =
-            await supabaseClient
-                .from("students")
-                .delete()
-                .eq("id", id);
-
-
-        if(error){
-
-            throw error;
-
-        }
-
-
-        await loadStudents();
-
-    }
-
-    catch(error){
-
-        console.error(error);
-
-        alert(
-            "Unable to delete student.\n\n" +
+        connectionStatus.textContent =
+            "● Connection Error";
+
+        showError(
+            "Unable to load students: " +
             error.message
         );
 
@@ -1443,136 +728,9 @@ async function deleteStudent(id){
 }
 
 
-/* =====================================================
-   PROGRAM BADGE
-===================================================== */
-
-function programBadge(program){
-
-    let className = "";
-
-
-    if(program === "MAEd")
-        className = "program-maed";
-
-
-    else if(program === "PhD")
-        className = "program-phd";
-
-
-    else if(program === "MBA")
-        className = "program-mba";
-
-
-    else if(program === "MPA")
-        className = "program-mpa";
-
-
-    else if(program === "MSCJ")
-        className = "program-mscj";
-
-
-    return `
-        <span class="badge ${className}">
-            ${escapeHTML(program)}
-        </span>
-    `;
-
-}
-
-
-/* =====================================================
-   FILE BADGE
-===================================================== */
-
-function fileBadge(status){
-
-    if(status === "Complete"){
-
-        return `
-            <span class="file-ok">
-                ✓ Complete
-            </span>
-        `;
-
-    }
-
-
-    return `
-        <span class="file-missing">
-            ✕ Pending
-        </span>
-    `;
-
-}
-
-
-/* =====================================================
-   THESIS BADGE
-===================================================== */
-
-function thesisBadge(status){
-
-    if(status === "Complete"){
-
-        return `
-            <span class="badge status-complete">
-                ✓ Complete
-            </span>
-        `;
-
-    }
-
-
-    return `
-        <span class="badge status-pending">
-            Pending
-        </span>
-    `;
-
-}
-
-
-/* =====================================================
-   OVERALL BADGE
-===================================================== */
-
-function overallBadge(status){
-
-    if(status === "Complete"){
-
-        return `
-            <span class="badge status-complete">
-                Complete
-            </span>
-        `;
-
-    }
-
-
-    if(status === "In Progress"){
-
-        return `
-            <span class="badge status-progress">
-                In Progress
-            </span>
-        `;
-
-    }
-
-
-    return `
-        <span class="badge status-not">
-            Pending
-        </span>
-    `;
-
-}
-
-
-/* =====================================================
+/* =========================================================
    RENDER TABLE
-===================================================== */
+   ========================================================= */
 
 function renderTable(){
 
@@ -1581,108 +739,88 @@ function renderTable(){
             "studentTableBody"
         );
 
-
     const search =
-        document
-            .getElementById("searchInput")
-            .value
-            .toLowerCase()
-            .trim();
+        document.getElementById(
+            "searchInput"
+        ).value
+        .toLowerCase()
+        .trim();
 
+    const group =
+        document.getElementById(
+            "groupFilter"
+        ).value;
 
     const program =
-        document
-            .getElementById("programFilter")
-            .value;
+        document.getElementById(
+            "programFilter"
+        ).value;
 
+    const fileStatus =
+        document.getElementById(
+            "fileFilter"
+        ).value;
 
-    const file =
-        document
-            .getElementById("fileFilter")
-            .value;
-
-
-    const thesis =
-        document
-            .getElementById("thesisFilter")
-            .value;
+    const thesisStatus =
+        document.getElementById(
+            "thesisFilter"
+        ).value;
 
 
     let filtered =
         students.filter(student => {
 
-            /* GROUP */
+            const name =
+                (student.name || "")
+                .toLowerCase();
 
-            if(student.group !== selectedGroup)
-                return false;
+            const title =
+                (student.thesis_title || "")
+                .toLowerCase();
 
+            const matchesSearch =
+                !search ||
+                name.includes(search) ||
+                title.includes(search);
 
-            /* SEARCH */
+            const matchesGroup =
+                group === "ALL" ||
+                student.group === group;
 
-            if(search){
+            const matchesProgram =
+                program === "ALL" ||
+                student.program === program;
 
-                const text =
-                    (
-                        student.name +
-                        " " +
-                        student.thesisTitle
-                    ).toLowerCase();
+            const matchesFile =
+                fileStatus === "ALL" ||
+                student.file_status === fileStatus;
 
+            const matchesThesis =
+                thesisStatus === "ALL" ||
+                student.thesis_status === thesisStatus;
 
-                if(!text.includes(search))
-                    return false;
-
-            }
-
-
-            /* PROGRAM */
-
-            if(
-                program &&
-                student.program !== program
-            ){
-
-                return false;
-
-            }
-
-
-            /* FILE */
-
-            if(
-                file &&
-                student.fileStatus !== file
-            ){
-
-                return false;
-
-            }
-
-
-            /* THESIS */
-
-            if(
-                thesis &&
-                student.thesisStatus !== thesis
-            ){
-
-                return false;
-
-            }
-
-
-            return true;
+            return (
+                matchesSearch &&
+                matchesGroup &&
+                matchesProgram &&
+                matchesFile &&
+                matchesThesis
+            );
 
         });
 
 
-    /* ALPHABETICAL */
+    /* Alphabetical sorting */
 
-    filtered.sort(
-        (a,b) =>
-            a.name.localeCompare(
-                b.name
-            )
+    filtered.sort((a,b) =>
+        (a.name || "")
+        .localeCompare(
+            b.name || "",
+            undefined,
+            {
+                sensitivity:"base"
+            }
+        )
     );
 
 
@@ -1692,264 +830,640 @@ function renderTable(){
     if(filtered.length === 0){
 
         tbody.innerHTML = `
-
             <tr>
-
-                <td
-                    colspan="9"
-                    class="empty">
-
-                    No students found
-                    in ${escapeHTML(selectedGroup)}.
-
+                <td colspan="9" class="empty">
+                    No student records found.
                 </td>
-
             </tr>
-
         `;
 
-        return;
+    }else{
+
+        filtered.forEach(
+            (student,index) => {
+
+                const row =
+                    document.createElement("tr");
+
+                row.innerHTML = `
+
+                    <td>
+                        ${index + 1}
+                    </td>
+
+                    <td>
+                        <strong>
+                            ${escapeHtml(
+                                student.name || ""
+                            )}
+                        </strong>
+                    </td>
+
+                    <td>
+                        <span class="group-badge">
+                            ${escapeHtml(
+                                student.group || ""
+                            )}
+                        </span>
+                    </td>
+
+                    <td>
+                        ${programBadge(
+                            student.program
+                        )}
+                    </td>
+
+                    <td>
+                        ${statusBadge(
+                            student.file_status
+                        )}
+                    </td>
+
+                    <td>
+                        ${statusBadge(
+                            student.thesis_status
+                        )}
+                    </td>
+
+                    <td>
+                        ${statusBadge(
+                            student.overall_status
+                        )}
+                    </td>
+
+                    <td>
+                        ${escapeHtml(
+                            student.thesis_title || "-"
+                        )}
+                    </td>
+
+                    <td>
+
+                        <div class="actions">
+
+                            <button
+                                class="btn-warning"
+                                onclick="editStudent(${student.id})"
+                            >
+                                Edit
+                            </button>
+
+                            <button
+                                class="btn-danger"
+                                onclick="deleteStudent(${student.id})"
+                            >
+                                Delete
+                            </button>
+
+                        </div>
+
+                    </td>
+                `;
+
+                tbody.appendChild(row);
+
+            }
+        );
 
     }
 
 
-    filtered.forEach(
-        (student,index) => {
-
-            const row =
-                document.createElement("tr");
-
-
-            row.innerHTML = `
-
-                <td>
-                    ${index + 1}
-                </td>
-
-
-                <td>
-                    <b>
-                        ${escapeHTML(student.name)}
-                    </b>
-                </td>
-
-
-                <td>
-                    ${escapeHTML(student.group)}
-                </td>
-
-
-                <td>
-                    ${programBadge(student.program)}
-                </td>
-
-
-                <td>
-                    ${fileBadge(student.fileStatus)}
-                </td>
-
-
-                <td
-                    class="thesis-title"
-                    title="${escapeHTML(student.thesisTitle)}">
-
-                    ${
-                        student.thesisTitle
-                        ?
-                        escapeHTML(student.thesisTitle)
-                        :
-                        "<span style='color:#999'>No thesis title</span>"
-                    }
-
-                </td>
-
-
-                <td>
-                    ${thesisBadge(student.thesisStatus)}
-                </td>
-
-
-                <td>
-                    ${overallBadge(student.overallStatus)}
-                </td>
-
-
-                <td>
-
-                    <div class="actions">
-
-                        <button
-                            class="btn-warning"
-                            onclick="openModal(${student.id})">
-
-                            Edit
-
-                        </button>
-
-
-                        <button
-                            class="btn-danger"
-                            onclick="deleteStudent(${student.id})">
-
-                            Delete
-
-                        </button>
-
-                    </div>
-
-                </td>
-
-            `;
-
-
-            tbody.appendChild(row);
-
-        }
-    );
-
-}
-
-
-/* =====================================================
-   DASHBOARD
-===================================================== */
-
-function updateDashboard(){
-
-    const tagaytay =
-        students.filter(
-            s =>
-                s.group ===
-                "TAGAYTAY GROUP"
-        ).length;
-
-
-    const geline =
-        students.filter(
-            s =>
-                s.group ===
-                "GELINE GROUP"
-        ).length;
-
-
-    const boracay =
-        students.filter(
-            s =>
-                s.group ===
-                "BORACAY GROUP"
-        ).length;
-
-
     document.getElementById(
-        "count-TAGAYTAY"
-    ).textContent = tagaytay;
-
-
-    document.getElementById(
-        "count-GELINE"
-    ).textContent = geline;
-
-
-    document.getElementById(
-        "count-BORACAY"
-    ).textContent = boracay;
-
-
-    /* CURRENT GROUP */
-
-    const current =
-        students.filter(
-            s =>
-                s.group === selectedGroup
+        "recordCount"
+    ).textContent =
+        filtered.length +
+        (
+            filtered.length === 1
+                ? " record"
+                : " records"
         );
 
 
-    document.getElementById(
-        "totalStudents"
-    ).textContent =
-        current.length;
+    updateDashboard();
+
+}
+
+
+/* =========================================================
+   PROGRAM BADGE
+   ========================================================= */
+
+function programBadge(program){
+
+    let className = "";
+
+    if(program === "PhD"){
+        className = "phd";
+    }
+
+    else if(program === "MAEd"){
+        className = "maed";
+    }
+
+    else if(program === "MBA"){
+        className = "mba";
+    }
+
+    else if(program === "MPA"){
+        className = "mpa";
+    }
+
+    else if(program === "MSCJ"){
+        className = "mscj";
+    }
+
+    return `
+        <span class="program-badge ${className}">
+            ${escapeHtml(program || "")}
+        </span>
+    `;
+}
+
+
+/* =========================================================
+   STATUS BADGE
+   ========================================================= */
+
+function statusBadge(status){
+
+    let className =
+        "status-pending";
+
+    if(status === "Complete"){
+        className =
+            "status-complete";
+    }
+
+    else if(status === "In Progress"){
+        className =
+            "status-progress";
+    }
+
+    return `
+        <span class="badge ${className}">
+            ${escapeHtml(status || "Pending")}
+        </span>
+    `;
+}
+
+
+/* =========================================================
+   DASHBOARD
+   ========================================================= */
+
+function updateDashboard(){
+
+    const group =
+        document.getElementById(
+            "groupFilter"
+        ).value;
+
+
+    const groupStudents =
+        group === "ALL"
+            ? students
+            : students.filter(
+                student =>
+                    student.group === group
+            );
 
 
     document.getElementById(
-        "maedCount"
+        "totalCount"
     ).textContent =
-        current.filter(
-            s => s.program === "MAEd"
+        groupStudents.length;
+
+
+    document.getElementById(
+        "filesComplete"
+    ).textContent =
+        groupStudents.filter(
+            student =>
+                student.file_status ===
+                "Complete"
         ).length;
 
 
     document.getElementById(
-        "phdCount"
+        "thesisComplete"
     ).textContent =
-        current.filter(
-            s => s.program === "PhD"
+        groupStudents.filter(
+            student =>
+                student.thesis_status ===
+                "Complete"
         ).length;
 
 
     document.getElementById(
-        "mbaCount"
+        "overallComplete"
     ).textContent =
-        current.filter(
-            s => s.program === "MBA"
-        ).length;
-
-
-    document.getElementById(
-        "mpaCount"
-    ).textContent =
-        current.filter(
-            s => s.program === "MPA"
-        ).length;
-
-
-    document.getElementById(
-        "mscjCount"
-    ).textContent =
-        current.filter(
-            s => s.program === "MSCJ"
+        groupStudents.filter(
+            student =>
+                student.overall_status ===
+                "Complete"
         ).length;
 
 }
 
 
-/* =====================================================
-   CLEAR FILTERS
-===================================================== */
+/* =========================================================
+   OPEN ADD MODAL
+   ========================================================= */
 
-function clearFilters(){
+function openAddModal(){
 
     document.getElementById(
-        "searchInput"
+        "modalTitle"
+    ).textContent =
+        "Add Student";
+
+
+    document.getElementById(
+        "studentId"
     ).value = "";
 
 
     document.getElementById(
-        "programFilter"
+        "studentName"
     ).value = "";
 
 
     document.getElementById(
-        "fileFilter"
+        "studentGroup"
+    ).value =
+        "TAGAYTAY GROUP";
+
+
+    document.getElementById(
+        "studentProgram"
+    ).value =
+        "MAEd";
+
+
+    document.getElementById(
+        "studentFileStatus"
+    ).value =
+        "Pending";
+
+
+    document.getElementById(
+        "studentThesisStatus"
+    ).value =
+        "Pending";
+
+
+    document.getElementById(
+        "studentOverallStatus"
+    ).value =
+        "Pending";
+
+
+    document.getElementById(
+        "studentThesisTitle"
     ).value = "";
 
 
     document.getElementById(
-        "thesisFilter"
-    ).value = "";
-
-
-    renderTable();
+        "studentModal"
+    ).classList.add("show");
 
 }
 
 
-/* =====================================================
+/* =========================================================
+   EDIT STUDENT
+   ========================================================= */
+
+function editStudent(id){
+
+    const student =
+        students.find(
+            s => Number(s.id) === Number(id)
+        );
+
+    if(!student){
+        showError(
+            "Student record not found."
+        );
+        return;
+    }
+
+
+    document.getElementById(
+        "modalTitle"
+    ).textContent =
+        "Edit Student";
+
+
+    document.getElementById(
+        "studentId"
+    ).value =
+        student.id;
+
+
+    document.getElementById(
+        "studentName"
+    ).value =
+        student.name || "";
+
+
+    document.getElementById(
+        "studentGroup"
+    ).value =
+        student.group ||
+        "TAGAYTAY GROUP";
+
+
+    document.getElementById(
+        "studentProgram"
+    ).value =
+        student.program ||
+        "MAEd";
+
+
+    document.getElementById(
+        "studentFileStatus"
+    ).value =
+        student.file_status ||
+        "Pending";
+
+
+    document.getElementById(
+        "studentThesisStatus"
+    ).value =
+        student.thesis_status ||
+        "Pending";
+
+
+    document.getElementById(
+        "studentOverallStatus"
+    ).value =
+        student.overall_status ||
+        "Pending";
+
+
+    document.getElementById(
+        "studentThesisTitle"
+    ).value =
+        student.thesis_title || "";
+
+
+    document.getElementById(
+        "studentModal"
+    ).classList.add("show");
+
+}
+
+
+/* =========================================================
+   SAVE STUDENT
+   ========================================================= */
+
+async function saveStudent(){
+
+    const id =
+        document.getElementById(
+            "studentId"
+        ).value;
+
+
+    const name =
+        document.getElementById(
+            "studentName"
+        ).value.trim();
+
+
+    const group =
+        document.getElementById(
+            "studentGroup"
+        ).value;
+
+
+    const program =
+        document.getElementById(
+            "studentProgram"
+        ).value;
+
+
+    const fileStatus =
+        document.getElementById(
+            "studentFileStatus"
+        ).value;
+
+
+    const thesisStatus =
+        document.getElementById(
+            "studentThesisStatus"
+        ).value;
+
+
+    const overallStatus =
+        document.getElementById(
+            "studentOverallStatus"
+        ).value;
+
+
+    const thesisTitle =
+        document.getElementById(
+            "studentThesisTitle"
+        ).value.trim();
+
+
+    if(!name){
+
+        showError(
+            "Please enter the student name."
+        );
+
+        return;
+    }
+
+
+    const studentData = {
+
+        name:name,
+
+        group:group,
+
+        program:program,
+
+        file_status:fileStatus,
+
+        thesis_status:thesisStatus,
+
+        overall_status:overallStatus,
+
+        thesis_title:thesisTitle
+
+    };
+
+
+    try{
+
+        let error;
+
+
+        if(id){
+
+            const result =
+                await supabaseClient
+                    .from("students")
+                    .update(studentData)
+                    .eq("id",id);
+
+            error =
+                result.error;
+
+        }else{
+
+            const result =
+                await supabaseClient
+                    .from("students")
+                    .insert([
+                        studentData
+                    ]);
+
+            error =
+                result.error;
+
+        }
+
+
+        if(error){
+            throw error;
+        }
+
+
+        closeModal();
+
+        showSuccess(
+            id
+                ? "Student updated successfully."
+                : "Student added successfully."
+        );
+
+
+        await loadStudents();
+
+
+    }catch(error){
+
+        console.error(error);
+
+        showError(
+            "Unable to save student: " +
+            error.message
+        );
+
+    }
+
+}
+
+
+/* =========================================================
+   DELETE STUDENT
+   ========================================================= */
+
+async function deleteStudent(id){
+
+    const student =
+        students.find(
+            s => Number(s.id) === Number(id)
+        );
+
+
+    if(!student){
+        return;
+    }
+
+
+    const confirmed =
+        confirm(
+            "Are you sure you want to delete " +
+            student.name +
+            "?"
+        );
+
+
+    if(!confirmed){
+        return;
+    }
+
+
+    try{
+
+        const { error } =
+            await supabaseClient
+                .from("students")
+                .delete()
+                .eq("id",id);
+
+
+        if(error){
+            throw error;
+        }
+
+
+        showSuccess(
+            "Student deleted successfully."
+        );
+
+
+        await loadStudents();
+
+
+    }catch(error){
+
+        console.error(error);
+
+        showError(
+            "Unable to delete student: " +
+            error.message
+        );
+
+    }
+
+}
+
+
+/* =========================================================
+   CLOSE MODAL
+   ========================================================= */
+
+function closeModal(){
+
+    document.getElementById(
+        "studentModal"
+    ).classList.remove("show");
+
+}
+
+
+/* =========================================================
+   CLICK OUTSIDE MODAL
+   ========================================================= */
+
+document.getElementById(
+    "studentModal"
+).addEventListener(
+    "click",
+    function(event){
+
+        if(event.target === this){
+            closeModal();
+        }
+
+    }
+);
+
+
+/* =========================================================
    ESCAPE HTML
-===================================================== */
+   ========================================================= */
 
-function escapeHTML(value){
+function escapeHtml(value){
 
-    return String(value || "")
+    return String(value)
         .replace(/&/g,"&amp;")
         .replace(/</g,"&lt;")
         .replace(/>/g,"&gt;")
@@ -1959,31 +1473,62 @@ function escapeHTML(value){
 }
 
 
-/* =====================================================
-   CLOSE MODAL WHEN CLICKING OUTSIDE
-===================================================== */
+/* =========================================================
+   MESSAGES
+   ========================================================= */
 
-document
-    .getElementById("studentModal")
-    .addEventListener(
-        "click",
-        function(event){
+function showError(message){
 
-            if(event.target === this){
+    const box =
+        document.getElementById(
+            "errorBox"
+        );
 
-                closeModal();
+    box.textContent =
+        message;
 
-            }
+    box.style.display =
+        "block";
 
-        }
+
+    setTimeout(
+        function(){
+
+            box.style.display =
+                "none";
+
+        },
+        5000
     );
 
+}
 
-/* =====================================================
-   INITIAL LOAD
-===================================================== */
 
-loadStudents();
+function showSuccess(message){
+
+    const box =
+        document.getElementById(
+            "successBox"
+        );
+
+    box.textContent =
+        message;
+
+    box.style.display =
+        "block";
+
+
+    setTimeout(
+        function(){
+
+            box.style.display =
+                "none";
+
+        },
+        3000
+    );
+
+}
 
 </script>
 
