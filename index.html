@@ -1524,7 +1524,9 @@ tr:hover{
     }
 
 }
-
+<button onclick="testStudentFilesBucket()">
+    Test Storage
+</button>
 </style>
 
 </head>
@@ -2250,7 +2252,45 @@ tr:hover{
 
 
 <script>
+async function testStudentFilesBucket(){
 
+    const { data, error } =
+        await supabaseClient
+        .storage
+        .listBuckets();
+
+    console.log("BUCKETS:", data);
+    console.log("ERROR:", error);
+
+    if(error){
+        alert(
+            "Storage Error:\n\n" +
+            error.message
+        );
+        return;
+    }
+
+    const bucket =
+        data.find(
+            b => b.name === "student-files"
+        );
+
+    if(bucket){
+
+        alert(
+            "✅ student-files FOUND!\n\n" +
+            "The website can access your bucket."
+        );
+
+    }else{
+
+        alert(
+            "❌ student-files NOT FOUND.\n\n" +
+            "Buckets detected:\n\n" +
+            data.map(b => b.name).join("\n")
+        );
+    }
+}
 /* =====================================================
    SUPABASE
 ===================================================== */
