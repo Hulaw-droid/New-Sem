@@ -3,11 +3,16 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
 <title>Graduate Group Tracking System</title>
+
+<link rel="manifest" href="manifest.json">
+<meta name="theme-color" content="#073b72">
 
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 
 <style>
+
 *{
     box-sizing:border-box;
     margin:0;
@@ -23,48 +28,52 @@ body{
 header{
     background:#073b72;
     color:white;
-    padding:20px 30px;
+    padding:18px 25px;
     display:flex;
     justify-content:space-between;
     align-items:center;
 }
 
 header h1{
-    font-size:24px;
+    font-size:23px;
 }
 
-header span{
-    font-size:14px;
-    opacity:.9;
+header small{
+    opacity:.85;
+}
+
+.connection{
+    font-size:13px;
+    font-weight:bold;
 }
 
 .container{
-    padding:25px;
     max-width:1500px;
     margin:auto;
+    padding:25px;
 }
 
 .dashboard{
     display:grid;
     grid-template-columns:repeat(4,1fr);
     gap:15px;
-    margin-bottom:25px;
+    margin-bottom:20px;
 }
 
 .card{
     background:white;
-    border-radius:10px;
     padding:20px;
+    border-radius:10px;
     box-shadow:0 2px 8px rgba(0,0,0,.08);
 }
 
 .card h3{
-    color:#555;
     font-size:14px;
+    color:#666;
     margin-bottom:8px;
 }
 
-.card .number{
+.number{
     font-size:30px;
     font-weight:bold;
     color:#073b72;
@@ -80,11 +89,12 @@ header span{
 
 .controls-row{
     display:flex;
-    gap:10px;
     flex-wrap:wrap;
+    gap:10px;
 }
 
-input,select{
+input,
+select{
     padding:10px 12px;
     border:1px solid #ccc;
     border-radius:6px;
@@ -94,47 +104,51 @@ input,select{
 
 .search{
     flex:1;
-    min-width:220px;
+    min-width:230px;
 }
 
 button{
-    border:none;
+    border:0;
     border-radius:6px;
-    padding:10px 16px;
+    padding:10px 15px;
     cursor:pointer;
     font-weight:bold;
 }
 
-.btn-primary{
+button:hover{
+    opacity:.9;
+}
+
+.primary{
     background:#073b72;
     color:white;
 }
 
-.btn-success{
+.success{
     background:#198754;
     color:white;
 }
 
-.btn-danger{
+.warning{
+    background:#f0ad4e;
+    color:white;
+}
+
+.danger{
     background:#dc3545;
     color:white;
 }
 
-.btn-secondary{
+.secondary{
     background:#6c757d;
-    color:white;
-}
-
-.btn-warning{
-    background:#f0ad4e;
     color:white;
 }
 
 .table-box{
     background:white;
     border-radius:10px;
-    box-shadow:0 2px 8px rgba(0,0,0,.08);
     overflow:hidden;
+    box-shadow:0 2px 8px rgba(0,0,0,.08);
 }
 
 .table-header{
@@ -142,13 +156,10 @@ button{
     display:flex;
     justify-content:space-between;
     align-items:center;
-    gap:10px;
-    flex-wrap:wrap;
 }
 
 .table-header h2{
     color:#073b72;
-    font-size:20px;
 }
 
 .table-wrap{
@@ -158,7 +169,7 @@ button{
 table{
     width:100%;
     border-collapse:collapse;
-    min-width:1050px;
+    min-width:1100px;
 }
 
 th{
@@ -170,10 +181,9 @@ th{
 }
 
 td{
-    padding:11px 12px;
+    padding:11px;
     border-bottom:1px solid #eee;
     font-size:14px;
-    vertical-align:middle;
 }
 
 tr:hover{
@@ -188,27 +198,19 @@ tr:hover{
     font-weight:bold;
 }
 
-.status-paid,
-.status-complete{
+.complete{
     background:#d1e7dd;
     color:#0f5132;
 }
 
-.status-pending{
+.pending{
     background:#f8d7da;
     color:#842029;
 }
 
-.status-progress{
+.progress{
     background:#fff3cd;
     color:#664d03;
-}
-
-.program-badge{
-    padding:5px 9px;
-    border-radius:15px;
-    font-weight:bold;
-    font-size:12px;
 }
 
 .phd{
@@ -236,7 +238,7 @@ tr:hover{
     color:#333;
 }
 
-.group-badge{
+.group{
     background:#e8f0f8;
     color:#073b72;
     padding:5px 8px;
@@ -256,17 +258,14 @@ tr:hover{
 }
 
 .modal{
-    display:none;
     position:fixed;
-    z-index:1000;
-    left:0;
-    top:0;
-    width:100%;
-    height:100%;
+    inset:0;
     background:rgba(0,0,0,.5);
+    display:none;
     justify-content:center;
     align-items:center;
     padding:20px;
+    z-index:999;
 }
 
 .modal.show{
@@ -294,8 +293,8 @@ tr:hover{
 
 .form-group label{
     display:block;
-    margin-bottom:6px;
     font-weight:bold;
+    margin-bottom:6px;
     font-size:14px;
 }
 
@@ -311,10 +310,39 @@ tr:hover{
     margin-top:20px;
 }
 
-.loading{
+.message{
+    display:none;
+    padding:12px;
+    margin-bottom:15px;
+    border-radius:6px;
+    font-weight:bold;
+}
+
+.message.show{
+    display:block;
+}
+
+.error{
+    background:#f8d7da;
+    color:#842029;
+}
+
+.success-message{
+    background:#d1e7dd;
+    color:#0f5132;
+}
+
+.offline-banner{
+    display:none;
+    background:#fff3cd;
+    color:#664d03;
+    padding:10px;
     text-align:center;
-    padding:30px;
-    color:#666;
+    font-weight:bold;
+}
+
+.offline-banner.show{
+    display:block;
 }
 
 .empty{
@@ -323,31 +351,16 @@ tr:hover{
     color:#777;
 }
 
-.error-box{
-    background:#f8d7da;
-    color:#842029;
-    padding:12px;
-    border-radius:6px;
-    margin-bottom:15px;
-    display:none;
-}
-
-.success-box{
-    background:#d1e7dd;
-    color:#0f5132;
-    padding:12px;
-    border-radius:6px;
-    margin-bottom:15px;
-    display:none;
-}
-
 @media(max-width:900px){
+
     .dashboard{
         grid-template-columns:repeat(2,1fr);
     }
+
 }
 
 @media(max-width:600px){
+
     header{
         padding:15px;
     }
@@ -364,30 +377,33 @@ tr:hover{
         grid-template-columns:1fr 1fr;
     }
 
-    .card{
-        padding:15px;
-    }
 }
+
 </style>
 </head>
 
 <body>
 
 <header>
-    <div>
-        <h1>Graduate Group Tracking System</h1>
-        <span>Graduate Student Monitoring System</span>
-    </div>
 
     <div>
-        <span id="connectionStatus">Connecting...</span>
+        <h1>Graduate Group Tracking System</h1>
+        <small>Graduate Student Monitoring System</small>
     </div>
+
+    <div class="connection" id="connectionStatus">
+        Connecting...
+    </div>
+
 </header>
+
+<div id="offlineBanner" class="offline-banner">
+    OFFLINE MODE — Changes will be saved on this device and synchronized when internet returns.
+</div>
 
 <div class="container">
 
-    <div id="errorBox" class="error-box"></div>
-    <div id="successBox" class="success-box"></div>
+    <div id="message" class="message"></div>
 
     <div class="dashboard">
 
@@ -413,6 +429,7 @@ tr:hover{
 
     </div>
 
+
     <div class="controls">
 
         <div class="controls-row">
@@ -421,43 +438,86 @@ tr:hover{
                 type="text"
                 id="searchInput"
                 class="search"
-                placeholder="Search student name or thesis title..."
+                placeholder="Search student name or thesis..."
                 oninput="renderTable()"
             >
 
             <select id="groupFilter" onchange="renderTable()">
-                <option value="ALL">All Groups</option>
-                <option value="TAGAYTAY GROUP">TAGAYTAY GROUP</option>
-                <option value="GELINE GROUP">GELINE GROUP</option>
-                <option value="BORACAY GROUP">BORACAY GROUP</option>
+
+                <option value="ALL">
+                    All Groups
+                </option>
+
+                <option value="TAGAYTAY GROUP">
+                    TAGAYTAY GROUP
+                </option>
+
+                <option value="GELINE GROUP">
+                    GELINE GROUP
+                </option>
+
+                <option value="BORACAY GROUP">
+                    BORACAY GROUP
+                </option>
+
             </select>
 
+
             <select id="programFilter" onchange="renderTable()">
-                <option value="ALL">All Programs</option>
+
+                <option value="ALL">
+                    All Programs
+                </option>
+
                 <option value="MAEd">MAEd</option>
                 <option value="PhD">PhD</option>
                 <option value="MBA">MBA</option>
                 <option value="MPA">MPA</option>
                 <option value="MSCJ">MSCJ</option>
+
             </select>
+
 
             <select id="fileFilter" onchange="renderTable()">
-                <option value="ALL">All File Status</option>
-                <option value="Complete">Complete</option>
-                <option value="Pending">Pending</option>
+
+                <option value="ALL">
+                    All File Status
+                </option>
+
+                <option value="Complete">
+                    Complete
+                </option>
+
+                <option value="Pending">
+                    Pending
+                </option>
+
             </select>
+
 
             <select id="thesisFilter" onchange="renderTable()">
-                <option value="ALL">All Thesis Status</option>
-                <option value="Complete">Complete</option>
-                <option value="Pending">Pending</option>
+
+                <option value="ALL">
+                    All Thesis Status
+                </option>
+
+                <option value="Complete">
+                    Complete
+                </option>
+
+                <option value="Pending">
+                    Pending
+                </option>
+
             </select>
 
-            <button class="btn-primary" onclick="openAddModal()">
+
+            <button class="primary" onclick="openAddModal()">
                 + Add Student
             </button>
 
-            <button class="btn-secondary" onclick="loadStudents()">
+
+            <button class="secondary" onclick="loadData()">
                 ↻ Refresh
             </button>
 
@@ -465,24 +525,28 @@ tr:hover{
 
     </div>
 
+
     <div class="table-box">
 
         <div class="table-header">
 
             <h2>Student Records</h2>
 
-            <div>
-                <span id="recordCount">0 records</span>
-            </div>
+            <span id="recordCount">
+                0 records
+            </span>
 
         </div>
+
 
         <div class="table-wrap">
 
             <table>
 
                 <thead>
+
                     <tr>
+
                         <th>#</th>
                         <th>Student Name</th>
                         <th>Group</th>
@@ -492,7 +556,9 @@ tr:hover{
                         <th>Overall</th>
                         <th>Thesis Title</th>
                         <th>Actions</th>
+
                     </tr>
+
                 </thead>
 
                 <tbody id="studentTableBody">
@@ -507,27 +573,43 @@ tr:hover{
 </div>
 
 
-<!-- ADD / EDIT MODAL -->
+<!-- MODAL -->
 
 <div class="modal" id="studentModal">
 
     <div class="modal-content">
 
-        <h2 id="modalTitle">Add Student</h2>
+        <h2 id="modalTitle">
+            Add Student
+        </h2>
 
-        <input type="hidden" id="studentId">
+
+        <input
+            type="hidden"
+            id="studentId"
+        >
+
 
         <div class="form-group">
-            <label>Student Name</label>
+
+            <label>
+                Student Name
+            </label>
+
             <input
                 type="text"
                 id="studentName"
                 placeholder="Enter student name"
             >
+
         </div>
 
+
         <div class="form-group">
-            <label>Group</label>
+
+            <label>
+                Group
+            </label>
 
             <select id="studentGroup">
 
@@ -547,9 +629,12 @@ tr:hover{
 
         </div>
 
+
         <div class="form-group">
 
-            <label>Program</label>
+            <label>
+                Program
+            </label>
 
             <select id="studentProgram">
 
@@ -563,49 +648,79 @@ tr:hover{
 
         </div>
 
+
         <div class="form-group">
 
-            <label>File Status</label>
+            <label>
+                File Status
+            </label>
 
             <select id="studentFileStatus">
 
-                <option value="Pending">Pending</option>
-                <option value="Complete">Complete</option>
+                <option value="Pending">
+                    Pending
+                </option>
+
+                <option value="Complete">
+                    Complete
+                </option>
 
             </select>
 
         </div>
 
+
         <div class="form-group">
 
-            <label>Thesis Status</label>
+            <label>
+                Thesis Status
+            </label>
 
             <select id="studentThesisStatus">
 
-                <option value="Pending">Pending</option>
-                <option value="Complete">Complete</option>
+                <option value="Pending">
+                    Pending
+                </option>
+
+                <option value="Complete">
+                    Complete
+                </option>
 
             </select>
 
         </div>
 
+
         <div class="form-group">
 
-            <label>Overall Status</label>
+            <label>
+                Overall Status
+            </label>
 
             <select id="studentOverallStatus">
 
-                <option value="Pending">Pending</option>
-                <option value="In Progress">In Progress</option>
-                <option value="Complete">Complete</option>
+                <option value="Pending">
+                    Pending
+                </option>
+
+                <option value="In Progress">
+                    In Progress
+                </option>
+
+                <option value="Complete">
+                    Complete
+                </option>
 
             </select>
 
         </div>
 
+
         <div class="form-group">
 
-            <label>Thesis Title</label>
+            <label>
+                Thesis Title
+            </label>
 
             <input
                 type="text"
@@ -615,17 +730,18 @@ tr:hover{
 
         </div>
 
+
         <div class="modal-buttons">
 
             <button
-                class="btn-secondary"
+                class="secondary"
                 onclick="closeModal()"
             >
                 Cancel
             </button>
 
             <button
-                class="btn-primary"
+                class="primary"
                 onclick="saveStudent()"
             >
                 Save Student
@@ -640,55 +756,168 @@ tr:hover{
 
 <script>
 
-/* =========================================================
-   SUPABASE CONNECTION
-   ========================================================= */
+/* =====================================================
+   SUPABASE
+===================================================== */
 
 const SUPABASE_URL =
-    "https://yiruvpikzntyiijapknt.supabase.co";
+"https://yiruvpikzntyiijapknt.supabase.co";
 
 const SUPABASE_KEY =
-    "sb_publishable_Z95aVweBRCPDWo1XH54GFQ_rrV9GIvk";
+"sb_publishable_Z95aVweBRCPDWo1XH54GFQ_rrV9GIvk";
 
 const supabaseClient =
-    window.supabase.createClient(
-        SUPABASE_URL,
-        SUPABASE_KEY
-    );
+window.supabase.createClient(
+    SUPABASE_URL,
+    SUPABASE_KEY
+);
 
 
-/* =========================================================
-   DATA
-   ========================================================= */
+/* =====================================================
+   LOCAL STORAGE
+===================================================== */
+
+const LOCAL_KEY =
+"graduateGroupStudents";
+
+const PENDING_KEY =
+"graduatePendingChanges";
+
 
 let students = [];
 
+let pendingChanges =
+JSON.parse(
+    localStorage.getItem(PENDING_KEY) || "[]"
+);
 
-/* =========================================================
-   START
-   ========================================================= */
+
+/* =====================================================
+   INITIALIZE
+===================================================== */
 
 document.addEventListener(
     "DOMContentLoaded",
-    function(){
-        loadStudents();
+    async function(){
+
+        updateConnection();
+
+        await loadData();
+
+        window.addEventListener(
+            "online",
+            async function(){
+
+                updateConnection();
+
+                await syncPendingChanges();
+
+                await loadOnlineData();
+
+            }
+        );
+
+
+        window.addEventListener(
+            "offline",
+            function(){
+
+                updateConnection();
+
+            }
+        );
+
+
+        if("serviceWorker" in navigator){
+
+            navigator.serviceWorker
+                .register(
+                    "service-worker.js"
+                )
+                .catch(
+                    error =>
+                        console.log(
+                            "Service Worker:",
+                            error
+                        )
+                );
+
+        }
+
     }
 );
 
 
-/* =========================================================
-   LOAD STUDENTS
-   ========================================================= */
+/* =====================================================
+   CONNECTION STATUS
+===================================================== */
 
-async function loadStudents(){
+function updateConnection(){
 
-    const connectionStatus =
+    const status =
         document.getElementById(
             "connectionStatus"
         );
 
-    connectionStatus.textContent =
-        "Loading...";
+    const banner =
+        document.getElementById(
+            "offlineBanner"
+        );
+
+
+    if(navigator.onLine){
+
+        status.textContent =
+            "● ONLINE";
+
+        status.style.color =
+            "#b7f7c5";
+
+        banner.classList.remove(
+            "show"
+        );
+
+    }else{
+
+        status.textContent =
+            "● OFFLINE";
+
+        status.style.color =
+            "#ffd166";
+
+        banner.classList.add(
+            "show"
+        );
+
+    }
+
+}
+
+
+/* =====================================================
+   LOAD DATA
+===================================================== */
+
+async function loadData(){
+
+    if(navigator.onLine){
+
+        await loadOnlineData();
+
+    }else{
+
+        loadLocalData();
+
+    }
+
+}
+
+
+/* =====================================================
+   LOAD FROM SUPABASE
+===================================================== */
+
+async function loadOnlineData(){
 
     try{
 
@@ -700,27 +929,41 @@ async function loadStudents(){
                     ascending:true
                 });
 
+
         if(error){
+
             throw error;
+
         }
 
-        students = data || [];
 
-        connectionStatus.textContent =
-            "● Online";
+        students =
+            data || [];
+
+
+        saveLocalData();
+
 
         renderTable();
 
+
+        await syncPendingChanges();
+
+
     }catch(error){
 
-        console.error(error);
+        console.log(
+            "Online loading failed:",
+            error
+        );
 
-        connectionStatus.textContent =
-            "● Connection Error";
 
-        showError(
-            "Unable to load students: " +
-            error.message
+        loadLocalData();
+
+
+        showMessage(
+            "Internet connection failed. Using offline data.",
+            "error"
         );
 
     }
@@ -728,9 +971,192 @@ async function loadStudents(){
 }
 
 
-/* =========================================================
+/* =====================================================
+   LOAD LOCAL
+===================================================== */
+
+function loadLocalData(){
+
+    try{
+
+        students =
+            JSON.parse(
+                localStorage.getItem(
+                    LOCAL_KEY
+                ) || "[]"
+            );
+
+    }catch(error){
+
+        students = [];
+
+    }
+
+
+    renderTable();
+
+}
+
+
+/* =====================================================
+   SAVE LOCAL
+===================================================== */
+
+function saveLocalData(){
+
+    localStorage.setItem(
+        LOCAL_KEY,
+        JSON.stringify(students)
+    );
+
+}
+
+
+/* =====================================================
+   SAVE PENDING
+===================================================== */
+
+function savePending(){
+
+    localStorage.setItem(
+        PENDING_KEY,
+        JSON.stringify(
+            pendingChanges
+        )
+    );
+
+}
+
+
+/* =====================================================
+   ADD PENDING CHANGE
+===================================================== */
+
+function addPendingChange(change){
+
+    pendingChanges.push(change);
+
+    savePending();
+
+}
+
+
+/* =====================================================
+   SYNC PENDING
+===================================================== */
+
+async function syncPendingChanges(){
+
+    if(!navigator.onLine){
+        return;
+    }
+
+
+    if(
+        pendingChanges.length === 0
+    ){
+        return;
+    }
+
+
+    const remaining = [];
+
+
+    for(
+        const change
+        of pendingChanges
+    ){
+
+        try{
+
+            if(change.type === "insert"){
+
+                const { error } =
+                    await supabaseClient
+                        .from("students")
+                        .insert([
+                            change.data
+                        ]);
+
+
+                if(error){
+                    throw error;
+                }
+
+            }
+
+
+            else if(
+                change.type === "update"
+            ){
+
+                const { error } =
+                    await supabaseClient
+                        .from("students")
+                        .update(
+                            change.data
+                        )
+                        .eq(
+                            "id",
+                            change.id
+                        );
+
+
+                if(error){
+                    throw error;
+                }
+
+            }
+
+
+            else if(
+                change.type === "delete"
+            ){
+
+                const { error } =
+                    await supabaseClient
+                        .from("students")
+                        .delete()
+                        .eq(
+                            "id",
+                            change.id
+                        );
+
+
+                if(error){
+                    throw error;
+                }
+
+            }
+
+        }catch(error){
+
+            console.log(
+                "Sync failed:",
+                error
+            );
+
+            remaining.push(
+                change
+            );
+
+        }
+
+    }
+
+
+    pendingChanges =
+        remaining;
+
+
+    savePending();
+
+}
+
+
+/* =====================================================
    RENDER TABLE
-   ========================================================= */
+===================================================== */
 
 function renderTable(){
 
@@ -739,6 +1165,7 @@ function renderTable(){
             "studentTableBody"
         );
 
+
     const search =
         document.getElementById(
             "searchInput"
@@ -746,81 +1173,99 @@ function renderTable(){
         .toLowerCase()
         .trim();
 
+
     const group =
         document.getElementById(
             "groupFilter"
         ).value;
+
 
     const program =
         document.getElementById(
             "programFilter"
         ).value;
 
-    const fileStatus =
+
+    const file =
         document.getElementById(
             "fileFilter"
         ).value;
 
-    const thesisStatus =
+
+    const thesis =
         document.getElementById(
             "thesisFilter"
         ).value;
 
 
     let filtered =
-        students.filter(student => {
+        students.filter(
+            student => {
 
-            const name =
-                (student.name || "")
-                .toLowerCase();
-
-            const title =
-                (student.thesis_title || "")
-                .toLowerCase();
-
-            const matchesSearch =
-                !search ||
-                name.includes(search) ||
-                title.includes(search);
-
-            const matchesGroup =
-                group === "ALL" ||
-                student.group === group;
-
-            const matchesProgram =
-                program === "ALL" ||
-                student.program === program;
-
-            const matchesFile =
-                fileStatus === "ALL" ||
-                student.file_status === fileStatus;
-
-            const matchesThesis =
-                thesisStatus === "ALL" ||
-                student.thesis_status === thesisStatus;
-
-            return (
-                matchesSearch &&
-                matchesGroup &&
-                matchesProgram &&
-                matchesFile &&
-                matchesThesis
-            );
-
-        });
+                const name =
+                    (
+                        student.name || ""
+                    ).toLowerCase();
 
 
-    /* Alphabetical sorting */
+                const title =
+                    (
+                        student.thesis_title || ""
+                    ).toLowerCase();
 
-    filtered.sort((a,b) =>
-        (a.name || "")
-        .localeCompare(
-            b.name || "",
-            undefined,
-            {
-                sensitivity:"base"
+
+                return (
+
+                    (
+                        !search ||
+                        name.includes(search) ||
+                        title.includes(search)
+                    )
+
+                    &&
+
+                    (
+                        group === "ALL" ||
+                        student.group === group
+                    )
+
+                    &&
+
+                    (
+                        program === "ALL" ||
+                        student.program === program
+                    )
+
+                    &&
+
+                    (
+                        file === "ALL" ||
+                        student.file_status === file
+                    )
+
+                    &&
+
+                    (
+                        thesis === "ALL" ||
+                        student.thesis_status === thesis
+                    )
+
+                );
+
             }
-        )
+        );
+
+
+    filtered.sort(
+        (a,b) =>
+            (a.name || "")
+            .localeCompare(
+                b.name || "",
+                undefined,
+                {
+                    sensitivity:"base"
+                }
+            )
     );
 
 
@@ -843,7 +1288,10 @@ function renderTable(){
             (student,index) => {
 
                 const row =
-                    document.createElement("tr");
+                    document.createElement(
+                        "tr"
+                    );
+
 
                 row.innerHTML = `
 
@@ -860,7 +1308,7 @@ function renderTable(){
                     </td>
 
                     <td>
-                        <span class="group-badge">
+                        <span class="group">
                             ${escapeHtml(
                                 student.group || ""
                             )}
@@ -902,14 +1350,14 @@ function renderTable(){
                         <div class="actions">
 
                             <button
-                                class="btn-warning"
+                                class="warning"
                                 onclick="editStudent(${student.id})"
                             >
                                 Edit
                             </button>
 
                             <button
-                                class="btn-danger"
+                                class="danger"
                                 onclick="deleteStudent(${student.id})"
                             >
                                 Delete
@@ -918,9 +1366,13 @@ function renderTable(){
                         </div>
 
                     </td>
+
                 `;
 
-                tbody.appendChild(row);
+
+                tbody.appendChild(
+                    row
+                );
 
             }
         );
@@ -944,72 +1396,85 @@ function renderTable(){
 }
 
 
-/* =========================================================
+/* =====================================================
    PROGRAM BADGE
-   ========================================================= */
+===================================================== */
 
 function programBadge(program){
 
-    let className = "";
+    let cls = "";
+
 
     if(program === "PhD"){
-        className = "phd";
+        cls = "phd";
     }
 
     else if(program === "MAEd"){
-        className = "maed";
+        cls = "maed";
     }
 
     else if(program === "MBA"){
-        className = "mba";
+        cls = "mba";
     }
 
     else if(program === "MPA"){
-        className = "mpa";
+        cls = "mpa";
     }
 
     else if(program === "MSCJ"){
-        className = "mscj";
+        cls = "mscj";
     }
 
+
     return `
-        <span class="program-badge ${className}">
-            ${escapeHtml(program || "")}
+        <span class="badge ${cls}">
+            ${escapeHtml(
+                program || ""
+            )}
         </span>
     `;
+
 }
 
 
-/* =========================================================
+/* =====================================================
    STATUS BADGE
-   ========================================================= */
+===================================================== */
 
 function statusBadge(status){
 
-    let className =
-        "status-pending";
+    let cls = "pending";
+
 
     if(status === "Complete"){
-        className =
-            "status-complete";
+
+        cls = "complete";
+
     }
 
-    else if(status === "In Progress"){
-        className =
-            "status-progress";
+    else if(
+        status === "In Progress"
+    ){
+
+        cls = "progress";
+
     }
+
 
     return `
-        <span class="badge ${className}">
-            ${escapeHtml(status || "Pending")}
+        <span class="badge ${cls}">
+            ${escapeHtml(
+                status || "Pending"
+            )}
         </span>
     `;
+
 }
 
 
-/* =========================================================
+/* =====================================================
    DASHBOARD
-   ========================================================= */
+===================================================== */
 
 function updateDashboard(){
 
@@ -1019,7 +1484,7 @@ function updateDashboard(){
         ).value;
 
 
-    const groupStudents =
+    const data =
         group === "ALL"
             ? students
             : students.filter(
@@ -1031,15 +1496,15 @@ function updateDashboard(){
     document.getElementById(
         "totalCount"
     ).textContent =
-        groupStudents.length;
+        data.length;
 
 
     document.getElementById(
         "filesComplete"
     ).textContent =
-        groupStudents.filter(
-            student =>
-                student.file_status ===
+        data.filter(
+            s =>
+                s.file_status ===
                 "Complete"
         ).length;
 
@@ -1047,9 +1512,9 @@ function updateDashboard(){
     document.getElementById(
         "thesisComplete"
     ).textContent =
-        groupStudents.filter(
-            student =>
-                student.thesis_status ===
+        data.filter(
+            s =>
+                s.thesis_status ===
                 "Complete"
         ).length;
 
@@ -1057,18 +1522,18 @@ function updateDashboard(){
     document.getElementById(
         "overallComplete"
     ).textContent =
-        groupStudents.filter(
-            student =>
-                student.overall_status ===
+        data.filter(
+            s =>
+                s.overall_status ===
                 "Complete"
         ).length;
 
 }
 
 
-/* =========================================================
-   OPEN ADD MODAL
-   ========================================================= */
+/* =====================================================
+   ADD
+===================================================== */
 
 function openAddModal(){
 
@@ -1125,26 +1590,28 @@ function openAddModal(){
 
     document.getElementById(
         "studentModal"
-    ).classList.add("show");
+    ).classList.add(
+        "show"
+    );
 
 }
 
 
-/* =========================================================
-   EDIT STUDENT
-   ========================================================= */
+/* =====================================================
+   EDIT
+===================================================== */
 
 function editStudent(id){
 
     const student =
         students.find(
-            s => Number(s.id) === Number(id)
+            s =>
+                Number(s.id) ===
+                Number(id)
         );
 
+
     if(!student){
-        showError(
-            "Student record not found."
-        );
         return;
     }
 
@@ -1210,14 +1677,16 @@ function editStudent(id){
 
     document.getElementById(
         "studentModal"
-    ).classList.add("show");
+    ).classList.add(
+        "show"
+    );
 
 }
 
 
-/* =========================================================
-   SAVE STUDENT
-   ========================================================= */
+/* =====================================================
+   SAVE
+===================================================== */
 
 async function saveStudent(){
 
@@ -1233,126 +1702,273 @@ async function saveStudent(){
         ).value.trim();
 
 
-    const group =
-        document.getElementById(
-            "studentGroup"
-        ).value;
-
-
-    const program =
-        document.getElementById(
-            "studentProgram"
-        ).value;
-
-
-    const fileStatus =
-        document.getElementById(
-            "studentFileStatus"
-        ).value;
-
-
-    const thesisStatus =
-        document.getElementById(
-            "studentThesisStatus"
-        ).value;
-
-
-    const overallStatus =
-        document.getElementById(
-            "studentOverallStatus"
-        ).value;
-
-
-    const thesisTitle =
-        document.getElementById(
-            "studentThesisTitle"
-        ).value.trim();
-
-
     if(!name){
 
-        showError(
-            "Please enter the student name."
+        showMessage(
+            "Please enter the student name.",
+            "error"
         );
 
         return;
+
     }
 
 
-    const studentData = {
+    const data = {
 
         name:name,
 
-        group:group,
+        group:
+            document.getElementById(
+                "studentGroup"
+            ).value,
 
-        program:program,
+        program:
+            document.getElementById(
+                "studentProgram"
+            ).value,
 
-        file_status:fileStatus,
+        file_status:
+            document.getElementById(
+                "studentFileStatus"
+            ).value,
 
-        thesis_status:thesisStatus,
+        thesis_status:
+            document.getElementById(
+                "studentThesisStatus"
+            ).value,
 
-        overall_status:overallStatus,
+        overall_status:
+            document.getElementById(
+                "studentOverallStatus"
+            ).value,
 
-        thesis_title:thesisTitle
+        thesis_title:
+            document.getElementById(
+                "studentThesisTitle"
+            ).value.trim()
 
     };
 
 
-    try{
+    /* ==========================================
+       UPDATE
+    ========================================== */
 
-        let error;
+    if(id){
+
+        const index =
+            students.findIndex(
+                s =>
+                    Number(s.id) ===
+                    Number(id)
+            );
 
 
-        if(id){
+        if(index !== -1){
 
-            const result =
-                await supabaseClient
-                    .from("students")
-                    .update(studentData)
-                    .eq("id",id);
-
-            error =
-                result.error;
-
-        }else{
-
-            const result =
-                await supabaseClient
-                    .from("students")
-                    .insert([
-                        studentData
-                    ]);
-
-            error =
-                result.error;
+            students[index] = {
+                ...students[index],
+                ...data
+            };
 
         }
 
 
-        if(error){
-            throw error;
-        }
+        saveLocalData();
+
+
+        renderTable();
 
 
         closeModal();
 
-        showSuccess(
-            id
-                ? "Student updated successfully."
-                : "Student added successfully."
-        );
+
+        if(navigator.onLine){
+
+            try{
+
+                const { error } =
+                    await supabaseClient
+                        .from("students")
+                        .update(data)
+                        .eq("id",id);
 
 
-        await loadStudents();
+                if(error){
+                    throw error;
+                }
 
 
-    }catch(error){
+                showMessage(
+                    "Student updated successfully.",
+                    "success"
+                );
 
-        console.error(error);
 
-        showError(
-            "Unable to save student: " +
-            error.message
+            }catch(error){
+
+                addPendingChange({
+
+                    type:"update",
+
+                    id:id,
+
+                    data:data
+
+                });
+
+
+                showMessage(
+                    "Saved offline. It will sync when internet returns.",
+                    "success"
+                );
+
+            }
+
+        }else{
+
+            addPendingChange({
+
+                type:"update",
+
+                id:id,
+
+                data:data
+
+            });
+
+
+            showMessage(
+                "Saved offline. It will sync when internet returns.",
+                "success"
+            );
+
+        }
+
+
+        return;
+
+    }
+
+
+    /* ==========================================
+       INSERT
+    ========================================== */
+
+    const temporaryId =
+        "offline-" +
+        Date.now() +
+        "-" +
+        Math.random()
+            .toString(36)
+            .substring(2,8);
+
+
+    const newStudent = {
+
+        id:temporaryId,
+
+        ...data
+
+    };
+
+
+    students.push(
+        newStudent
+    );
+
+
+    saveLocalData();
+
+
+    renderTable();
+
+
+    closeModal();
+
+
+    if(navigator.onLine){
+
+        try{
+
+            const { data:inserted, error } =
+                await supabaseClient
+                    .from("students")
+                    .insert([
+                        data
+                    ])
+                    .select()
+                    .single();
+
+
+            if(error){
+                throw error;
+            }
+
+
+            /* Replace temporary record */
+
+            const index =
+                students.findIndex(
+                    s =>
+                        s.id ===
+                        temporaryId
+                );
+
+
+            if(index !== -1){
+
+                students[index] =
+                    inserted;
+
+            }
+
+
+            saveLocalData();
+
+
+            renderTable();
+
+
+            showMessage(
+                "Student added successfully.",
+                "success"
+            );
+
+
+        }catch(error){
+
+            addPendingChange({
+
+                type:"insert",
+
+                data:data
+
+            });
+
+
+            showMessage(
+                "Saved offline. It will sync when internet returns.",
+                "success"
+            );
+
+        }
+
+    }else{
+
+        addPendingChange({
+
+            type:"insert",
+
+            data:data
+
+        });
+
+
+        showMessage(
+            "Saved offline. It will sync when internet returns.",
+            "success"
         );
 
     }
@@ -1360,15 +1976,17 @@ async function saveStudent(){
 }
 
 
-/* =========================================================
-   DELETE STUDENT
-   ========================================================= */
+/* =====================================================
+   DELETE
+===================================================== */
 
 async function deleteStudent(id){
 
     const student =
         students.find(
-            s => Number(s.id) === Number(id)
+            s =>
+                String(s.id) ===
+                String(id)
         );
 
 
@@ -1377,48 +1995,101 @@ async function deleteStudent(id){
     }
 
 
-    const confirmed =
-        confirm(
-            "Are you sure you want to delete " +
+    if(
+        !confirm(
+            "Delete " +
             student.name +
             "?"
-        );
-
-
-    if(!confirmed){
+        )
+    ){
         return;
     }
 
 
-    try{
-
-        const { error } =
-            await supabaseClient
-                .from("students")
-                .delete()
-                .eq("id",id);
-
-
-        if(error){
-            throw error;
-        }
-
-
-        showSuccess(
-            "Student deleted successfully."
+    students =
+        students.filter(
+            s =>
+                String(s.id) !==
+                String(id)
         );
 
 
-        await loadStudents();
+    saveLocalData();
 
 
-    }catch(error){
+    renderTable();
 
-        console.error(error);
 
-        showError(
-            "Unable to delete student: " +
-            error.message
+    if(
+        String(id).startsWith(
+            "offline-"
+        )
+    ){
+
+        showMessage(
+            "Offline record deleted.",
+            "success"
+        );
+
+        return;
+
+    }
+
+
+    if(navigator.onLine){
+
+        try{
+
+            const { error } =
+                await supabaseClient
+                    .from("students")
+                    .delete()
+                    .eq("id",id);
+
+
+            if(error){
+                throw error;
+            }
+
+
+            showMessage(
+                "Student deleted successfully.",
+                "success"
+            );
+
+
+        }catch(error){
+
+            addPendingChange({
+
+                type:"delete",
+
+                id:id
+
+            });
+
+
+            showMessage(
+                "Deleted locally. Server deletion will sync later.",
+                "success"
+            );
+
+        }
+
+    }else{
+
+        addPendingChange({
+
+            type:"delete",
+
+            id:id
+
+        });
+
+
+        showMessage(
+            "Deleted offline. It will sync when internet returns.",
+            "success"
         );
 
     }
@@ -1426,22 +2097,97 @@ async function deleteStudent(id){
 }
 
 
-/* =========================================================
+/* =====================================================
    CLOSE MODAL
-   ========================================================= */
+===================================================== */
 
 function closeModal(){
 
     document.getElementById(
         "studentModal"
-    ).classList.remove("show");
+    ).classList.remove(
+        "show"
+    );
 
 }
 
 
-/* =========================================================
-   CLICK OUTSIDE MODAL
-   ========================================================= */
+/* =====================================================
+   MESSAGE
+===================================================== */
+
+function showMessage(
+    message,
+    type
+){
+
+    const box =
+        document.getElementById(
+            "message"
+        );
+
+
+    box.textContent =
+        message;
+
+
+    box.className =
+        "message show " +
+        (
+            type === "error"
+                ? "error"
+                : "success-message"
+        );
+
+
+    setTimeout(
+        function(){
+
+            box.classList.remove(
+                "show"
+            );
+
+        },
+        4000
+    );
+
+}
+
+
+/* =====================================================
+   ESCAPE HTML
+===================================================== */
+
+function escapeHtml(value){
+
+    return String(value)
+        .replace(
+            /&/g,
+            "&amp;"
+        )
+        .replace(
+            /</g,
+            "&lt;"
+        )
+        .replace(
+            />/g,
+            "&gt;"
+        )
+        .replace(
+            /"/g,
+            "&quot;"
+        )
+        .replace(
+            /'/g,
+            "&#039;"
+        );
+
+}
+
+
+/* =====================================================
+   CLOSE MODAL OUTSIDE
+===================================================== */
 
 document.getElementById(
     "studentModal"
@@ -1449,86 +2195,17 @@ document.getElementById(
     "click",
     function(event){
 
-        if(event.target === this){
+        if(
+            event.target ===
+            this
+        ){
+
             closeModal();
+
         }
 
     }
 );
-
-
-/* =========================================================
-   ESCAPE HTML
-   ========================================================= */
-
-function escapeHtml(value){
-
-    return String(value)
-        .replace(/&/g,"&amp;")
-        .replace(/</g,"&lt;")
-        .replace(/>/g,"&gt;")
-        .replace(/"/g,"&quot;")
-        .replace(/'/g,"&#039;");
-
-}
-
-
-/* =========================================================
-   MESSAGES
-   ========================================================= */
-
-function showError(message){
-
-    const box =
-        document.getElementById(
-            "errorBox"
-        );
-
-    box.textContent =
-        message;
-
-    box.style.display =
-        "block";
-
-
-    setTimeout(
-        function(){
-
-            box.style.display =
-                "none";
-
-        },
-        5000
-    );
-
-}
-
-
-function showSuccess(message){
-
-    const box =
-        document.getElementById(
-            "successBox"
-        );
-
-    box.textContent =
-        message;
-
-    box.style.display =
-        "block";
-
-
-    setTimeout(
-        function(){
-
-            box.style.display =
-                "none";
-
-        },
-        3000
-    );
-
-}
 
 </script>
 
