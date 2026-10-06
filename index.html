@@ -911,6 +911,15 @@ tr:hover{
 }
 
 
+.not-uploaded{
+
+    background:#eef1f4;
+
+    color:#555;
+
+}
+
+
 .phd{
 
     background:#1976d2;
@@ -1003,6 +1012,8 @@ tr:hover{
 
     cursor:pointer;
 
+    flex-shrink:0;
+
 }
 
 
@@ -1019,7 +1030,7 @@ tr:hover{
 
     align-items:center;
 
-    gap:5px;
+    gap:7px;
 
 }
 
@@ -1031,6 +1042,8 @@ tr:hover{
     flex-direction:column;
 
     gap:4px;
+
+    min-width:0;
 
 }
 
@@ -1058,13 +1071,17 @@ tr:hover{
 
     display:inline-block;
 
-    padding:4px 7px;
+    width:max-content;
+
+    padding:5px 9px;
 
     border-radius:5px;
 
     background:#e8f0f8;
 
     color:var(--primary);
+
+    border:0;
 
     text-decoration:none;
 
@@ -1080,6 +1097,151 @@ tr:hover{
 .file-view-button:hover{
 
     background:#dce8f3;
+
+}
+
+
+/* =====================================================
+   FILE PREVIEW MODAL
+===================================================== */
+
+.file-preview-modal-content{
+
+    background:white;
+
+    width:900px;
+
+    max-width:95%;
+
+    max-height:92vh;
+
+    overflow:auto;
+
+    border-radius:10px;
+
+    padding:20px;
+
+}
+
+
+.file-preview-header{
+
+    display:flex;
+
+    justify-content:space-between;
+
+    align-items:center;
+
+    gap:15px;
+
+    border-bottom:1px solid var(--border);
+
+    padding-bottom:15px;
+
+    margin-bottom:15px;
+
+}
+
+
+.file-preview-header h2{
+
+    color:var(--primary);
+
+    font-size:17px;
+
+    word-break:break-word;
+
+}
+
+
+.file-preview-close{
+
+    background:#f1f3f5;
+
+    color:#555;
+
+    font-size:18px;
+
+    width:35px;
+
+    height:35px;
+
+    padding:0;
+
+    flex-shrink:0;
+
+}
+
+
+.file-preview-area{
+
+    width:100%;
+
+    min-height:200px;
+
+    display:flex;
+
+    justify-content:center;
+
+    align-items:center;
+
+    background:#f6f8fa;
+
+    border:1px solid var(--border);
+
+    border-radius:8px;
+
+    padding:15px;
+
+}
+
+
+.file-preview-image{
+
+    max-width:100%;
+
+    max-height:65vh;
+
+    object-fit:contain;
+
+    border-radius:5px;
+
+}
+
+
+.file-preview-frame{
+
+    width:100%;
+
+    height:65vh;
+
+    border:0;
+
+    background:white;
+
+}
+
+
+.file-preview-message{
+
+    text-align:center;
+
+    padding:50px 20px;
+
+    color:#666;
+
+}
+
+
+.file-preview-actions{
+
+    display:flex;
+
+    justify-content:flex-end;
+
+    gap:8px;
+
+    margin-top:15px;
 
 }
 
@@ -1256,7 +1418,6 @@ tr:hover{
         padding:15px;
 
     }
-
 
 }
 
@@ -1855,6 +2016,10 @@ tr:hover{
 </div>
 
 
+<!-- =====================================================
+     STUDENT MODAL
+===================================================== -->
+
 <div
     class="modal"
     id="studentModal"
@@ -2028,6 +2193,56 @@ tr:hover{
             </button>
 
         </div>
+
+    </div>
+
+</div>
+
+
+<!-- =====================================================
+     FILE PREVIEW MODAL
+===================================================== -->
+
+<div
+    class="modal"
+    id="filePreviewModal"
+>
+
+
+    <div class="file-preview-modal-content">
+
+
+        <div class="file-preview-header">
+
+            <h2 id="filePreviewTitle">
+                Uploaded File
+            </h2>
+
+
+            <button
+                type="button"
+                class="file-preview-close"
+                onclick="closeFilePreview()"
+            >
+                ×
+            </button>
+
+        </div>
+
+
+        <div
+            class="file-preview-area"
+            id="filePreviewContent"
+        >
+        </div>
+
+
+        <div
+            class="file-preview-actions"
+            id="filePreviewActions"
+        >
+        </div>
+
 
     </div>
 
@@ -2441,6 +2656,10 @@ async function uploadStudentFile(id){
                     safeName;
 
 
+                /* =====================================
+                   UPLOAD TO SUPABASE STORAGE
+                ===================================== */
+
                 const {
                     error:uploadError
                 } =
@@ -2465,18 +2684,9 @@ async function uploadStudentFile(id){
                 }
 
 
-                const {
-                    data:urlData
-                } =
-                    supabaseClient
-                        .storage
-                        .from(
-                            "student-files"
-                        )
-                        .getPublicUrl(
-                            filePath
-                        );
-
+                /* =====================================
+                   SAVE FILE INFORMATION
+                ===================================== */
 
                 studentFiles[
                     String(id)
@@ -2492,10 +2702,7 @@ async function uploadStudentFile(id){
                         file.size,
 
                     path:
-                        filePath,
-
-                    url:
-                        urlData.publicUrl
+                        filePath
 
                 };
 
@@ -2605,7 +2812,7 @@ function fileUploadButton(student){
 
     const hasFile =
         file &&
-        file.url;
+        file.path;
 
 
     const status =
@@ -2624,12 +2831,7 @@ function fileUploadButton(student){
                     class="badge ${
                         hasFile
                         ? "complete"
-                        : ""
-                    }"
-                    style="${
-                        hasFile
-                        ? ""
-                        : "background:#eef1f4;color:#555;"
+                        : "not-uploaded"
                     }"
                 >
 
@@ -2656,18 +2858,15 @@ function fileUploadButton(student){
                         </span>
 
 
-                        <a
-                            href="${escapeAttribute(
-                                file.url
-                            )}"
-                            target="_blank"
-                            rel="noopener noreferrer"
+                        <button
+                            type="button"
                             class="file-view-button"
+                            onclick="viewStudentFile('${escapeAttribute(student.id)}')"
                         >
 
                             View
 
-                        </a>
+                        </button>
 
                       `
                     : ""
@@ -2683,12 +2882,364 @@ function fileUploadButton(student){
                 onclick="uploadStudentFile('${escapeAttribute(student.id)}')"
                 title="Upload file"
             >
+
                 +
+
             </button>
 
         </div>
 
     `;
+
+}
+
+
+/* =====================================================
+   VIEW UPLOADED FILE
+===================================================== */
+
+async function viewStudentFile(id){
+
+    const file =
+        studentFiles[
+            String(id)
+        ];
+
+
+    if(
+        !file ||
+        !file.path
+    ){
+
+        showMessage(
+            "No uploaded file found.",
+            "error"
+        );
+
+        return;
+
+    }
+
+
+    try{
+
+        showMessage(
+            "Opening " +
+            file.name +
+            "...",
+            "success"
+        );
+
+
+        const {
+            data,
+            error
+        } =
+            await supabaseClient
+                .storage
+                .from(
+                    "student-files"
+                )
+                .createSignedUrl(
+                    file.path,
+                    3600
+                );
+
+
+        if(error){
+
+            throw error;
+
+        }
+
+
+        if(
+            !data ||
+            !data.signedUrl
+        ){
+
+            throw new Error(
+                "Unable to create viewing link."
+            );
+
+        }
+
+
+        const modal =
+            document.getElementById(
+                "filePreviewModal"
+            );
+
+
+        const title =
+            document.getElementById(
+                "filePreviewTitle"
+            );
+
+
+        const content =
+            document.getElementById(
+                "filePreviewContent"
+            );
+
+
+        const actions =
+            document.getElementById(
+                "filePreviewActions"
+            );
+
+
+        title.textContent =
+            file.name;
+
+
+        content.innerHTML =
+            "";
+
+
+        actions.innerHTML =
+            "";
+
+
+        /* =====================================
+           IMAGE
+        ===================================== */
+
+        if(
+            (
+                file.type ||
+                ""
+            ).startsWith(
+                "image/"
+            )
+        ){
+
+            content.innerHTML = `
+
+                <img
+                    class="file-preview-image"
+                    src="${escapeAttribute(
+                        data.signedUrl
+                    )}"
+                    alt="${escapeHtml(
+                        file.name
+                    )}"
+                >
+
+            `;
+
+        }
+
+
+        /* =====================================
+           PDF
+        ===================================== */
+
+        else if(
+            file.type ===
+            "application/pdf"
+        ){
+
+            content.innerHTML = `
+
+                <iframe
+                    class="file-preview-frame"
+                    src="${escapeAttribute(
+                        data.signedUrl
+                    )}"
+                    title="${escapeHtml(
+                        file.name
+                    )}"
+                >
+                </iframe>
+
+            `;
+
+        }
+
+
+        /* =====================================
+           OTHER FILE TYPES
+        ===================================== */
+
+        else{
+
+            content.innerHTML = `
+
+                <div
+                    class="file-preview-message"
+                >
+
+                    <h3
+                        style="margin-bottom:10px;color:#073b72;"
+                    >
+                        File uploaded successfully
+                    </h3>
+
+                    <p>
+                        Preview is not available
+                        for this file type.
+                    </p>
+
+                    <p
+                        style="margin-top:8px;font-size:12px;"
+                    >
+                        Click Open or Download below.
+                    </p>
+
+                </div>
+
+            `;
+
+        }
+
+
+        /* =====================================
+           OPEN BUTTON
+        ===================================== */
+
+        const openButton =
+            document.createElement(
+                "button"
+            );
+
+
+        openButton.className =
+            "primary";
+
+
+        openButton.textContent =
+            "Open";
+
+
+        openButton.onclick =
+            function(){
+
+                window.open(
+                    data.signedUrl,
+                    "_blank"
+                );
+
+            };
+
+
+        /* =====================================
+           DOWNLOAD BUTTON
+        ===================================== */
+
+        const downloadButton =
+            document.createElement(
+                "a"
+            );
+
+
+        downloadButton.className =
+            "secondary";
+
+
+        downloadButton.textContent =
+            "Download";
+
+
+        downloadButton.href =
+            data.signedUrl;
+
+
+        downloadButton.target =
+            "_blank";
+
+
+        downloadButton.rel =
+            "noopener noreferrer";
+
+
+        downloadButton.style.textDecoration =
+            "none";
+
+
+        downloadButton.style.display =
+            "inline-block";
+
+
+        downloadButton.style.padding =
+            "10px 14px";
+
+
+        downloadButton.style.borderRadius =
+            "6px";
+
+
+        actions.appendChild(
+            openButton
+        );
+
+
+        actions.appendChild(
+            downloadButton
+        );
+
+
+        modal.classList.add(
+            "show"
+        );
+
+    }catch(error){
+
+        console.log(
+            "File viewing failed:",
+            error
+        );
+
+
+        showMessage(
+            "Unable to view file: " +
+            (
+                error.message ||
+                "Unknown error"
+            ),
+            "error"
+        );
+
+    }
+
+}
+
+
+/* =====================================================
+   CLOSE FILE PREVIEW
+===================================================== */
+
+function closeFilePreview(){
+
+    const modal =
+        document.getElementById(
+            "filePreviewModal"
+        );
+
+
+    const content =
+        document.getElementById(
+            "filePreviewContent"
+        );
+
+
+    const actions =
+        document.getElementById(
+            "filePreviewActions"
+        );
+
+
+    modal.classList.remove(
+        "show"
+    );
+
+
+    content.innerHTML =
+        "";
+
+
+    actions.innerHTML =
+        "";
 
 }
 
@@ -3120,13 +3671,15 @@ function renderTable(){
                 }
 
 
+                const storedFile =
+                    studentFiles[
+                        String(student.id)
+                    ];
+
+
                 const actualFileStatus =
-                    studentFiles[
-                        String(student.id)
-                    ] &&
-                    studentFiles[
-                        String(student.id)
-                    ].url
+                    storedFile &&
+                    storedFile.path
                     ? "Complete"
                     : "Not Uploaded";
 
@@ -3542,13 +4095,15 @@ function toggleSelectAll(){
                 }
 
 
+                const storedFile =
+                    studentFiles[
+                        String(student.id)
+                    ];
+
+
                 const actualFileStatus =
-                    studentFiles[
-                        String(student.id)
-                    ] &&
-                    studentFiles[
-                        String(student.id)
-                    ].url
+                    storedFile &&
+                    storedFile.path
                     ? "Complete"
                     : "Not Uploaded";
 
@@ -4345,7 +4900,7 @@ function updateDashboard(){
                 ] &&
                 studentFiles[
                     String(s.id)
-                ].url
+                ].path
         ).length;
 
 
@@ -4655,7 +5210,7 @@ async function saveStudent(){
             ] &&
             studentFiles[
                 String(id)
-            ].url
+            ].path
         )
         ? "Complete"
         : "Not Uploaded";
@@ -5031,7 +5586,7 @@ function escapeAttribute(value){
 
 
 /* =====================================================
-   CLOSE MODAL OUTSIDE
+   CLOSE STUDENT MODAL OUTSIDE
 ===================================================== */
 
 document
@@ -5048,6 +5603,31 @@ document
             ){
 
                 closeModal();
+
+            }
+
+        }
+    );
+
+
+/* =====================================================
+   CLOSE FILE PREVIEW OUTSIDE
+===================================================== */
+
+document
+    .getElementById(
+        "filePreviewModal"
+    )
+    .addEventListener(
+        "click",
+        function(event){
+
+            if(
+                event.target ===
+                this
+            ){
+
+                closeFilePreview();
 
             }
 
