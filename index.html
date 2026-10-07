@@ -697,6 +697,28 @@ tr:hover{
     text-overflow:ellipsis;
 }
 
+.file-status-select{
+    min-width:125px;
+    padding:6px 8px;
+    border-radius:15px;
+    font-size:10px;
+    font-weight:bold;
+    cursor:pointer;
+    outline:none;
+}
+
+.file-status-select.complete-select{
+    background:#d1e7dd;
+    color:#0f5132;
+    border:1px solid #a3cfbb;
+}
+
+.file-status-select.pending-select{
+    background:#eef1f4;
+    color:#555;
+    border:1px solid #d5dadd;
+}
+
 /* =====================================================
    EMPTY STATE
 ===================================================== */
@@ -1730,13 +1752,6 @@ let deleteStudentId = null;
    START EMPTY
 ===================================================== */
 
-/*
-   Clear old locally saved student records when this
-   version of the system starts.
-
-   Supabase remains the main database.
-*/
-
 localStorage.removeItem(LOCAL_KEY);
 
 students = [];
@@ -1972,6 +1987,11 @@ function saveStudentFiles(){
 
 function fileUploadButton(student){
 
+    const storedStatus =
+        student.file_status === "Complete"
+        ? "Complete"
+        : "Not Yet Done";
+
     const file =
         studentFiles[
             String(student.id)
@@ -1981,10 +2001,10 @@ function fileUploadButton(student){
         file &&
         file.path;
 
-    const status =
-        hasFile
-        ? "Complete"
-        : "Not Yet Done";
+    const selectClass =
+        storedStatus === "Complete"
+        ? "complete-select"
+        : "pending-select";
 
     return `
 
@@ -1992,15 +2012,27 @@ function fileUploadButton(student){
 
             <div class="file-info">
 
-                <span class="badge ${
-                    hasFile
-                    ? "complete"
-                    : "not-uploaded"
-                }">
+                <select
+                    class="file-status-select ${selectClass}"
+                    onchange="updateFileStatus('${escapeAttribute(student.id)}', this.value)"
+                    onclick="event.stopPropagation()"
+                >
 
-                    ${status}
+                    <option
+                        value="Complete"
+                        ${storedStatus === "Complete" ? "selected" : ""}
+                    >
+                        Complete
+                    </option>
 
-                </span>
+                    <option
+                        value="Not Yet Done"
+                        ${storedStatus === "Not Yet Done" ? "selected" : ""}
+                    >
+                        Not Yet Done
+                    </option>
+
+                </select>
 
                 ${
                     hasFile
@@ -2020,6 +2052,140 @@ function fileUploadButton(student){
         </div>
 
     `;
+
+}
+
+/* =====================================================
+   UPDATE FILE STATUS
+===================================================== */
+
+async function updateFileStatus(id,status){
+
+    if(
+        status !== "Complete" &&
+        status !== "Not Yet Done"
+    ){
+
+        return;
+
+    }
+
+    const student =
+        students.find(
+            s =>
+                String(s.id) ===
+                String(id)
+        );
+
+    if(!student){
+
+        showMessage(
+            "Student record not found.",
+            "error"
+        );
+
+        return;
+
+    }
+
+    student.file_status =
+        status;
+
+    saveLocalData();
+
+    renderTable();
+
+    updateDashboard();
+
+    if(
+        String(id).startsWith(
+            "offline-"
+        )
+    ){
+
+        showMessage(
+            "Files Status updated successfully.",
+            "success"
+        );
+
+        return;
+
+    }
+
+    if(navigator.onLine){
+
+        try{
+
+            const {
+                error
+            } =
+                await supabaseClient
+                    .from("students")
+                    .update({
+                        file_status:status
+                    })
+                    .eq(
+                        "id",
+                        id
+                    );
+
+            if(error){
+
+                throw error;
+
+            }
+
+            showMessage(
+                "Files Status updated successfully.",
+                "success"
+            );
+
+        }catch(error){
+
+            console.log(
+                "File status update failed:",
+                error
+            );
+
+            addPendingChange({
+
+                type:"update",
+
+                id:id,
+
+                data:{
+                    file_status:status
+                }
+
+            });
+
+            showMessage(
+                "Saved locally. It will sync when internet returns.",
+                "success"
+            );
+
+        }
+
+    }else{
+
+        addPendingChange({
+
+            type:"update",
+
+            id:id,
+
+            data:{
+                file_status:status
+            }
+
+        });
+
+        showMessage(
+            "Saved offline. It will sync when internet returns.",
+            "success"
+        );
+
+    }
 
 }
 
@@ -2750,14 +2916,8 @@ function getFilteredStudents(){
 
             }
 
-            const storedFile =
-                studentFiles[
-                    String(student.id)
-                ];
-
             const actualFileStatus =
-                storedFile &&
-                storedFile.path
+                student.file_status === "Complete"
                 ? "Complete"
                 : "Not Yet Done";
 
@@ -3643,8 +3803,6 @@ async function confirmDeleteArchived(){
 
     }
 
-    /* Remove locally */
-
     students =
         students.filter(
             s =>
@@ -3659,8 +3817,6 @@ async function confirmDeleteArchived(){
     saveStudentFiles();
 
     closeDeleteModal();
-
-    /* Offline record */
 
     if(
         String(id).startsWith(
@@ -3682,8 +3838,6 @@ async function confirmDeleteArchived(){
         return;
 
     }
-
-    /* Delete from Supabase */
 
     if(!navigator.onLine){
 
@@ -3872,12 +4026,8 @@ function updateDashboard(){
     ).textContent =
         data.filter(
             s =>
-                studentFiles[
-                    String(s.id)
-                ] &&
-                studentFiles[
-                    String(s.id)
-                ].path
+                s.file_status ===
+                "Complete"
         ).length;
 
     document.getElementById(
@@ -4110,6 +4260,15 @@ async function saveStudent(){
 
     }
 
+    const existingStudent =
+        id
+        ? students.find(
+            s =>
+                String(s.id) ===
+                String(id)
+        )
+        : null;
+
     const data = {
 
         name:name,
@@ -4138,22 +4297,15 @@ async function saveStudent(){
             document.getElementById(
                 "studentThesisTitle"
             ).value
-            .trim()
+            .trim(),
+
+        file_status:
+            existingStudent &&
+            existingStudent.file_status
+            ? existingStudent.file_status
+            : "Not Yet Done"
 
     };
-
-    data.file_status =
-        (
-            id &&
-            studentFiles[
-                String(id)
-            ] &&
-            studentFiles[
-                String(id)
-            ].path
-        )
-        ? "Complete"
-        : "Not Yet Done";
 
     /* =================================================
        UPDATE
