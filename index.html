@@ -1846,8 +1846,8 @@ tr:hover{
                     Complete
                 </option>
 
-                <option value="Not Uploaded">
-                    Not Uploaded
+                <option value="Not Yet Done">
+                    Not Yet Done
                 </option>
 
             </select>
@@ -2858,7 +2858,7 @@ function fileUploadButton(student){
     const status =
         hasFile
         ? "Complete"
-        : "Not Uploaded";
+        : "Not Yet Done";
 
 
     return `
@@ -3703,7 +3703,7 @@ function renderTable(){
                     storedFile &&
                     storedFile.path
                     ? "Complete"
-                    : "Not Uploaded";
+                    : "Not Yet Done";
 
 
                 if(
@@ -4127,7 +4127,7 @@ function toggleSelectAll(){
                     storedFile &&
                     storedFile.path
                     ? "Complete"
-                    : "Not Uploaded";
+                    : "Not Yet Done";
 
 
                 if(
@@ -4607,6 +4607,7 @@ async function archiveStudent(
     renderTable();
 
     updateSidebarCounts();
+
 
 }
 
@@ -5235,7 +5236,7 @@ async function saveStudent(){
             ].path
         )
         ? "Complete"
-        : "Not Uploaded";
+        : "Not Yet Done";
 
 
     /* =================================================
