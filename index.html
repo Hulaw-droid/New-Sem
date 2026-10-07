@@ -671,7 +671,7 @@ tr:hover{
 }
 
 /* =====================================================
-   FILE
+   STATUS DROPDOWNS
 ===================================================== */
 
 .file-box{
@@ -697,7 +697,8 @@ tr:hover{
     text-overflow:ellipsis;
 }
 
-.file-status-select{
+.file-status-select,
+.table-status-select{
     min-width:125px;
     padding:6px 8px;
     border-radius:15px;
@@ -707,13 +708,15 @@ tr:hover{
     outline:none;
 }
 
-.file-status-select.complete-select{
+.file-status-select.complete-select,
+.table-status-select.complete-select{
     background:#d1e7dd;
     color:#0f5132;
     border:1px solid #a3cfbb;
 }
 
-.file-status-select.pending-select{
+.file-status-select.pending-select,
+.table-status-select.pending-select{
     background:#eef1f4;
     color:#555;
     border:1px solid #d5dadd;
@@ -1365,7 +1368,7 @@ tr:hover{
             >
                 <option value="ALL">All Thesis Status</option>
                 <option value="Complete">Complete</option>
-                <option value="Pending">Pending</option>
+                <option value="Not Yet Done">Not Yet Done</option>
             </select>
 
             <button
@@ -1547,18 +1550,47 @@ tr:hover{
 
         </div>
 
+        <!-- FILE STATUS DROPDOWN -->
+
+        <div class="form-group">
+
+            <label>File Status</label>
+
+            <select id="studentFileStatus">
+
+                <option value="Not Yet Done">
+                    Not Yet Done
+                </option>
+
+                <option value="Complete">
+                    Complete
+                </option>
+
+            </select>
+
+        </div>
+
+        <!-- THESIS STATUS DROPDOWN -->
+
         <div class="form-group">
 
             <label>Thesis Status</label>
 
             <select id="studentThesisStatus">
 
-                <option value="Pending">Pending</option>
-                <option value="Complete">Complete</option>
+                <option value="Not Yet Done">
+                    Not Yet Done
+                </option>
+
+                <option value="Complete">
+                    Complete
+                </option>
 
             </select>
 
         </div>
+
+        <!-- OVERALL STATUS DROPDOWN -->
 
         <div class="form-group">
 
@@ -1566,9 +1598,13 @@ tr:hover{
 
             <select id="studentOverallStatus">
 
-                <option value="Pending">Pending</option>
-                <option value="In Progress">In Progress</option>
-                <option value="Complete">Complete</option>
+                <option value="Not Yet Done">
+                    Not Yet Done
+                </option>
+
+                <option value="Complete">
+                    Complete
+                </option>
 
             </select>
 
@@ -1982,15 +2018,106 @@ function saveStudentFiles(){
 }
 
 /* =====================================================
+   GET STATUS
+===================================================== */
+
+function getFileStatus(student){
+
+    return student.file_status === "Complete"
+        ? "Complete"
+        : "Not Yet Done";
+
+}
+
+function getThesisStatus(student){
+
+    return student.thesis_status === "Complete"
+        ? "Complete"
+        : "Not Yet Done";
+
+}
+
+function getOverallStatus(student){
+
+    return student.overall_status === "Complete"
+        ? "Complete"
+        : "Not Yet Done";
+
+}
+
+/* =====================================================
+   STATUS SELECT
+===================================================== */
+
+function statusSelect(
+    id,
+    type,
+    status
+){
+
+    const safeId =
+        escapeAttribute(id);
+
+    const selectClass =
+        status === "Complete"
+        ? "complete-select"
+        : "pending-select";
+
+    let functionName = "";
+
+    if(type === "file"){
+
+        functionName =
+            "updateFileStatus";
+
+    }else if(type === "thesis"){
+
+        functionName =
+            "updateThesisStatus";
+
+    }else if(type === "overall"){
+
+        functionName =
+            "updateOverallStatus";
+
+    }
+
+    return `
+
+        <select
+            class="table-status-select ${selectClass}"
+            onchange="${functionName}('${safeId}', this.value)"
+            onclick="event.stopPropagation()"
+        >
+
+            <option
+                value="Complete"
+                ${status === "Complete" ? "selected" : ""}
+            >
+                Complete
+            </option>
+
+            <option
+                value="Not Yet Done"
+                ${status === "Not Yet Done" ? "selected" : ""}
+            >
+                Not Yet Done
+            </option>
+
+        </select>
+
+    `;
+
+}
+
+/* =====================================================
    FILE DISPLAY
 ===================================================== */
 
 function fileUploadButton(student){
 
     const storedStatus =
-        student.file_status === "Complete"
-        ? "Complete"
-        : "Not Yet Done";
+        getFileStatus(student);
 
     const file =
         studentFiles[
@@ -2001,38 +2128,17 @@ function fileUploadButton(student){
         file &&
         file.path;
 
-    const selectClass =
-        storedStatus === "Complete"
-        ? "complete-select"
-        : "pending-select";
-
     return `
 
         <div class="file-box">
 
             <div class="file-info">
 
-                <select
-                    class="file-status-select ${selectClass}"
-                    onchange="updateFileStatus('${escapeAttribute(student.id)}', this.value)"
-                    onclick="event.stopPropagation()"
-                >
-
-                    <option
-                        value="Complete"
-                        ${storedStatus === "Complete" ? "selected" : ""}
-                    >
-                        Complete
-                    </option>
-
-                    <option
-                        value="Not Yet Done"
-                        ${storedStatus === "Not Yet Done" ? "selected" : ""}
-                    >
-                        Not Yet Done
-                    </option>
-
-                </select>
+                ${statusSelect(
+                    student.id,
+                    "file",
+                    storedStatus
+                )}
 
                 ${
                     hasFile
@@ -2070,6 +2176,74 @@ async function updateFileStatus(id,status){
 
     }
 
+    await updateStudentStatus(
+        id,
+        "file_status",
+        status,
+        "Files Status"
+    );
+
+}
+
+/* =====================================================
+   UPDATE THESIS STATUS
+===================================================== */
+
+async function updateThesisStatus(id,status){
+
+    if(
+        status !== "Complete" &&
+        status !== "Not Yet Done"
+    ){
+
+        return;
+
+    }
+
+    await updateStudentStatus(
+        id,
+        "thesis_status",
+        status,
+        "Thesis Status"
+    );
+
+}
+
+/* =====================================================
+   UPDATE OVERALL STATUS
+===================================================== */
+
+async function updateOverallStatus(id,status){
+
+    if(
+        status !== "Complete" &&
+        status !== "Not Yet Done"
+    ){
+
+        return;
+
+    }
+
+    await updateStudentStatus(
+        id,
+        "overall_status",
+        status,
+        "Overall Status"
+    );
+
+}
+
+/* =====================================================
+   UPDATE STUDENT STATUS
+===================================================== */
+
+async function updateStudentStatus(
+    id,
+    field,
+    status,
+    label
+){
+
     const student =
         students.find(
             s =>
@@ -2088,7 +2262,7 @@ async function updateFileStatus(id,status){
 
     }
 
-    student.file_status =
+    student[field] =
         status;
 
     saveLocalData();
@@ -2104,7 +2278,8 @@ async function updateFileStatus(id,status){
     ){
 
         showMessage(
-            "Files Status updated successfully.",
+            label +
+            " updated successfully.",
             "success"
         );
 
@@ -2122,7 +2297,7 @@ async function updateFileStatus(id,status){
                 await supabaseClient
                     .from("students")
                     .update({
-                        file_status:status
+                        [field]:status
                     })
                     .eq(
                         "id",
@@ -2136,14 +2311,16 @@ async function updateFileStatus(id,status){
             }
 
             showMessage(
-                "Files Status updated successfully.",
+                label +
+                " updated successfully.",
                 "success"
             );
 
         }catch(error){
 
             console.log(
-                "File status update failed:",
+                label +
+                " update failed:",
                 error
             );
 
@@ -2154,7 +2331,7 @@ async function updateFileStatus(id,status){
                 id:id,
 
                 data:{
-                    file_status:status
+                    [field]:status
                 }
 
             });
@@ -2175,7 +2352,7 @@ async function updateFileStatus(id,status){
             id:id,
 
             data:{
-                file_status:status
+                [field]:status
             }
 
         });
@@ -2917,9 +3094,7 @@ function getFilteredStudents(){
             }
 
             const actualFileStatus =
-                student.file_status === "Complete"
-                ? "Complete"
-                : "Not Yet Done";
+                getFileStatus(student);
 
             if(
                 file !== "ALL" &&
@@ -2930,9 +3105,12 @@ function getFilteredStudents(){
 
             }
 
+            const actualThesisStatus =
+                getThesisStatus(student);
+
             if(
                 thesis !== "ALL" &&
-                student.thesis_status !== thesis
+                actualThesisStatus !== thesis
             ){
 
                 return false;
@@ -3092,6 +3270,15 @@ function renderTable(){
 
                 }
 
+                const fileStatus =
+                    getFileStatus(student);
+
+                const thesisStatus =
+                    getThesisStatus(student);
+
+                const overallStatus =
+                    getOverallStatus(student);
+
                 row.innerHTML = `
 
                     <td class="checkbox-cell">
@@ -3148,16 +3335,20 @@ function renderTable(){
 
                     <td>
 
-                        ${statusBadge(
-                            student.thesis_status
+                        ${statusSelect(
+                            student.id,
+                            "thesis",
+                            thesisStatus
                         )}
 
                     </td>
 
                     <td>
 
-                        ${statusBadge(
-                            student.overall_status
+                        ${statusSelect(
+                            student.id,
+                            "overall",
+                            overallStatus
                         )}
 
                     </td>
@@ -3965,14 +4156,6 @@ function statusBadge(status){
         cls =
             "complete";
 
-    }else if(
-        status ===
-        "In Progress"
-    ){
-
-        cls =
-            "progress";
-
     }
 
     return `
@@ -3981,7 +4164,7 @@ function statusBadge(status){
 
             ${escapeHtml(
                 status ||
-                "Pending"
+                "Not Yet Done"
             )}
 
         </span>
@@ -4026,7 +4209,7 @@ function updateDashboard(){
     ).textContent =
         data.filter(
             s =>
-                s.file_status ===
+                getFileStatus(s) ===
                 "Complete"
         ).length;
 
@@ -4035,7 +4218,7 @@ function updateDashboard(){
     ).textContent =
         data.filter(
             s =>
-                s.thesis_status ===
+                getThesisStatus(s) ===
                 "Complete"
         ).length;
 
@@ -4044,7 +4227,7 @@ function updateDashboard(){
     ).textContent =
         data.filter(
             s =>
-                s.overall_status ===
+                getOverallStatus(s) ===
                 "Complete"
         ).length;
 
@@ -4138,14 +4321,19 @@ function openAddModal(){
         "MAEd";
 
     document.getElementById(
+        "studentFileStatus"
+    ).value =
+        "Not Yet Done";
+
+    document.getElementById(
         "studentThesisStatus"
     ).value =
-        "Pending";
+        "Not Yet Done";
 
     document.getElementById(
         "studentOverallStatus"
     ).value =
-        "Pending";
+        "Not Yet Done";
 
     document.getElementById(
         "studentThesisTitle"
@@ -4207,16 +4395,19 @@ function editStudent(id){
         "MAEd";
 
     document.getElementById(
+        "studentFileStatus"
+    ).value =
+        getFileStatus(student);
+
+    document.getElementById(
         "studentThesisStatus"
     ).value =
-        student.thesis_status ||
-        "Pending";
+        getThesisStatus(student);
 
     document.getElementById(
         "studentOverallStatus"
     ).value =
-        student.overall_status ||
-        "Pending";
+        getOverallStatus(student);
 
     document.getElementById(
         "studentThesisTitle"
@@ -4260,15 +4451,6 @@ async function saveStudent(){
 
     }
 
-    const existingStudent =
-        id
-        ? students.find(
-            s =>
-                String(s.id) ===
-                String(id)
-        )
-        : null;
-
     const data = {
 
         name:name,
@@ -4281,6 +4463,11 @@ async function saveStudent(){
         program:
             document.getElementById(
                 "studentProgram"
+            ).value,
+
+        file_status:
+            document.getElementById(
+                "studentFileStatus"
             ).value,
 
         thesis_status:
@@ -4297,13 +4484,7 @@ async function saveStudent(){
             document.getElementById(
                 "studentThesisTitle"
             ).value
-            .trim(),
-
-        file_status:
-            existingStudent &&
-            existingStudent.file_status
-            ? existingStudent.file_status
-            : "Not Yet Done"
+            .trim()
 
     };
 
