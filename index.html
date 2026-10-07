@@ -4,22 +4,13 @@
 
 <meta charset="UTF-8">
 
-<meta
-    name="viewport"
-    content="width=device-width, initial-scale=1.0"
->
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 
 <title>Graduate Group Tracking System</title>
 
-<link
-    rel="manifest"
-    href="manifest.json"
->
+<link rel="manifest" href="manifest.json">
 
-<meta
-    name="theme-color"
-    content="#073b72"
->
+<meta name="theme-color" content="#073b72">
 
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 
@@ -36,1358 +27,889 @@
     font-family:Arial,Helvetica,sans-serif;
 }
 
-
-/* =====================================================
-   ROOT
-===================================================== */
-
 :root{
-
     --primary:#073b72;
-
+    --primary-dark:#052d57;
     --primary-light:#e8f0f8;
-
     --background:#f4f6f9;
-
-    --white:#ffffff;
-
+    --white:#fff;
     --text:#222;
-
     --muted:#6c757d;
-
     --border:#e3e7eb;
-
     --danger:#dc3545;
-
+    --danger-light:#f8d7da;
     --success:#198754;
-
+    --success-light:#d1e7dd;
     --warning:#f0ad4e;
-
+    --warning-light:#fff3cd;
+    --shadow:0 3px 12px rgba(0,0,0,.06);
 }
-
 
 /* =====================================================
    BODY
 ===================================================== */
 
 body{
-
     background:var(--background);
-
     color:var(--text);
-
     min-height:100vh;
-
 }
-
 
 /* =====================================================
    HEADER
 ===================================================== */
 
 header{
-
-    background:var(--primary);
-
+    background:linear-gradient(135deg,#073b72,#0b4e91);
     color:white;
-
-    padding:17px 25px;
-
+    padding:18px 28px;
     display:flex;
-
     justify-content:space-between;
-
     align-items:center;
-
-    box-shadow:0 2px 8px rgba(0,0,0,.12);
-
+    box-shadow:0 3px 12px rgba(0,0,0,.14);
     position:sticky;
-
     top:0;
-
     z-index:100;
-
 }
 
+.header-left{
+    display:flex;
+    align-items:center;
+    gap:13px;
+}
+
+.header-logo{
+    width:42px;
+    height:42px;
+    border-radius:10px;
+    background:rgba(255,255,255,.14);
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    font-size:21px;
+    font-weight:bold;
+}
 
 .header-left h1{
-
-    font-size:22px;
-
+    font-size:21px;
     margin-bottom:4px;
-
 }
-
 
 .header-left small{
-
-    opacity:.82;
-
+    opacity:.8;
     font-size:12px;
-
 }
-
 
 .connection{
-
-    font-size:13px;
-
+    font-size:12px;
     font-weight:bold;
-
+    background:rgba(255,255,255,.1);
+    padding:8px 12px;
+    border-radius:20px;
 }
 
-
 /* =====================================================
-   OFFLINE BANNER
+   OFFLINE
 ===================================================== */
 
 .offline-banner{
-
     display:none;
-
     background:#fff3cd;
-
     color:#664d03;
-
     padding:10px;
-
     text-align:center;
-
     font-weight:bold;
-
-    font-size:13px;
-
+    font-size:12px;
+    border-bottom:1px solid #ffe69c;
 }
-
 
 .offline-banner.show{
-
     display:block;
-
 }
 
-
 /* =====================================================
-   MAIN LAYOUT
+   LAYOUT
 ===================================================== */
 
 .main-layout{
-
     display:flex;
-
-    min-height:calc(100vh - 70px);
-
+    min-height:calc(100vh - 78px);
 }
-
 
 /* =====================================================
    SIDEBAR
 ===================================================== */
 
 .sidebar{
-
-    width:245px;
-
+    width:250px;
     background:white;
-
     border-right:1px solid var(--border);
-
-    padding:20px 14px;
-
+    padding:22px 14px;
     flex-shrink:0;
-
     position:sticky;
-
-    top:70px;
-
-    height:calc(100vh - 70px);
-
+    top:78px;
+    height:calc(100vh - 78px);
     overflow-y:auto;
-
 }
 
+.sidebar-brand{
+    padding:0 12px 18px;
+    border-bottom:1px solid var(--border);
+    margin-bottom:17px;
+}
+
+.sidebar-brand strong{
+    display:block;
+    color:var(--primary);
+    font-size:14px;
+    margin-bottom:4px;
+}
+
+.sidebar-brand span{
+    color:#8a9299;
+    font-size:11px;
+}
 
 .sidebar-title{
-
-    font-size:11px;
-
+    font-size:10px;
     font-weight:bold;
-
     color:#8a9299;
-
     text-transform:uppercase;
-
-    letter-spacing:.7px;
-
+    letter-spacing:1px;
     padding:5px 12px 10px;
-
 }
-
 
 .group-button{
-
     width:100%;
-
     border:0;
-
     background:transparent;
-
     color:#39424e;
-
-    padding:12px 13px;
-
+    padding:11px 12px;
     margin-bottom:5px;
-
-    border-radius:8px;
-
+    border-radius:9px;
     display:flex;
-
     align-items:center;
-
-    gap:11px;
-
+    gap:10px;
     text-align:left;
-
     cursor:pointer;
-
-    font-size:13px;
-
+    font-size:12px;
     font-weight:bold;
-
     transition:.2s;
-
 }
-
 
 .group-button:hover{
-
     background:#f0f4f8;
-
 }
-
 
 .group-button.active{
-
     background:var(--primary);
-
     color:white;
-
+    box-shadow:0 3px 8px rgba(7,59,114,.2);
 }
-
 
 .group-icon{
-
-    width:28px;
-
-    height:28px;
-
-    border-radius:7px;
-
+    width:29px;
+    height:29px;
+    border-radius:8px;
     display:flex;
-
     align-items:center;
-
     justify-content:center;
-
     background:#e8f0f8;
-
     color:var(--primary);
-
-    font-size:13px;
-
+    font-size:12px;
+    font-weight:bold;
     flex-shrink:0;
-
 }
-
 
 .group-button.active .group-icon{
-
     background:rgba(255,255,255,.18);
-
     color:white;
-
 }
-
 
 .group-name{
-
     flex:1;
-
 }
-
 
 .group-count{
-
     min-width:25px;
-
     text-align:center;
-
     padding:3px 6px;
-
     border-radius:20px;
-
     background:#eef1f4;
-
     color:#555;
-
-    font-size:11px;
-
+    font-size:10px;
 }
-
 
 .group-button.active .group-count{
-
     background:rgba(255,255,255,.2);
-
     color:white;
-
 }
-
 
 .sidebar-divider{
-
     border:0;
-
     border-top:1px solid var(--border);
-
     margin:17px 5px;
-
 }
-
 
 .archive-button{
-
     width:100%;
-
     border:0;
-
     background:#f8f9fa;
-
     color:#555;
-
-    padding:12px 13px;
-
-    border-radius:8px;
-
+    padding:11px 12px;
+    border-radius:9px;
     display:flex;
-
     align-items:center;
-
-    gap:11px;
-
+    gap:10px;
     cursor:pointer;
-
     font-weight:bold;
-
-    font-size:13px;
-
+    font-size:12px;
 }
-
 
 .archive-button:hover{
-
     background:#f0f2f4;
-
 }
-
 
 .archive-button.active{
-
     background:#fff3cd;
-
     color:#664d03;
-
 }
-
 
 /* =====================================================
    CONTENT
 ===================================================== */
 
 .content{
-
     flex:1;
-
     min-width:0;
-
-    padding:24px;
-
+    padding:25px;
 }
-
 
 .container{
-
     max-width:1600px;
-
     margin:auto;
-
 }
 
+/* =====================================================
+   PAGE INTRO
+===================================================== */
+
+.page-intro{
+    margin-bottom:20px;
+}
+
+.page-intro h2{
+    color:var(--primary);
+    font-size:23px;
+    margin-bottom:5px;
+}
+
+.page-intro p{
+    color:var(--muted);
+    font-size:12px;
+}
 
 /* =====================================================
    MESSAGE
 ===================================================== */
 
 .message{
-
     display:none;
-
     padding:12px 15px;
-
     margin-bottom:15px;
-
-    border-radius:7px;
-
+    border-radius:8px;
     font-weight:bold;
-
-    font-size:13px;
-
+    font-size:12px;
+    border:1px solid transparent;
 }
-
 
 .message.show{
-
     display:block;
-
 }
-
 
 .error{
-
     background:#f8d7da;
-
     color:#842029;
-
+    border-color:#f1aeb5;
 }
-
 
 .success-message{
-
     background:#d1e7dd;
-
     color:#0f5132;
-
+    border-color:#a3cfbb;
 }
-
 
 /* =====================================================
    DASHBOARD
 ===================================================== */
 
 .dashboard{
-
     display:grid;
-
-    grid-template-columns:
-        repeat(4,1fr);
-
+    grid-template-columns:repeat(4,1fr);
     gap:15px;
-
     margin-bottom:20px;
-
 }
-
 
 .card{
-
     background:white;
-
-    padding:19px;
-
-    border-radius:10px;
-
-    box-shadow:0 2px 8px rgba(0,0,0,.06);
-
+    padding:18px;
+    border-radius:11px;
+    box-shadow:var(--shadow);
     border:1px solid #edf0f3;
-
+    position:relative;
+    overflow:hidden;
 }
 
+.card::after{
+    content:"";
+    position:absolute;
+    right:-20px;
+    bottom:-25px;
+    width:80px;
+    height:80px;
+    border-radius:50%;
+    background:var(--primary-light);
+}
 
 .card h3{
-
-    font-size:13px;
-
+    font-size:11px;
     color:#68717a;
-
     margin-bottom:9px;
-
+    text-transform:uppercase;
+    letter-spacing:.3px;
 }
-
 
 .number{
-
     font-size:29px;
-
     font-weight:bold;
-
     color:var(--primary);
-
+    position:relative;
+    z-index:1;
 }
-
 
 /* =====================================================
    CONTROLS
 ===================================================== */
 
 .controls{
-
     background:white;
-
     padding:16px;
-
-    border-radius:10px;
-
+    border-radius:11px;
     margin-bottom:20px;
-
-    box-shadow:0 2px 8px rgba(0,0,0,.06);
-
+    box-shadow:var(--shadow);
     border:1px solid #edf0f3;
-
 }
 
+.controls-label{
+    font-size:11px;
+    color:#68717a;
+    font-weight:bold;
+    margin-bottom:10px;
+}
 
 .controls-row{
-
     display:flex;
-
     flex-wrap:wrap;
-
     gap:9px;
-
 }
-
 
 input,
 select{
-
     padding:10px 12px;
-
     border:1px solid #ccd2d8;
-
-    border-radius:6px;
-
-    font-size:13px;
-
+    border-radius:7px;
+    font-size:12px;
     background:white;
-
     outline:none;
-
+    color:#333;
 }
-
 
 input:focus,
 select:focus{
-
     border-color:var(--primary);
-
-    box-shadow:0 0 0 2px rgba(7,59,114,.08);
-
+    box-shadow:0 0 0 3px rgba(7,59,114,.08);
 }
-
 
 .search{
-
     flex:1;
-
     min-width:220px;
-
 }
-
 
 button{
-
     border:0;
-
-    border-radius:6px;
-
+    border-radius:7px;
     padding:10px 14px;
-
     cursor:pointer;
-
     font-weight:bold;
-
-    font-size:13px;
-
+    font-size:12px;
+    transition:.15s;
 }
-
 
 button:hover{
-
-    opacity:.9;
-
+    transform:translateY(-1px);
+    opacity:.93;
 }
 
+button:active{
+    transform:translateY(0);
+}
 
 .primary{
-
     background:var(--primary);
-
     color:white;
-
 }
 
+.primary:hover{
+    background:var(--primary-dark);
+}
 
 .success{
-
     background:var(--success);
-
     color:white;
-
 }
-
 
 .warning{
-
     background:var(--warning);
-
     color:white;
-
 }
-
 
 .danger{
-
     background:var(--danger);
-
     color:white;
-
 }
-
 
 .secondary{
-
     background:#6c757d;
-
     color:white;
-
 }
-
 
 .archive-selected{
-
     display:none;
-
-    background:#dc3545;
-
+    background:var(--danger);
     color:white;
-
 }
-
 
 .archive-selected.show{
-
     display:block;
-
 }
 
-
 /* =====================================================
-   TABLE BOX
+   TABLE
 ===================================================== */
 
 .table-box{
-
     background:white;
-
-    border-radius:10px;
-
+    border-radius:11px;
     overflow:hidden;
-
-    box-shadow:0 2px 8px rgba(0,0,0,.06);
-
+    box-shadow:var(--shadow);
     border:1px solid #edf0f3;
-
 }
-
 
 .table-header{
-
     padding:17px 18px;
-
     display:flex;
-
     justify-content:space-between;
-
     align-items:center;
-
     border-bottom:1px solid var(--border);
-
 }
-
 
 .table-header h2{
-
     color:var(--primary);
-
-    font-size:19px;
-
+    font-size:17px;
 }
-
 
 .table-header-right{
-
     display:flex;
-
     align-items:center;
-
-    gap:10px;
-
+    gap:9px;
     color:#6c757d;
-
-    font-size:12px;
-
+    font-size:11px;
 }
 
+.record-pill{
+    background:#f1f4f7;
+    padding:6px 9px;
+    border-radius:20px;
+}
 
 .table-wrap{
-
     overflow-x:auto;
-
 }
-
 
 table{
-
     width:100%;
-
     border-collapse:collapse;
-
     min-width:1150px;
-
 }
-
 
 th{
-
-    background:var(--primary);
-
+    background:#073b72;
     color:white;
-
-    padding:11px 12px;
-
+    padding:12px;
     text-align:left;
-
-    font-size:12px;
-
+    font-size:11px;
     white-space:nowrap;
-
+    letter-spacing:.2px;
 }
-
 
 td{
-
     padding:11px 12px;
-
     border-bottom:1px solid #edf0f2;
-
-    font-size:13px;
-
+    font-size:12px;
     vertical-align:middle;
-
 }
-
 
 tr:hover{
-
     background:#f8fbff;
-
 }
-
 
 .checkbox-cell{
-
     width:42px;
-
     text-align:center;
-
 }
-
 
 .student-checkbox,
 #selectAll{
-
     width:16px;
-
     height:16px;
-
     cursor:pointer;
-
 }
-
 
 .student-name{
-
     font-weight:bold;
-
     min-width:170px;
-
+    color:#29313a;
 }
-
 
 .thesis-cell{
-
     width:280px;
-
     max-width:280px;
-
     white-space:normal;
-
     word-break:break-word;
-
     overflow-wrap:anywhere;
-
     line-height:1.45;
-
     color:#454b52;
-
 }
-
 
 .actions{
-
     display:flex;
-
     gap:5px;
-
     white-space:nowrap;
-
 }
-
 
 .actions button{
-
     padding:7px 9px;
-
-    font-size:11px;
-
+    font-size:10px;
 }
-
 
 /* =====================================================
    BADGES
 ===================================================== */
 
 .badge{
-
     display:inline-block;
-
     padding:5px 9px;
-
     border-radius:15px;
-
-    font-size:11px;
-
+    font-size:10px;
     font-weight:bold;
-
     white-space:nowrap;
-
 }
-
 
 .complete{
-
     background:#d1e7dd;
-
     color:#0f5132;
-
 }
-
 
 .pending{
-
     background:#f8d7da;
-
     color:#842029;
-
 }
-
 
 .progress{
-
     background:#fff3cd;
-
     color:#664d03;
-
 }
-
 
 .not-uploaded{
-
     background:#eef1f4;
-
     color:#555;
-
 }
-
 
 .phd{
-
     background:#1976d2;
-
     color:white;
-
 }
-
 
 .maed{
-
     background:#8ecae6;
-
     color:#123;
-
 }
-
 
 .mba{
-
     background:#8e6bbf;
-
     color:white;
-
 }
-
 
 .mpa{
-
     background:#176b3a;
-
     color:white;
-
 }
-
 
 .mscj{
-
     background:#f5a6a6;
-
     color:#333;
-
 }
-
 
 .group{
-
     background:#e8f0f8;
-
     color:#073b72;
-
     padding:5px 8px;
-
     border-radius:5px;
-
-    font-size:11px;
-
+    font-size:10px;
     font-weight:bold;
-
     white-space:nowrap;
-
 }
-
 
 /* =====================================================
-   FILE UPLOAD
+   FILE
 ===================================================== */
-
-.file-upload-button{
-
-    width:30px;
-
-    height:30px;
-
-    padding:0;
-
-    margin-left:7px;
-
-    border-radius:6px;
-
-    background:var(--primary);
-
-    color:white;
-
-    font-size:19px;
-
-    line-height:30px;
-
-    text-align:center;
-
-    cursor:pointer;
-
-    flex-shrink:0;
-
-}
-
-
-.file-upload-button:hover{
-
-    opacity:.85;
-
-}
-
 
 .file-box{
-
     display:flex;
-
     align-items:center;
-
     gap:7px;
-
 }
-
 
 .file-info{
-
     display:flex;
-
     flex-direction:column;
-
     gap:4px;
-
     min-width:0;
-
 }
-
 
 .file-name{
-
     display:block;
-
-    font-size:11px;
-
-    color:#555;
-
-    max-width:130px;
-
-    white-space:nowrap;
-
-    overflow:hidden;
-
-    text-overflow:ellipsis;
-
-}
-
-
-.file-view-button{
-
-    display:inline-block;
-
-    width:max-content;
-
-    padding:5px 9px;
-
-    border-radius:5px;
-
-    background:#e8f0f8;
-
-    color:var(--primary);
-
-    border:0;
-
-    text-decoration:none;
-
     font-size:10px;
-
-    font-weight:bold;
-
-    cursor:pointer;
-
-}
-
-
-.file-view-button:hover{
-
-    background:#dce8f3;
-
-}
-
-
-/* =====================================================
-   FILE PREVIEW MODAL
-===================================================== */
-
-.file-preview-modal-content{
-
-    background:white;
-
-    width:900px;
-
-    max-width:95%;
-
-    max-height:92vh;
-
-    overflow:auto;
-
-    border-radius:10px;
-
-    padding:20px;
-
-}
-
-
-.file-preview-header{
-
-    display:flex;
-
-    justify-content:space-between;
-
-    align-items:center;
-
-    gap:15px;
-
-    border-bottom:1px solid var(--border);
-
-    padding-bottom:15px;
-
-    margin-bottom:15px;
-
-}
-
-
-.file-preview-header h2{
-
-    color:var(--primary);
-
-    font-size:17px;
-
-    word-break:break-word;
-
-}
-
-
-.file-preview-close{
-
-    background:#f1f3f5;
-
     color:#555;
-
-    font-size:18px;
-
-    width:35px;
-
-    height:35px;
-
-    padding:0;
-
-    flex-shrink:0;
-
+    max-width:130px;
+    white-space:nowrap;
+    overflow:hidden;
+    text-overflow:ellipsis;
 }
-
-
-.file-preview-area{
-
-    width:100%;
-
-    min-height:200px;
-
-    display:flex;
-
-    justify-content:center;
-
-    align-items:center;
-
-    background:#f6f8fa;
-
-    border:1px solid var(--border);
-
-    border-radius:8px;
-
-    padding:15px;
-
-}
-
-
-.file-preview-image{
-
-    max-width:100%;
-
-    max-height:65vh;
-
-    object-fit:contain;
-
-    border-radius:5px;
-
-}
-
-
-.file-preview-frame{
-
-    width:100%;
-
-    height:65vh;
-
-    border:0;
-
-    background:white;
-
-}
-
-
-.file-preview-message{
-
-    text-align:center;
-
-    padding:50px 20px;
-
-    color:#666;
-
-}
-
-
-.file-preview-actions{
-
-    display:flex;
-
-    justify-content:flex-end;
-
-    gap:8px;
-
-    margin-top:15px;
-
-}
-
 
 /* =====================================================
-   EMPTY
+   EMPTY STATE
 ===================================================== */
 
-.empty{
-
+.empty-state{
+    padding:60px 20px !important;
     text-align:center;
-
-    padding:50px 20px;
-
     color:#777;
-
 }
 
+.empty-icon{
+    width:55px;
+    height:55px;
+    margin:0 auto 14px;
+    border-radius:50%;
+    background:#eef3f8;
+    color:var(--primary);
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    font-size:24px;
+}
+
+.empty-state strong{
+    display:block;
+    color:#495057;
+    font-size:14px;
+    margin-bottom:5px;
+}
+
+.empty-state span{
+    font-size:11px;
+    color:#8a9299;
+}
+
+/* =====================================================
+   ARCHIVED
+===================================================== */
+
+.archived-row{
+    background:#fafafa;
+}
+
+.archived-row:hover{
+    background:#f3f3f3;
+}
+
+.restore-button{
+    background:#198754;
+    color:white;
+}
 
 /* =====================================================
    MODAL
 ===================================================== */
 
 .modal{
-
     position:fixed;
-
     inset:0;
-
-    background:rgba(0,0,0,.5);
-
+    background:rgba(3,20,35,.58);
+    backdrop-filter:blur(2px);
     display:none;
-
     justify-content:center;
-
     align-items:center;
-
     padding:20px;
-
     z-index:999;
-
 }
-
 
 .modal.show{
-
     display:flex;
-
 }
-
 
 .modal-content{
-
     background:white;
-
     width:600px;
-
     max-width:100%;
-
     max-height:90vh;
-
     overflow-y:auto;
-
-    border-radius:10px;
-
+    border-radius:12px;
     padding:25px;
-
+    box-shadow:0 15px 40px rgba(0,0,0,.2);
 }
-
 
 .modal-content h2{
-
     color:var(--primary);
-
     margin-bottom:20px;
-
+    font-size:19px;
 }
-
 
 .form-group{
-
     margin-bottom:15px;
-
 }
-
 
 .form-group label{
-
     display:block;
-
     font-weight:bold;
-
     margin-bottom:6px;
-
-    font-size:13px;
-
+    font-size:12px;
+    color:#444;
 }
-
 
 .form-group input,
 .form-group select{
-
     width:100%;
-
 }
-
 
 .modal-buttons{
-
     display:flex;
-
     justify-content:flex-end;
-
     gap:10px;
-
     margin-top:20px;
-
 }
-
 
 /* =====================================================
-   ARCHIVED MODE
+   DELETE MODAL
 ===================================================== */
 
-.archived-row{
-
-    background:#fafafa;
-
+.confirm-icon{
+    width:55px;
+    height:55px;
+    border-radius:50%;
+    background:#f8d7da;
+    color:#842029;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    font-size:25px;
+    margin-bottom:15px;
 }
 
-
-.archived-row:hover{
-
-    background:#f3f3f3;
-
+.confirm-text{
+    color:#666;
+    font-size:13px;
+    line-height:1.5;
 }
 
+/* =====================================================
+   FILE PREVIEW
+===================================================== */
 
-.restore-button{
-
-    background:#198754;
-
-    color:white;
-
+.file-preview-modal-content{
+    background:white;
+    width:900px;
+    max-width:95%;
+    max-height:92vh;
+    overflow:auto;
+    border-radius:12px;
+    padding:20px;
 }
 
+.file-preview-header{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    gap:15px;
+    border-bottom:1px solid var(--border);
+    padding-bottom:15px;
+    margin-bottom:15px;
+}
+
+.file-preview-header h2{
+    color:var(--primary);
+    font-size:17px;
+    word-break:break-word;
+}
+
+.file-preview-close{
+    background:#f1f3f5;
+    color:#555;
+    font-size:18px;
+    width:35px;
+    height:35px;
+    padding:0;
+}
+
+.file-preview-area{
+    width:100%;
+    min-height:200px;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    background:#f6f8fa;
+    border:1px solid var(--border);
+    border-radius:8px;
+    padding:15px;
+}
+
+.file-preview-image{
+    max-width:100%;
+    max-height:65vh;
+    object-fit:contain;
+    border-radius:5px;
+}
+
+.file-preview-frame{
+    width:100%;
+    height:65vh;
+    border:0;
+    background:white;
+}
+
+.file-preview-message{
+    text-align:center;
+    padding:50px 20px;
+    color:#666;
+}
+
+.file-preview-actions{
+    display:flex;
+    justify-content:flex-end;
+    gap:8px;
+    margin-top:15px;
+}
 
 /* =====================================================
    RESPONSIVE
@@ -1396,159 +918,165 @@ tr:hover{
 @media(max-width:1100px){
 
     .dashboard{
-
-        grid-template-columns:
-            repeat(2,1fr);
-
+        grid-template-columns:repeat(2,1fr);
     }
 
 }
-
 
 @media(max-width:800px){
 
     .sidebar{
-
         width:190px;
-
     }
 
     .content{
-
         padding:15px;
-
     }
 
 }
-
 
 @media(max-width:600px){
 
     header{
-
-        padding:14px;
-
+        padding:13px;
     }
 
     .header-left h1{
+        font-size:16px;
+    }
 
-        font-size:17px;
+    .header-left small{
+        font-size:10px;
+    }
 
+    .header-logo{
+        width:36px;
+        height:36px;
     }
 
     .connection{
-
-        font-size:11px;
-
+        font-size:9px;
+        padding:6px 8px;
     }
 
     .main-layout{
-
         display:block;
-
     }
 
     .sidebar{
-
         position:static;
-
         width:100%;
-
         height:auto;
-
         border-right:0;
-
         border-bottom:1px solid var(--border);
-
         padding:10px;
+    }
 
+    .sidebar-brand{
+        display:none;
     }
 
     .sidebar-title{
-
         display:none;
-
     }
 
     .group-button{
-
         display:inline-flex;
-
         width:auto;
-
         margin-right:4px;
-
     }
 
     .sidebar-divider{
-
         display:none;
-
     }
 
     .archive-button{
-
         width:auto;
-
         display:inline-flex;
-
         margin-top:5px;
-
     }
 
     .dashboard{
-
-        grid-template-columns:
-            1fr 1fr;
-
+        grid-template-columns:1fr 1fr;
         gap:9px;
-
     }
 
     .card{
-
         padding:14px;
-
     }
 
     .number{
-
         font-size:24px;
-
     }
 
     .content{
-
         padding:10px;
+    }
 
+    .page-intro h2{
+        font-size:19px;
+    }
+
+    .controls-row{
+        flex-direction:column;
+    }
+
+    .search{
+        width:100%;
+        min-width:0;
     }
 
 }
-<button onclick="testStudentFilesBucket()">
-    Test Storage
-</button>
+
+/* =====================================================
+   SCROLLBAR
+===================================================== */
+
+::-webkit-scrollbar{
+    width:8px;
+    height:8px;
+}
+
+::-webkit-scrollbar-track{
+    background:#f1f3f5;
+}
+
+::-webkit-scrollbar-thumb{
+    background:#c5ccd3;
+    border-radius:10px;
+}
+
+::-webkit-scrollbar-thumb:hover{
+    background:#aeb6be;
+}
+
 </style>
 
 </head>
 
-
 <body>
-
 
 <header>
 
     <div class="header-left">
 
-        <h1>
-            Graduate Group Tracking System
-        </h1>
+        <div class="header-logo">
+            G
+        </div>
 
-        <small>
-            Graduate Student Monitoring System
-        </small>
+        <div>
+
+            <h1>
+                Graduate Group Tracking System
+            </h1>
+
+            <small>
+                Graduate Student Monitoring System
+            </small>
+
+        </div>
 
     </div>
-
 
     <div
         class="connection"
@@ -1559,7 +1087,6 @@ tr:hover{
 
 </header>
 
-
 <div
     id="offlineBanner"
     class="offline-banner"
@@ -1567,17 +1094,25 @@ tr:hover{
     OFFLINE MODE — Changes will be saved on this device and synchronized when internet returns.
 </div>
 
-
 <div class="main-layout">
-
 
 <aside class="sidebar">
 
+    <div class="sidebar-brand">
+
+        <strong>
+            Graduate Records
+        </strong>
+
+        <span>
+            Student Management Portal
+        </span>
+
+    </div>
 
     <div class="sidebar-title">
         Groups
     </div>
-
 
     <button
         class="group-button active"
@@ -1585,9 +1120,7 @@ tr:hover{
         onclick="selectGroup('ALL')"
     >
 
-        <span class="group-icon">
-            ☰
-        </span>
+        <span class="group-icon">☰</span>
 
         <span class="group-name">
             All Groups
@@ -1596,12 +1129,9 @@ tr:hover{
         <span
             class="group-count"
             id="countAll"
-        >
-            0
-        </span>
+        >0</span>
 
     </button>
-
 
     <button
         class="group-button"
@@ -1609,9 +1139,7 @@ tr:hover{
         onclick="selectGroup('TAGAYTAY GROUP')"
     >
 
-        <span class="group-icon">
-            T
-        </span>
+        <span class="group-icon">T</span>
 
         <span class="group-name">
             TAGAYTAY GROUP
@@ -1620,12 +1148,9 @@ tr:hover{
         <span
             class="group-count"
             id="countTagaytay"
-        >
-            0
-        </span>
+        >0</span>
 
     </button>
-
 
     <button
         class="group-button"
@@ -1633,9 +1158,7 @@ tr:hover{
         onclick="selectGroup('GELINE GROUP')"
     >
 
-        <span class="group-icon">
-            G
-        </span>
+        <span class="group-icon">G</span>
 
         <span class="group-name">
             GELINE GROUP
@@ -1644,12 +1167,9 @@ tr:hover{
         <span
             class="group-count"
             id="countGeline"
-        >
-            0
-        </span>
+        >0</span>
 
     </button>
-
 
     <button
         class="group-button"
@@ -1657,9 +1177,7 @@ tr:hover{
         onclick="selectGroup('BORACAY GROUP')"
     >
 
-        <span class="group-icon">
-            B
-        </span>
+        <span class="group-icon">B</span>
 
         <span class="group-name">
             BORACAY GROUP
@@ -1668,15 +1186,11 @@ tr:hover{
         <span
             class="group-count"
             id="countBoracay"
-        >
-            0
-        </span>
+        >0</span>
 
     </button>
 
-
     <hr class="sidebar-divider">
-
 
     <button
         class="archive-button"
@@ -1695,29 +1209,34 @@ tr:hover{
         <span
             class="group-count"
             id="archiveCount"
-        >
-            0
-        </span>
+        >0</span>
 
     </button>
 
-
 </aside>
-
 
 <main class="content">
 
 <div class="container">
 
+    <div class="page-intro">
+
+        <h2 id="pageTitle">
+            Student Records
+        </h2>
+
+        <p>
+            Manage and monitor graduate student records and completion status.
+        </p>
+
+    </div>
 
     <div
         id="message"
         class="message"
     ></div>
 
-
     <div class="dashboard">
-
 
         <div class="card">
 
@@ -1734,7 +1253,6 @@ tr:hover{
 
         </div>
 
-
         <div class="card">
 
             <h3>
@@ -1749,7 +1267,6 @@ tr:hover{
             </div>
 
         </div>
-
 
         <div class="card">
 
@@ -1766,7 +1283,6 @@ tr:hover{
 
         </div>
 
-
         <div class="card">
 
             <h3>
@@ -1782,15 +1298,15 @@ tr:hover{
 
         </div>
 
-
     </div>
-
 
     <div class="controls">
 
+        <div class="controls-label">
+            SEARCH AND FILTERS
+        </div>
 
         <div class="controls-row">
-
 
             <input
                 type="text"
@@ -1800,78 +1316,35 @@ tr:hover{
                 oninput="renderTable()"
             >
 
-
             <select
                 id="programFilter"
                 onchange="renderTable()"
             >
-
-                <option value="ALL">
-                    All Programs
-                </option>
-
-                <option value="MAEd">
-                    MAEd
-                </option>
-
-                <option value="PhD">
-                    PhD
-                </option>
-
-                <option value="MBA">
-                    MBA
-                </option>
-
-                <option value="MPA">
-                    MPA
-                </option>
-
-                <option value="MSCJ">
-                    MSCJ
-                </option>
-
+                <option value="ALL">All Programs</option>
+                <option value="MAEd">MAEd</option>
+                <option value="PhD">PhD</option>
+                <option value="MBA">MBA</option>
+                <option value="MPA">MPA</option>
+                <option value="MSCJ">MSCJ</option>
             </select>
-
 
             <select
                 id="fileFilter"
                 onchange="renderTable()"
             >
-
-                <option value="ALL">
-                    All File Status
-                </option>
-
-                <option value="Complete">
-                    Complete
-                </option>
-
-                <option value="Not Yet Done">
-                    Not Yet Done
-                </option>
-
+                <option value="ALL">All File Status</option>
+                <option value="Complete">Complete</option>
+                <option value="Not Yet Done">Not Yet Done</option>
             </select>
-
 
             <select
                 id="thesisFilter"
                 onchange="renderTable()"
             >
-
-                <option value="ALL">
-                    All Thesis Status
-                </option>
-
-                <option value="Complete">
-                    Complete
-                </option>
-
-                <option value="Pending">
-                    Pending
-                </option>
-
+                <option value="ALL">All Thesis Status</option>
+                <option value="Complete">Complete</option>
+                <option value="Pending">Pending</option>
             </select>
-
 
             <button
                 class="primary"
@@ -1880,14 +1353,12 @@ tr:hover{
                 + Add Student
             </button>
 
-
             <button
                 class="secondary"
                 onclick="loadData()"
             >
                 ↻ Refresh
             </button>
-
 
             <button
                 class="archive-selected"
@@ -1897,49 +1368,41 @@ tr:hover{
                 Archive Selected
             </button>
 
-
         </div>
-
 
     </div>
 
-
     <div class="table-box">
 
-
         <div class="table-header">
-
 
             <h2 id="tableTitle">
                 Student Records
             </h2>
 
-
             <div class="table-header-right">
 
-                <span id="selectedCount">
+                <span
+                    class="record-pill"
+                    id="selectedCount"
+                >
                     0 selected
                 </span>
 
-                <span>
-                    |
-                </span>
-
-                <span id="recordCount">
+                <span
+                    class="record-pill"
+                    id="recordCount"
+                >
                     0 records
                 </span>
 
             </div>
 
-
         </div>
-
 
         <div class="table-wrap">
 
-
             <table>
-
 
                 <thead>
 
@@ -1956,67 +1419,41 @@ tr:hover{
 
                         </th>
 
-                        <th>
-                            #
-                        </th>
+                        <th>#</th>
 
-                        <th>
-                            Student Name
-                        </th>
+                        <th>Student Name</th>
 
-                        <th>
-                            Group
-                        </th>
+                        <th>Group</th>
 
-                        <th>
-                            Program
-                        </th>
+                        <th>Program</th>
 
-                        <th>
-                            Files
-                        </th>
+                        <th>Files</th>
 
-                        <th>
-                            Thesis
-                        </th>
+                        <th>Thesis</th>
 
-                        <th>
-                            Overall
-                        </th>
+                        <th>Overall</th>
 
-                        <th>
-                            Thesis Title
-                        </th>
+                        <th>Thesis Title</th>
 
-                        <th>
-                            Actions
-                        </th>
+                        <th>Actions</th>
 
                     </tr>
 
                 </thead>
 
-
-                <tbody id="studentTableBody">
-
-                </tbody>
-
+                <tbody id="studentTableBody"></tbody>
 
             </table>
 
-
         </div>
 
-
     </div>
-
 
 </div>
 
 </main>
 
 </div>
-
 
 <!-- =====================================================
      STUDENT MODAL
@@ -2027,26 +1464,20 @@ tr:hover{
     id="studentModal"
 >
 
-
     <div class="modal-content">
-
 
         <h2 id="modalTitle">
             Add Student
         </h2>
-
 
         <input
             type="hidden"
             id="studentId"
         >
 
-
         <div class="form-group">
 
-            <label>
-                Student Name
-            </label>
+            <label>Student Name</label>
 
             <input
                 type="text"
@@ -2056,12 +1487,9 @@ tr:hover{
 
         </div>
 
-
         <div class="form-group">
 
-            <label>
-                Group
-            </label>
+            <label>Group</label>
 
             <select id="studentGroup">
 
@@ -2081,91 +1509,52 @@ tr:hover{
 
         </div>
 
-
         <div class="form-group">
 
-            <label>
-                Program
-            </label>
+            <label>Program</label>
 
             <select id="studentProgram">
 
-                <option value="MAEd">
-                    MAEd
-                </option>
-
-                <option value="PhD">
-                    PhD
-                </option>
-
-                <option value="MBA">
-                    MBA
-                </option>
-
-                <option value="MPA">
-                    MPA
-                </option>
-
-                <option value="MSCJ">
-                    MSCJ
-                </option>
+                <option value="MAEd">MAEd</option>
+                <option value="PhD">PhD</option>
+                <option value="MBA">MBA</option>
+                <option value="MPA">MPA</option>
+                <option value="MSCJ">MSCJ</option>
 
             </select>
 
         </div>
 
-
         <div class="form-group">
 
-            <label>
-                Thesis Status
-            </label>
+            <label>Thesis Status</label>
 
             <select id="studentThesisStatus">
 
-                <option value="Pending">
-                    Pending
-                </option>
-
-                <option value="Complete">
-                    Complete
-                </option>
+                <option value="Pending">Pending</option>
+                <option value="Complete">Complete</option>
 
             </select>
 
         </div>
 
-
         <div class="form-group">
 
-            <label>
-                Overall Status
-            </label>
+            <label>Overall Status</label>
 
             <select id="studentOverallStatus">
 
-                <option value="Pending">
-                    Pending
-                </option>
-
-                <option value="In Progress">
-                    In Progress
-                </option>
-
-                <option value="Complete">
-                    Complete
-                </option>
+                <option value="Pending">Pending</option>
+                <option value="In Progress">In Progress</option>
+                <option value="Complete">Complete</option>
 
             </select>
 
         </div>
 
-
         <div class="form-group">
 
-            <label>
-                Thesis Title
-            </label>
+            <label>Thesis Title</label>
 
             <input
                 type="text"
@@ -2175,9 +1564,7 @@ tr:hover{
 
         </div>
 
-
         <div class="modal-buttons">
-
 
             <button
                 class="secondary"
@@ -2185,7 +1572,6 @@ tr:hover{
             >
                 Cancel
             </button>
-
 
             <button
                 class="primary"
@@ -2200,6 +1586,53 @@ tr:hover{
 
 </div>
 
+<!-- =====================================================
+     DELETE CONFIRMATION MODAL
+===================================================== -->
+
+<div
+    class="modal"
+    id="deleteModal"
+>
+
+    <div class="modal-content">
+
+        <div class="confirm-icon">
+            !
+        </div>
+
+        <h2>
+            Delete Archived Student
+        </h2>
+
+        <p
+            class="confirm-text"
+            id="deleteMessage"
+        >
+            Are you sure you want to permanently delete this student?
+        </p>
+
+        <div class="modal-buttons">
+
+            <button
+                class="secondary"
+                onclick="closeDeleteModal()"
+            >
+                Cancel
+            </button>
+
+            <button
+                class="danger"
+                onclick="confirmDeleteArchived()"
+            >
+                Delete Permanently
+            </button>
+
+        </div>
+
+    </div>
+
+</div>
 
 <!-- =====================================================
      FILE PREVIEW MODAL
@@ -2210,16 +1643,13 @@ tr:hover{
     id="filePreviewModal"
 >
 
-
     <div class="file-preview-modal-content">
-
 
         <div class="file-preview-header">
 
             <h2 id="filePreviewTitle">
                 Uploaded File
             </h2>
-
 
             <button
                 type="button"
@@ -2231,66 +1661,22 @@ tr:hover{
 
         </div>
 
-
         <div
             class="file-preview-area"
             id="filePreviewContent"
-        >
-        </div>
-
+        ></div>
 
         <div
             class="file-preview-actions"
             id="filePreviewActions"
-        >
-        </div>
-
+        ></div>
 
     </div>
 
 </div>
 
-
 <script>
-async function testStudentFilesBucket(){
 
-    const { data, error } =
-        await supabaseClient
-        .storage
-        .listBuckets();
-
-    console.log("BUCKETS:", data);
-    console.log("ERROR:", error);
-
-    if(error){
-        alert(
-            "Storage Error:\n\n" +
-            error.message
-        );
-        return;
-    }
-
-    const bucket =
-        data.find(
-            b => b.name === "student-files"
-        );
-
-    if(bucket){
-
-        alert(
-            "✅ student-files FOUND!\n\n" +
-            "The website can access your bucket."
-        );
-
-    }else{
-
-        alert(
-            "❌ student-files NOT FOUND.\n\n" +
-            "Buckets detected:\n\n" +
-            data.map(b => b.name).join("\n")
-        );
-    }
-}
 /* =====================================================
    SUPABASE
 ===================================================== */
@@ -2298,17 +1684,14 @@ async function testStudentFilesBucket(){
 const SUPABASE_URL =
     "https://yiruvpikzntyiijapknt.supabase.co";
 
-
 const SUPABASE_KEY =
     "sb_publishable_Z95aVweBRCPDWo1XH54GFQ_rrV9GIvk";
-
 
 const supabaseClient =
     window.supabase.createClient(
         SUPABASE_URL,
         SUPABASE_KEY
     );
-
 
 /* =====================================================
    LOCAL STORAGE
@@ -2317,42 +1700,46 @@ const supabaseClient =
 const LOCAL_KEY =
     "graduateGroupStudents";
 
-
 const PENDING_KEY =
     "graduatePendingChanges";
-
 
 const FILE_KEY =
     "graduateStudentFiles";
 
-
 let students = [];
-
 
 let pendingChanges =
     JSON.parse(
-        localStorage.getItem(
-            PENDING_KEY
-        ) || "[]"
+        localStorage.getItem(PENDING_KEY) || "[]"
     );
-
 
 let studentFiles =
     JSON.parse(
-        localStorage.getItem(
-            FILE_KEY
-        ) || "{}"
+        localStorage.getItem(FILE_KEY) || "{}"
     );
-
 
 let selectedIds = new Set();
 
-
 let selectedGroup = "ALL";
-
 
 let showingArchived = false;
 
+let deleteStudentId = null;
+
+/* =====================================================
+   START EMPTY
+===================================================== */
+
+/*
+   Clear old locally saved student records when this
+   version of the system starts.
+
+   Supabase remains the main database.
+*/
+
+localStorage.removeItem(LOCAL_KEY);
+
+students = [];
 
 /* =====================================================
    INITIALIZE
@@ -2365,7 +1752,6 @@ document.addEventListener(
         updateConnection();
 
         await loadData();
-
 
         window.addEventListener(
             "online",
@@ -2380,7 +1766,6 @@ document.addEventListener(
             }
         );
 
-
         window.addEventListener(
             "offline",
             function(){
@@ -2390,13 +1775,10 @@ document.addEventListener(
             }
         );
 
-
         if("serviceWorker" in navigator){
 
             navigator.serviceWorker
-                .register(
-                    "service-worker.js"
-                )
+                .register("service-worker.js")
                 .catch(
                     error =>
                         console.log(
@@ -2410,7 +1792,6 @@ document.addEventListener(
     }
 );
 
-
 /* =====================================================
    CONNECTION
 ===================================================== */
@@ -2422,12 +1803,10 @@ function updateConnection(){
             "connectionStatus"
         );
 
-
     const banner =
         document.getElementById(
             "offlineBanner"
         );
-
 
     if(navigator.onLine){
 
@@ -2457,7 +1836,6 @@ function updateConnection(){
 
 }
 
-
 /* =====================================================
    LOAD DATA
 ===================================================== */
@@ -2475,7 +1853,6 @@ async function loadData(){
     }
 
 }
-
 
 /* =====================================================
    LOAD ONLINE
@@ -2499,32 +1876,24 @@ async function loadOnlineData(){
                     }
                 );
 
-
         if(error){
 
             throw error;
 
         }
 
-
         students =
             data || [];
 
-
         saveLocalData();
-
 
         selectedIds.clear();
 
-
         renderTable();
-
 
         updateSidebarCounts();
 
-
         await syncPendingChanges();
-
 
     }catch(error){
 
@@ -2533,9 +1902,7 @@ async function loadOnlineData(){
             error
         );
 
-
         loadLocalData();
-
 
         showMessage(
             "Internet connection failed. Using offline data.",
@@ -2545,7 +1912,6 @@ async function loadOnlineData(){
     }
 
 }
-
 
 /* =====================================================
    LOAD LOCAL
@@ -2568,13 +1934,11 @@ function loadLocalData(){
 
     }
 
-
     renderTable();
 
     updateSidebarCounts();
 
 }
-
 
 /* =====================================================
    SAVE LOCAL
@@ -2589,7 +1953,6 @@ function saveLocalData(){
 
 }
 
-
 /* =====================================================
    SAVE FILES
 ===================================================== */
@@ -2603,6 +1966,62 @@ function saveStudentFiles(){
 
 }
 
+/* =====================================================
+   FILE DISPLAY
+===================================================== */
+
+function fileUploadButton(student){
+
+    const file =
+        studentFiles[
+            String(student.id)
+        ];
+
+    const hasFile =
+        file &&
+        file.path;
+
+    const status =
+        hasFile
+        ? "Complete"
+        : "Not Yet Done";
+
+    return `
+
+        <div class="file-box">
+
+            <div class="file-info">
+
+                <span class="badge ${
+                    hasFile
+                    ? "complete"
+                    : "not-uploaded"
+                }">
+
+                    ${status}
+
+                </span>
+
+                ${
+                    hasFile
+                    ? `
+                        <span
+                            class="file-name"
+                            title="${escapeHtml(file.name)}"
+                        >
+                            ${escapeHtml(file.name)}
+                        </span>
+                    `
+                    : ""
+                }
+
+            </div>
+
+        </div>
+
+    `;
+
+}
 
 /* =====================================================
    FILE UPLOAD
@@ -2621,14 +2040,12 @@ async function uploadStudentFile(id){
 
     }
 
-
     const student =
         students.find(
             s =>
                 String(s.id) ===
                 String(id)
         );
-
 
     if(!student){
 
@@ -2641,20 +2058,13 @@ async function uploadStudentFile(id){
 
     }
 
-
     const input =
-        document.createElement(
-            "input"
-        );
+        document.createElement("input");
 
-
-    input.type =
-        "file";
-
+    input.type = "file";
 
     input.accept =
         ".pdf,.doc,.docx,.xls,.xlsx,.ppt,.pptx,.txt,.jpg,.jpeg,.png";
-
 
     input.onchange =
         async function(){
@@ -2662,13 +2072,11 @@ async function uploadStudentFile(id){
             const file =
                 input.files[0];
 
-
             if(!file){
 
                 return;
 
             }
-
 
             try{
 
@@ -2679,14 +2087,11 @@ async function uploadStudentFile(id){
                     "success"
                 );
 
-
                 const safeName =
-                    file.name
-                        .replace(
-                            /[^a-zA-Z0-9._-]/g,
-                            "_"
-                        );
-
+                    file.name.replace(
+                        /[^a-zA-Z0-9._-]/g,
+                        "_"
+                    );
 
                 const filePath =
                     String(id) +
@@ -2695,19 +2100,12 @@ async function uploadStudentFile(id){
                     "_" +
                     safeName;
 
-
-                /* =====================================
-                   UPLOAD TO SUPABASE STORAGE
-                ===================================== */
-
                 const {
                     error:uploadError
                 } =
                     await supabaseClient
                         .storage
-                        .from(
-                            "student-files"
-                        )
+                        .from("student-files")
                         .upload(
                             filePath,
                             file,
@@ -2716,53 +2114,32 @@ async function uploadStudentFile(id){
                             }
                         );
 
-
                 if(uploadError){
 
                     throw uploadError;
 
                 }
 
-
-                /* =====================================
-                   SAVE FILE INFORMATION
-                ===================================== */
-
                 studentFiles[
                     String(id)
                 ] = {
 
-                    name:
-                        file.name,
+                    name:file.name,
 
-                    type:
-                        file.type,
+                    type:file.type,
 
-                    size:
-                        file.size,
+                    size:file.size,
 
-                    path:
-                        filePath
+                    path:filePath
 
                 };
-
-
-                /* =====================================
-                   FILE IS NOW COMPLETE
-                ===================================== */
 
                 student.file_status =
                     "Complete";
 
-
                 saveStudentFiles();
 
                 saveLocalData();
-
-
-                /* =====================================
-                   UPDATE ONLINE STUDENT STATUS
-                ===================================== */
 
                 if(
                     !String(id).startsWith(
@@ -2774,18 +2151,14 @@ async function uploadStudentFile(id){
                         error
                     } =
                         await supabaseClient
-                            .from(
-                                "students"
-                            )
+                            .from("students")
                             .update({
-                                file_status:
-                                    "Complete"
+                                file_status:"Complete"
                             })
                             .eq(
                                 "id",
                                 id
                             );
-
 
                     if(error){
 
@@ -2798,11 +2171,9 @@ async function uploadStudentFile(id){
 
                 }
 
-
                 renderTable();
 
                 updateDashboard();
-
 
                 showMessage(
                     file.name +
@@ -2810,14 +2181,12 @@ async function uploadStudentFile(id){
                     "success"
                 );
 
-
             }catch(error){
 
                 console.log(
                     "File upload failed:",
                     error
                 );
-
 
                 showMessage(
                     "File upload failed: " +
@@ -2832,92 +2201,12 @@ async function uploadStudentFile(id){
 
         };
 
-
     input.click();
 
 }
 
-
 /* =====================================================
-   FILE DISPLAY
-===================================================== */
-
-function fileUploadButton(student){
-
-    const file =
-        studentFiles[
-            String(student.id)
-        ];
-
-
-    const hasFile =
-        file &&
-        file.path;
-
-
-    const status =
-        hasFile
-        ? "Complete"
-        : "Not Yet Done";
-
-
-    return `
-
-        <div class="file-box">
-
-            <div class="file-info">
-
-                <span
-                    class="badge ${
-                        hasFile
-                        ? "complete"
-                        : "not-uploaded"
-                    }"
-                >
-
-                    ${status}
-
-                </span>
-
-
-                ${
-                    hasFile
-                    ? `
-
-                        <span
-                            class="file-name"
-                            title="${escapeHtml(
-                                file.name
-                            )}"
-                        >
-
-                            ${escapeHtml(
-                                file.name
-                            )}
-
-                        </span>
-
-
-                    
-
-                      `
-                    : ""
-
-                }
-
-            </div>
-
-
-           
-        </div>
-
-    `;
-
-}
-
-
-/* =====================================================
-   VIEW UPLOADED FILE
+   VIEW FILE
 ===================================================== */
 
 async function viewStudentFile(id){
@@ -2926,7 +2215,6 @@ async function viewStudentFile(id){
         studentFiles[
             String(id)
         ];
-
 
     if(
         !file ||
@@ -2942,16 +2230,7 @@ async function viewStudentFile(id){
 
     }
 
-
     try{
-
-        showMessage(
-            "Opening " +
-            file.name +
-            "...",
-            "success"
-        );
-
 
         const {
             data,
@@ -2959,21 +2238,17 @@ async function viewStudentFile(id){
         } =
             await supabaseClient
                 .storage
-                .from(
-                    "student-files"
-                )
+                .from("student-files")
                 .createSignedUrl(
                     file.path,
                     3600
                 );
-
 
         if(error){
 
             throw error;
 
         }
-
 
         if(
             !data ||
@@ -2986,78 +2261,53 @@ async function viewStudentFile(id){
 
         }
 
-
         const modal =
             document.getElementById(
                 "filePreviewModal"
             );
-
 
         const title =
             document.getElementById(
                 "filePreviewTitle"
             );
 
-
         const content =
             document.getElementById(
                 "filePreviewContent"
             );
-
 
         const actions =
             document.getElementById(
                 "filePreviewActions"
             );
 
-
         title.textContent =
             file.name;
-
 
         content.innerHTML =
             "";
 
-
         actions.innerHTML =
             "";
-
-
-        /* =====================================
-           IMAGE
-        ===================================== */
 
         if(
             (
                 file.type ||
                 ""
-            ).startsWith(
-                "image/"
-            )
+            ).startsWith("image/")
         ){
 
             content.innerHTML = `
 
                 <img
                     class="file-preview-image"
-                    src="${escapeAttribute(
-                        data.signedUrl
-                    )}"
-                    alt="${escapeHtml(
-                        file.name
-                    )}"
+                    src="${escapeAttribute(data.signedUrl)}"
+                    alt="${escapeHtml(file.name)}"
                 >
 
             `;
 
-        }
-
-
-        /* =====================================
-           PDF
-        ===================================== */
-
-        else if(
+        }else if(
             file.type ===
             "application/pdf"
         ){
@@ -3066,31 +2316,16 @@ async function viewStudentFile(id){
 
                 <iframe
                     class="file-preview-frame"
-                    src="${escapeAttribute(
-                        data.signedUrl
-                    )}"
-                    title="${escapeHtml(
-                        file.name
-                    )}"
-                >
-                </iframe>
+                    src="${escapeAttribute(data.signedUrl)}"
+                ></iframe>
 
             `;
 
-        }
-
-
-        /* =====================================
-           OTHER FILE TYPES
-        ===================================== */
-
-        else{
+        }else{
 
             content.innerHTML = `
 
-                <div
-                    class="file-preview-message"
-                >
+                <div class="file-preview-message">
 
                     <h3
                         style="margin-bottom:10px;color:#073b72;"
@@ -3099,14 +2334,7 @@ async function viewStudentFile(id){
                     </h3>
 
                     <p>
-                        Preview is not available
-                        for this file type.
-                    </p>
-
-                    <p
-                        style="margin-top:8px;font-size:12px;"
-                    >
-                        Click Open or Download below.
+                        Preview is not available for this file type.
                     </p>
 
                 </div>
@@ -3115,24 +2343,14 @@ async function viewStudentFile(id){
 
         }
 
-
-        /* =====================================
-           OPEN BUTTON
-        ===================================== */
-
         const openButton =
-            document.createElement(
-                "button"
-            );
-
+            document.createElement("button");
 
         openButton.className =
             "primary";
 
-
         openButton.textContent =
             "Open";
-
 
         openButton.onclick =
             function(){
@@ -3144,74 +2362,49 @@ async function viewStudentFile(id){
 
             };
 
-
-        /* =====================================
-           DOWNLOAD BUTTON
-        ===================================== */
-
         const downloadButton =
-            document.createElement(
-                "a"
-            );
-
+            document.createElement("a");
 
         downloadButton.className =
             "secondary";
 
-
         downloadButton.textContent =
             "Download";
-
 
         downloadButton.href =
             data.signedUrl;
 
-
         downloadButton.target =
             "_blank";
-
 
         downloadButton.rel =
             "noopener noreferrer";
 
-
         downloadButton.style.textDecoration =
             "none";
-
 
         downloadButton.style.display =
             "inline-block";
 
-
         downloadButton.style.padding =
             "10px 14px";
 
-
         downloadButton.style.borderRadius =
-            "6px";
-
+            "7px";
 
         actions.appendChild(
             openButton
         );
 
-
         actions.appendChild(
             downloadButton
         );
-
 
         modal.classList.add(
             "show"
         );
 
     }catch(error){
-
-        console.log(
-            "File viewing failed:",
-            error
-        );
-
 
         showMessage(
             "Unable to view file: " +
@@ -3226,48 +2419,32 @@ async function viewStudentFile(id){
 
 }
 
-
 /* =====================================================
    CLOSE FILE PREVIEW
 ===================================================== */
 
 function closeFilePreview(){
 
-    const modal =
-        document.getElementById(
-            "filePreviewModal"
-        );
-
-
-    const content =
-        document.getElementById(
-            "filePreviewContent"
-        );
-
-
-    const actions =
-        document.getElementById(
-            "filePreviewActions"
-        );
-
-
-    modal.classList.remove(
+    document.getElementById(
+        "filePreviewModal"
+    ).classList.remove(
         "show"
     );
 
-
-    content.innerHTML =
+    document.getElementById(
+        "filePreviewContent"
+    ).innerHTML =
         "";
 
-
-    actions.innerHTML =
+    document.getElementById(
+        "filePreviewActions"
+    ).innerHTML =
         "";
 
 }
 
-
 /* =====================================================
-   SAVE PENDING
+   PENDING CHANGES
 ===================================================== */
 
 function savePending(){
@@ -3281,11 +2458,6 @@ function savePending(){
 
 }
 
-
-/* =====================================================
-   ADD PENDING
-===================================================== */
-
 function addPendingChange(change){
 
     pendingChanges.push(
@@ -3296,21 +2468,10 @@ function addPendingChange(change){
 
 }
 
-
-/* =====================================================
-   SYNC PENDING
-===================================================== */
-
 async function syncPendingChanges(){
 
-    if(!navigator.onLine){
-
-        return;
-
-    }
-
-
     if(
+        !navigator.onLine ||
         pendingChanges.length === 0
     ){
 
@@ -3318,9 +2479,7 @@ async function syncPendingChanges(){
 
     }
 
-
     const remaining = [];
-
 
     for(
         const change
@@ -3328,7 +2487,6 @@ async function syncPendingChanges(){
     ){
 
         try{
-
 
             if(
                 change.type ===
@@ -3344,17 +2502,13 @@ async function syncPendingChanges(){
                             change.data
                         ]);
 
-
                 if(error){
 
                     throw error;
 
                 }
 
-            }
-
-
-            else if(
+            }else if(
                 change.type ===
                 "update"
             ){
@@ -3372,7 +2526,6 @@ async function syncPendingChanges(){
                             change.id
                         );
 
-
                 if(error){
 
                     throw error;
@@ -3381,14 +2534,7 @@ async function syncPendingChanges(){
 
             }
 
-
         }catch(error){
-
-            console.log(
-                "Sync failed:",
-                error
-            );
-
 
             remaining.push(
                 change
@@ -3398,18 +2544,15 @@ async function syncPendingChanges(){
 
     }
 
-
     pendingChanges =
         remaining;
-
 
     savePending();
 
 }
 
-
 /* =====================================================
-   GROUP SELECT
+   GROUP
 ===================================================== */
 
 function selectGroup(group){
@@ -3428,11 +2571,6 @@ function selectGroup(group){
 
 }
 
-
-/* =====================================================
-   SHOW ARCHIVED
-===================================================== */
-
 function showArchived(){
 
     showingArchived =
@@ -3446,9 +2584,8 @@ function showArchived(){
 
 }
 
-
 /* =====================================================
-   SIDEBAR BUTTONS
+   SIDEBAR
 ===================================================== */
 
 function updateSidebarButtons(){
@@ -3456,15 +2593,11 @@ function updateSidebarButtons(){
     const buttons = [
 
         "groupBtnAll",
-
         "groupBtnTagaytay",
-
         "groupBtnGeline",
-
         "groupBtnBoracay"
 
     ];
-
 
     buttons.forEach(
         id => {
@@ -3478,7 +2611,6 @@ function updateSidebarButtons(){
         }
     );
 
-
     document
         .getElementById(
             "archiveViewButton"
@@ -3486,7 +2618,6 @@ function updateSidebarButtons(){
         .classList.remove(
             "active"
         );
-
 
     if(showingArchived){
 
@@ -3502,60 +2633,26 @@ function updateSidebarButtons(){
 
     }
 
+    const map = {
 
-    if(
-        selectedGroup ===
-        "ALL"
-    ){
+        "ALL":"groupBtnAll",
 
-        document
-            .getElementById(
-                "groupBtnAll"
-            )
-            .classList.add(
-                "active"
-            );
+        "TAGAYTAY GROUP":
+            "groupBtnTagaytay",
 
-    }
+        "GELINE GROUP":
+            "groupBtnGeline",
 
-    else if(
-        selectedGroup ===
-        "TAGAYTAY GROUP"
-    ){
+        "BORACAY GROUP":
+            "groupBtnBoracay"
+
+    };
+
+    if(map[selectedGroup]){
 
         document
             .getElementById(
-                "groupBtnTagaytay"
-            )
-            .classList.add(
-                "active"
-            );
-
-    }
-
-    else if(
-        selectedGroup ===
-        "GELINE GROUP"
-    ){
-
-        document
-            .getElementById(
-                "groupBtnGeline"
-            )
-            .classList.add(
-                "active"
-            );
-
-    }
-
-    else if(
-        selectedGroup ===
-        "BORACAY GROUP"
-    ){
-
-        document
-            .getElementById(
-                "groupBtnBoracay"
+                map[selectedGroup]
             )
             .classList.add(
                 "active"
@@ -3565,10 +2662,140 @@ function updateSidebarButtons(){
 
 }
 
-
 /* =====================================================
    RENDER TABLE
 ===================================================== */
+
+function getFilteredStudents(){
+
+    const search =
+        document.getElementById(
+            "searchInput"
+        ).value.toLowerCase().trim();
+
+    const program =
+        document.getElementById(
+            "programFilter"
+        ).value;
+
+    const file =
+        document.getElementById(
+            "fileFilter"
+        ).value;
+
+    const thesis =
+        document.getElementById(
+            "thesisFilter"
+        ).value;
+
+    return students.filter(
+        student => {
+
+            if(showingArchived){
+
+                if(!student.archived){
+
+                    return false;
+
+                }
+
+            }else{
+
+                if(student.archived){
+
+                    return false;
+
+                }
+
+            }
+
+            if(
+                !showingArchived &&
+                selectedGroup !== "ALL" &&
+                student.group !== selectedGroup
+            ){
+
+                return false;
+
+            }
+
+            const name =
+                (
+                    student.name ||
+                    ""
+                ).toLowerCase();
+
+            const title =
+                (
+                    student.thesis_title ||
+                    ""
+                ).toLowerCase();
+
+            if(
+                search &&
+                !name.includes(search) &&
+                !title.includes(search)
+            ){
+
+                return false;
+
+            }
+
+            if(
+                program !== "ALL" &&
+                student.program !== program
+            ){
+
+                return false;
+
+            }
+
+            const storedFile =
+                studentFiles[
+                    String(student.id)
+                ];
+
+            const actualFileStatus =
+                storedFile &&
+                storedFile.path
+                ? "Complete"
+                : "Not Yet Done";
+
+            if(
+                file !== "ALL" &&
+                actualFileStatus !== file
+            ){
+
+                return false;
+
+            }
+
+            if(
+                thesis !== "ALL" &&
+                student.thesis_status !== thesis
+            ){
+
+                return false;
+
+            }
+
+            return true;
+
+        }
+    ).sort(
+        (a,b) =>
+            (
+                a.name || ""
+            ).localeCompare(
+                b.name || "",
+                undefined,
+                {
+                    sensitivity:"base"
+                }
+            )
+    );
+
+}
 
 function renderTable(){
 
@@ -3577,182 +2804,25 @@ function renderTable(){
             "studentTableBody"
         );
 
-
-    const search =
-        document.getElementById(
-            "searchInput"
-        )
-        .value
-        .toLowerCase()
-        .trim();
-
-
-    const program =
-        document.getElementById(
-            "programFilter"
-        ).value;
-
-
-    const file =
-        document.getElementById(
-            "fileFilter"
-        ).value;
-
-
-    const thesis =
-        document.getElementById(
-            "thesisFilter"
-        ).value;
-
-
-    let filtered =
-        students.filter(
-            student => {
-
-
-                if(showingArchived){
-
-                    if(
-                        !student.archived
-                    ){
-
-                        return false;
-
-                    }
-
-                }else{
-
-                    if(
-                        student.archived
-                    ){
-
-                        return false;
-
-                    }
-
-                }
-
-
-                if(
-                    !showingArchived &&
-                    selectedGroup !==
-                    "ALL"
-                ){
-
-                    if(
-                        student.group !==
-                        selectedGroup
-                    ){
-
-                        return false;
-
-                    }
-
-                }
-
-
-                const name =
-                    (
-                        student.name ||
-                        ""
-                    )
-                    .toLowerCase();
-
-
-                const title =
-                    (
-                        student.thesis_title ||
-                        ""
-                    )
-                    .toLowerCase();
-
-
-                if(
-                    search &&
-                    !name.includes(
-                        search
-                    ) &&
-                    !title.includes(
-                        search
-                    )
-                ){
-
-                    return false;
-
-                }
-
-
-                if(
-                    program !== "ALL" &&
-                    student.program !==
-                    program
-                ){
-
-                    return false;
-
-                }
-
-
-                const storedFile =
-                    studentFiles[
-                        String(student.id)
-                    ];
-
-
-                const actualFileStatus =
-                    storedFile &&
-                    storedFile.path
-                    ? "Complete"
-                    : "Not Yet Done";
-
-
-                if(
-                    file !== "ALL" &&
-                    actualFileStatus !==
-                    file
-                ){
-
-                    return false;
-
-                }
-
-
-                if(
-                    thesis !== "ALL" &&
-                    student.thesis_status !==
-                    thesis
-                ){
-
-                    return false;
-
-                }
-
-
-                return true;
-
-            }
-        );
-
-
-    filtered.sort(
-        (a,b) =>
-            (
-                a.name || ""
-            )
-            .localeCompare(
-                b.name || "",
-                undefined,
-                {
-                    sensitivity:
-                        "base"
-                }
-            )
-    );
-
+    const filtered =
+        getFilteredStudents();
 
     tbody.innerHTML =
         "";
 
+    document.getElementById(
+        "pageTitle"
+    ).textContent =
+        showingArchived
+        ? "Archived Students"
+        : "Student Records";
+
+    document.getElementById(
+        "tableTitle"
+    ).textContent =
+        showingArchived
+        ? "Archived Student Records"
+        : "Student Records";
 
     if(
         filtered.length === 0
@@ -3764,14 +2834,28 @@ function renderTable(){
 
                 <td
                     colspan="10"
-                    class="empty"
+                    class="empty-state"
                 >
 
-                    ${
-                        showingArchived
-                        ? "No archived students found."
-                        : "No student records found."
-                    }
+                    <div class="empty-icon">
+                        ${showingArchived ? "▣" : "＋"}
+                    </div>
+
+                    <strong>
+                        ${
+                            showingArchived
+                            ? "No archived students found"
+                            : "No student records found"
+                        }
+                    </strong>
+
+                    <span>
+                        ${
+                            showingArchived
+                            ? "Archived records will appear here."
+                            : "Add a student to begin tracking graduate records."
+                        }
+                    </span>
 
                 </td>
 
@@ -3781,20 +2865,15 @@ function renderTable(){
 
     }else{
 
-
         filtered.forEach(
             (student,index) => {
-
 
                 const row =
                     document.createElement(
                         "tr"
                     );
 
-
-                if(
-                    student.archived
-                ){
+                if(student.archived){
 
                     row.classList.add(
                         "archived-row"
@@ -3802,23 +2881,16 @@ function renderTable(){
 
                 }
 
-
                 const checked =
                     selectedIds.has(
-                        String(
-                            student.id
-                        )
+                        String(student.id)
                     )
                     ? "checked"
                     : "";
 
-
                 let actionButton = "";
 
-
-                if(
-                    showingArchived
-                ){
+                if(showingArchived){
 
                     actionButton = `
 
@@ -3827,6 +2899,13 @@ function renderTable(){
                             onclick="restoreStudent('${escapeAttribute(student.id)}')"
                         >
                             Restore
+                        </button>
+
+                        <button
+                            class="danger"
+                            onclick="deleteArchivedStudent('${escapeAttribute(student.id)}')"
+                        >
+                            Delete
                         </button>
 
                     `;
@@ -3853,12 +2932,9 @@ function renderTable(){
 
                 }
 
-
                 row.innerHTML = `
 
-                    <td
-                        class="checkbox-cell"
-                    >
+                    <td class="checkbox-cell">
 
                         <input
                             type="checkbox"
@@ -3870,37 +2946,29 @@ function renderTable(){
 
                     </td>
 
-
                     <td>
                         ${index + 1}
                     </td>
 
-
-                    <td
-                        class="student-name"
-                    >
+                    <td class="student-name">
 
                         ${escapeHtml(
-                            student.name ||
-                            ""
+                            student.name || ""
                         )}
 
                     </td>
-
 
                     <td>
 
                         <span class="group">
 
                             ${escapeHtml(
-                                student.group ||
-                                ""
+                                student.group || ""
                             )}
 
                         </span>
 
                     </td>
-
 
                     <td>
 
@@ -3910,7 +2978,6 @@ function renderTable(){
 
                     </td>
 
-
                     <td>
 
                         ${fileUploadButton(
@@ -3918,7 +2985,6 @@ function renderTable(){
                         )}
 
                     </td>
-
 
                     <td>
 
@@ -3928,7 +2994,6 @@ function renderTable(){
 
                     </td>
 
-
                     <td>
 
                         ${statusBadge(
@@ -3937,24 +3002,17 @@ function renderTable(){
 
                     </td>
 
-
-                    <td
-                        class="thesis-cell"
-                    >
+                    <td class="thesis-cell">
 
                         ${escapeHtml(
-                            student.thesis_title ||
-                            "-"
+                            student.thesis_title || "-"
                         )}
 
                     </td>
 
-
                     <td>
 
-                        <div
-                            class="actions"
-                        >
+                        <div class="actions">
 
                             ${actionButton}
 
@@ -3964,7 +3022,6 @@ function renderTable(){
 
                 `;
 
-
                 tbody.appendChild(
                     row
                 );
@@ -3973,7 +3030,6 @@ function renderTable(){
         );
 
     }
-
 
     document.getElementById(
         "recordCount"
@@ -3985,7 +3041,6 @@ function renderTable(){
             : " records"
         );
 
-
     updateSelectAllState();
 
     updateDashboard();
@@ -3993,7 +3048,6 @@ function renderTable(){
     updateSelectedCount();
 
 }
-
 
 /* =====================================================
    SELECT ALL
@@ -4006,203 +3060,37 @@ function toggleSelectAll(){
             "selectAll"
         );
 
-
-    const search =
-        document.getElementById(
-            "searchInput"
-        )
-        .value
-        .toLowerCase()
-        .trim();
-
-
-    const program =
-        document.getElementById(
-            "programFilter"
-        ).value;
-
-
-    const file =
-        document.getElementById(
-            "fileFilter"
-        ).value;
-
-
-    const thesis =
-        document.getElementById(
-            "thesisFilter"
-        ).value;
-
-
     const visible =
-        students.filter(
-            student => {
-
-
-                if(
-                    showingArchived
-                ){
-
-                    if(
-                        !student.archived
-                    ){
-
-                        return false;
-
-                    }
-
-                }else{
-
-                    if(
-                        student.archived
-                    ){
-
-                        return false;
-
-                    }
-
-                }
-
-
-                if(
-                    !showingArchived &&
-                    selectedGroup !==
-                    "ALL" &&
-                    student.group !==
-                    selectedGroup
-                ){
-
-                    return false;
-
-                }
-
-
-                const name =
-                    (
-                        student.name ||
-                        ""
-                    ).toLowerCase();
-
-
-                const title =
-                    (
-                        student.thesis_title ||
-                        ""
-                    ).toLowerCase();
-
-
-                if(
-                    search &&
-                    !name.includes(
-                        search
-                    ) &&
-                    !title.includes(
-                        search
-                    )
-                ){
-
-                    return false;
-
-                }
-
-
-                if(
-                    program !== "ALL" &&
-                    student.program !==
-                    program
-                ){
-
-                    return false;
-
-                }
-
-
-                const storedFile =
-                    studentFiles[
-                        String(student.id)
-                    ];
-
-
-                const actualFileStatus =
-                    storedFile &&
-                    storedFile.path
-                    ? "Complete"
-                    : "Not Yet Done";
-
-
-                if(
-                    file !== "ALL" &&
-                    actualFileStatus !==
-                    file
-                ){
-
-                    return false;
-
-                }
-
-
-                if(
-                    thesis !== "ALL" &&
-                    student.thesis_status !==
-                    thesis
-                ){
-
-                    return false;
-
-                }
-
-
-                return true;
-
-            }
-        );
-
+        getFilteredStudents();
 
     if(checkbox.checked){
 
         visible.forEach(
-            student => {
-
+            student =>
                 selectedIds.add(
-                    String(
-                        student.id
-                    )
-                );
-
-            }
+                    String(student.id)
+                )
         );
 
     }else{
 
         visible.forEach(
-            student => {
-
+            student =>
                 selectedIds.delete(
-                    String(
-                        student.id
-                    )
-                );
-
-            }
+                    String(student.id)
+                )
         );
 
     }
-
 
     renderTable();
 
 }
 
-
-/* =====================================================
-   INDIVIDUAL SELECTION
-===================================================== */
-
 function toggleStudentSelection(id){
 
     id =
         String(id);
-
 
     if(
         selectedIds.has(id)
@@ -4216,17 +3104,11 @@ function toggleStudentSelection(id){
 
     }
 
-
     updateSelectAllState();
 
     updateSelectedCount();
 
 }
-
-
-/* =====================================================
-   SELECT ALL STATE
-===================================================== */
 
 function updateSelectAllState(){
 
@@ -4235,25 +3117,21 @@ function updateSelectAllState(){
             "selectAll"
         );
 
-
     if(!checkbox){
 
         return;
 
     }
 
-
-    const visibleCheckboxes =
-        document.querySelectorAll(
-            ".student-checkbox"
-        );
-
+    const visible =
+        getFilteredStudents();
 
     if(
-        visibleCheckboxes.length === 0
+        visible.length === 0
     ){
 
-        checkbox.checked = false;
+        checkbox.checked =
+            false;
 
         checkbox.indeterminate =
             false;
@@ -4262,39 +3140,27 @@ function updateSelectAllState(){
 
     }
 
-
     const checked =
-        Array.from(
-            visibleCheckboxes
-        )
-        .filter(
-            cb => cb.checked
-        )
-        .length;
-
+        visible.filter(
+            student =>
+                selectedIds.has(
+                    String(student.id)
+                )
+        ).length;
 
     checkbox.checked =
-        checked ===
-        visibleCheckboxes.length;
-
+        checked === visible.length;
 
     checkbox.indeterminate =
         checked > 0 &&
-        checked <
-        visibleCheckboxes.length;
+        checked < visible.length;
 
 }
-
-
-/* =====================================================
-   SELECTED COUNT
-===================================================== */
 
 function updateSelectedCount(){
 
     const count =
         selectedIds.size;
-
 
     document.getElementById(
         "selectedCount"
@@ -4302,12 +3168,10 @@ function updateSelectedCount(){
         count +
         " selected";
 
-
     const button =
         document.getElementById(
             "archiveSelectedButton"
         );
-
 
     if(
         count > 0 &&
@@ -4328,7 +3192,6 @@ function updateSelectedCount(){
 
 }
 
-
 /* =====================================================
    ARCHIVE SELECTED
 ===================================================== */
@@ -4340,7 +3203,6 @@ async function archiveSelected(){
             selectedIds
         );
 
-
     if(
         ids.length === 0
     ){
@@ -4348,23 +3210,6 @@ async function archiveSelected(){
         return;
 
     }
-
-
-    const names =
-        students
-            .filter(
-                student =>
-                    ids.includes(
-                        String(
-                            student.id
-                        )
-                    )
-            )
-            .map(
-                student =>
-                    student.name
-            );
-
 
     if(
         !confirm(
@@ -4384,7 +3229,6 @@ async function archiveSelected(){
 
     }
 
-
     for(
         const id of ids
     ){
@@ -4396,16 +3240,17 @@ async function archiveSelected(){
 
     }
 
-
     selectedIds.clear();
 
     renderTable();
 
+    updateSidebarCounts();
+
     showMessage(
-        names.length +
+        ids.length +
         " student" +
         (
-            names.length === 1
+            ids.length === 1
             ? ""
             : "s"
         ) +
@@ -4415,9 +3260,8 @@ async function archiveSelected(){
 
 }
 
-
 /* =====================================================
-   ARCHIVE ONE STUDENT
+   ARCHIVE
 ===================================================== */
 
 async function archiveStudent(
@@ -4432,13 +3276,11 @@ async function archiveStudent(
                 String(id)
         );
 
-
     if(!student){
 
         return;
 
     }
-
 
     if(!bulk){
 
@@ -4456,7 +3298,6 @@ async function archiveStudent(
 
     }
 
-
     const index =
         students.findIndex(
             s =>
@@ -4464,13 +3305,11 @@ async function archiveStudent(
                 String(id)
         );
 
-
     if(index === -1){
 
         return;
 
     }
-
 
     students[index] = {
 
@@ -4480,13 +3319,11 @@ async function archiveStudent(
 
     };
 
-
     saveLocalData();
 
     selectedIds.delete(
         String(id)
     );
-
 
     if(
         String(id).startsWith(
@@ -4494,21 +3331,13 @@ async function archiveStudent(
         )
     ){
 
-        if(!bulk){
-
-            showMessage(
-                "Student archived.",
-                "success"
-            );
-
-        }
-
         renderTable();
+
+        updateSidebarCounts();
 
         return;
 
     }
-
 
     if(navigator.onLine){
 
@@ -4527,31 +3356,13 @@ async function archiveStudent(
                         id
                     );
 
-
             if(error){
 
                 throw error;
 
             }
 
-
-            if(!bulk){
-
-                showMessage(
-                    "Student archived successfully.",
-                    "success"
-                );
-
-            }
-
-
         }catch(error){
-
-            console.log(
-                "Archive failed:",
-                error
-            );
-
 
             addPendingChange({
 
@@ -4564,16 +3375,6 @@ async function archiveStudent(
                 }
 
             });
-
-
-            if(!bulk){
-
-                showMessage(
-                    "Archived locally. It will sync when internet returns.",
-                    "success"
-                );
-
-            }
 
         }
 
@@ -4591,26 +3392,13 @@ async function archiveStudent(
 
         });
 
-
-        if(!bulk){
-
-            showMessage(
-                "Archived offline. It will sync when internet returns.",
-                "success"
-            );
-
-        }
-
     }
-
 
     renderTable();
 
     updateSidebarCounts();
 
-
 }
-
 
 /* =====================================================
    RESTORE
@@ -4625,13 +3413,11 @@ async function restoreStudent(id){
                 String(id)
         );
 
-
     if(!student){
 
         return;
 
     }
-
 
     if(
         !confirm(
@@ -4645,14 +3431,12 @@ async function restoreStudent(id){
 
     }
 
-
     const index =
         students.findIndex(
             s =>
                 String(s.id) ===
                 String(id)
         );
-
 
     if(index !== -1){
 
@@ -4666,9 +3450,7 @@ async function restoreStudent(id){
 
     }
 
-
     saveLocalData();
-
 
     if(
         String(id).startsWith(
@@ -4676,19 +3458,18 @@ async function restoreStudent(id){
         )
     ){
 
+        renderTable();
+
+        updateSidebarCounts();
+
         showMessage(
             "Student restored.",
             "success"
         );
 
-        renderTable();
-
-        updateSidebarCounts();
-
         return;
 
     }
-
 
     if(navigator.onLine){
 
@@ -4707,19 +3488,16 @@ async function restoreStudent(id){
                         id
                     );
 
-
             if(error){
 
                 throw error;
 
             }
 
-
             showMessage(
                 "Student restored successfully.",
                 "success"
             );
-
 
         }catch(error){
 
@@ -4734,7 +3512,6 @@ async function restoreStudent(id){
                 }
 
             });
-
 
             showMessage(
                 "Restored locally. It will sync when internet returns.",
@@ -4757,7 +3534,6 @@ async function restoreStudent(id){
 
         });
 
-
         showMessage(
             "Restored offline. It will sync when internet returns.",
             "success"
@@ -4765,13 +3541,227 @@ async function restoreStudent(id){
 
     }
 
-
     renderTable();
 
     updateSidebarCounts();
 
 }
 
+/* =====================================================
+   DELETE ARCHIVED STUDENT
+===================================================== */
+
+function deleteArchivedStudent(id){
+
+    const student =
+        students.find(
+            s =>
+                String(s.id) ===
+                String(id)
+        );
+
+    if(!student){
+
+        showMessage(
+            "Student record not found.",
+            "error"
+        );
+
+        return;
+
+    }
+
+    if(!student.archived){
+
+        showMessage(
+            "Only archived students can be deleted.",
+            "error"
+        );
+
+        return;
+
+    }
+
+    deleteStudentId =
+        String(id);
+
+    document.getElementById(
+        "deleteMessage"
+    ).textContent =
+        "Permanently delete " +
+        student.name +
+        "? This action cannot be undone.";
+
+    document.getElementById(
+        "deleteModal"
+    ).classList.add(
+        "show"
+    );
+
+}
+
+/* =====================================================
+   CONFIRM DELETE
+===================================================== */
+
+async function confirmDeleteArchived(){
+
+    if(!deleteStudentId){
+
+        return;
+
+    }
+
+    const id =
+        deleteStudentId;
+
+    const student =
+        students.find(
+            s =>
+                String(s.id) ===
+                String(id)
+        );
+
+    if(!student){
+
+        closeDeleteModal();
+
+        return;
+
+    }
+
+    if(!student.archived){
+
+        closeDeleteModal();
+
+        showMessage(
+            "Only archived students can be deleted.",
+            "error"
+        );
+
+        return;
+
+    }
+
+    /* Remove locally */
+
+    students =
+        students.filter(
+            s =>
+                String(s.id) !==
+                String(id)
+        );
+
+    delete studentFiles[id];
+
+    saveLocalData();
+
+    saveStudentFiles();
+
+    closeDeleteModal();
+
+    /* Offline record */
+
+    if(
+        String(id).startsWith(
+            "offline-"
+        )
+    ){
+
+        renderTable();
+
+        updateSidebarCounts();
+
+        updateDashboard();
+
+        showMessage(
+            "Archived student deleted.",
+            "success"
+        );
+
+        return;
+
+    }
+
+    /* Delete from Supabase */
+
+    if(!navigator.onLine){
+
+        showMessage(
+            "You must be online to permanently delete an archived student.",
+            "error"
+        );
+
+        await loadData();
+
+        return;
+
+    }
+
+    try{
+
+        const {
+            error
+        } =
+            await supabaseClient
+                .from("students")
+                .delete()
+                .eq(
+                    "id",
+                    id
+                );
+
+        if(error){
+
+            throw error;
+
+        }
+
+        renderTable();
+
+        updateSidebarCounts();
+
+        updateDashboard();
+
+        showMessage(
+            "Archived student deleted permanently.",
+            "success"
+        );
+
+    }catch(error){
+
+        console.log(
+            "Delete failed:",
+            error
+        );
+
+        showMessage(
+            "Could not delete the student from the database: " +
+            (
+                error.message ||
+                "Unknown error"
+            ),
+            "error"
+        );
+
+        await loadOnlineData();
+
+    }
+
+}
+
+function closeDeleteModal(){
+
+    deleteStudentId =
+        null;
+
+    document.getElementById(
+        "deleteModal"
+    ).classList.remove(
+        "show"
+    );
+
+}
 
 /* =====================================================
    PROGRAM BADGE
@@ -4781,43 +3771,21 @@ function programBadge(program){
 
     let cls = "";
 
-
     if(program === "PhD"){
-
         cls = "phd";
-
-    }
-
-    else if(program === "MAEd"){
-
+    }else if(program === "MAEd"){
         cls = "maed";
-
-    }
-
-    else if(program === "MBA"){
-
+    }else if(program === "MBA"){
         cls = "mba";
-
-    }
-
-    else if(program === "MPA"){
-
+    }else if(program === "MPA"){
         cls = "mpa";
-
-    }
-
-    else if(program === "MSCJ"){
-
+    }else if(program === "MSCJ"){
         cls = "mscj";
-
     }
-
 
     return `
 
-        <span
-            class="badge ${cls}"
-        >
+        <span class="badge ${cls}">
 
             ${escapeHtml(
                 program || ""
@@ -4829,7 +3797,6 @@ function programBadge(program){
 
 }
 
-
 /* =====================================================
    STATUS BADGE
 ===================================================== */
@@ -4839,18 +3806,12 @@ function statusBadge(status){
     let cls =
         "pending";
 
-
-    if(
-        status ===
-        "Complete"
-    ){
+    if(status === "Complete"){
 
         cls =
             "complete";
 
-    }
-
-    else if(
+    }else if(
         status ===
         "In Progress"
     ){
@@ -4860,12 +3821,9 @@ function statusBadge(status){
 
     }
 
-
     return `
 
-        <span
-            class="badge ${cls}"
-        >
+        <span class="badge ${cls}">
 
             ${escapeHtml(
                 status ||
@@ -4878,7 +3836,6 @@ function statusBadge(status){
 
 }
 
-
 /* =====================================================
    DASHBOARD
 ===================================================== */
@@ -4890,7 +3847,6 @@ function updateDashboard(){
             student =>
                 !student.archived
         );
-
 
     if(
         selectedGroup !==
@@ -4906,12 +3862,10 @@ function updateDashboard(){
 
     }
 
-
     document.getElementById(
         "totalCount"
     ).textContent =
         data.length;
-
 
     document.getElementById(
         "filesComplete"
@@ -4926,7 +3880,6 @@ function updateDashboard(){
                 ].path
         ).length;
 
-
     document.getElementById(
         "thesisComplete"
     ).textContent =
@@ -4935,7 +3888,6 @@ function updateDashboard(){
                 s.thesis_status ===
                 "Complete"
         ).length;
-
 
     document.getElementById(
         "overallComplete"
@@ -4947,7 +3899,6 @@ function updateDashboard(){
         ).length;
 
 }
-
 
 /* =====================================================
    SIDEBAR COUNTS
@@ -4961,12 +3912,10 @@ function updateSidebarCounts(){
                 !s.archived
         );
 
-
     document.getElementById(
         "countAll"
     ).textContent =
         active.length;
-
 
     document.getElementById(
         "countTagaytay"
@@ -4977,7 +3926,6 @@ function updateSidebarCounts(){
                 "TAGAYTAY GROUP"
         ).length;
 
-
     document.getElementById(
         "countGeline"
     ).textContent =
@@ -4986,7 +3934,6 @@ function updateSidebarCounts(){
                 s.group ===
                 "GELINE GROUP"
         ).length;
-
 
     document.getElementById(
         "countBoracay"
@@ -4997,7 +3944,6 @@ function updateSidebarCounts(){
                 "BORACAY GROUP"
         ).length;
 
-
     document.getElementById(
         "archiveCount"
     ).textContent =
@@ -5007,7 +3953,6 @@ function updateSidebarCounts(){
         ).length;
 
 }
-
 
 /* =====================================================
    ADD MODAL
@@ -5020,18 +3965,15 @@ function openAddModal(){
     ).textContent =
         "Add Student";
 
-
     document.getElementById(
         "studentId"
     ).value =
         "";
 
-
     document.getElementById(
         "studentName"
     ).value =
         "";
-
 
     document.getElementById(
         "studentGroup"
@@ -5040,30 +3982,25 @@ function openAddModal(){
         ? selectedGroup
         : "TAGAYTAY GROUP";
 
-
     document.getElementById(
         "studentProgram"
     ).value =
         "MAEd";
-
 
     document.getElementById(
         "studentThesisStatus"
     ).value =
         "Pending";
 
-
     document.getElementById(
         "studentOverallStatus"
     ).value =
         "Pending";
 
-
     document.getElementById(
         "studentThesisTitle"
     ).value =
         "";
-
 
     document.getElementById(
         "studentModal"
@@ -5072,7 +4009,6 @@ function openAddModal(){
     );
 
 }
-
 
 /* =====================================================
    EDIT
@@ -5087,31 +4023,26 @@ function editStudent(id){
                 String(id)
         );
 
-
     if(!student){
 
         return;
 
     }
 
-
     document.getElementById(
         "modalTitle"
     ).textContent =
         "Edit Student";
-
 
     document.getElementById(
         "studentId"
     ).value =
         student.id;
 
-
     document.getElementById(
         "studentName"
     ).value =
         student.name || "";
-
 
     document.getElementById(
         "studentGroup"
@@ -5119,13 +4050,11 @@ function editStudent(id){
         student.group ||
         "TAGAYTAY GROUP";
 
-
     document.getElementById(
         "studentProgram"
     ).value =
         student.program ||
         "MAEd";
-
 
     document.getElementById(
         "studentThesisStatus"
@@ -5133,20 +4062,17 @@ function editStudent(id){
         student.thesis_status ||
         "Pending";
 
-
     document.getElementById(
         "studentOverallStatus"
     ).value =
         student.overall_status ||
         "Pending";
 
-
     document.getElementById(
         "studentThesisTitle"
     ).value =
         student.thesis_title ||
         "";
-
 
     document.getElementById(
         "studentModal"
@@ -5155,7 +4081,6 @@ function editStudent(id){
     );
 
 }
-
 
 /* =====================================================
    SAVE STUDENT
@@ -5168,13 +4093,11 @@ async function saveStudent(){
             "studentId"
         ).value;
 
-
     const name =
         document.getElementById(
             "studentName"
         ).value
         .trim();
-
 
     if(!name){
 
@@ -5186,7 +4109,6 @@ async function saveStudent(){
         return;
 
     }
-
 
     const data = {
 
@@ -5220,11 +4142,6 @@ async function saveStudent(){
 
     };
 
-
-    /* =================================================
-       FILE STATUS IS AUTOMATIC
-    ================================================= */
-
     data.file_status =
         (
             id &&
@@ -5237,7 +4154,6 @@ async function saveStudent(){
         )
         ? "Complete"
         : "Not Yet Done";
-
 
     /* =================================================
        UPDATE
@@ -5252,7 +4168,6 @@ async function saveStudent(){
                     String(id)
             );
 
-
         if(index !== -1){
 
             students[index] = {
@@ -5265,7 +4180,6 @@ async function saveStudent(){
 
         }
 
-
         saveLocalData();
 
         renderTable();
@@ -5273,7 +4187,6 @@ async function saveStudent(){
         updateSidebarCounts();
 
         closeModal();
-
 
         if(
             String(id).startsWith(
@@ -5290,7 +4203,6 @@ async function saveStudent(){
 
         }
 
-
         if(navigator.onLine){
 
             try{
@@ -5306,19 +4218,16 @@ async function saveStudent(){
                             id
                         );
 
-
                 if(error){
 
                     throw error;
 
                 }
 
-
                 showMessage(
                     "Student updated successfully.",
                     "success"
                 );
-
 
             }catch(error){
 
@@ -5331,7 +4240,6 @@ async function saveStudent(){
                     data:data
 
                 });
-
 
                 showMessage(
                     "Saved locally. It will sync when internet returns.",
@@ -5352,7 +4260,6 @@ async function saveStudent(){
 
             });
 
-
             showMessage(
                 "Saved offline. It will sync when internet returns.",
                 "success"
@@ -5360,11 +4267,9 @@ async function saveStudent(){
 
         }
 
-
         return;
 
     }
-
 
     /* =================================================
        INSERT
@@ -5378,11 +4283,9 @@ async function saveStudent(){
             .toString(36)
             .substring(2,8);
 
-
     const newStudent = {
 
-        id:
-            temporaryId,
+        id:temporaryId,
 
         archived:false,
 
@@ -5390,11 +4293,9 @@ async function saveStudent(){
 
     };
 
-
     students.push(
         newStudent
     );
-
 
     saveLocalData();
 
@@ -5403,7 +4304,6 @@ async function saveStudent(){
     updateSidebarCounts();
 
     closeModal();
-
 
     if(navigator.onLine){
 
@@ -5421,13 +4321,11 @@ async function saveStudent(){
                     .select()
                     .single();
 
-
             if(error){
 
                 throw error;
 
             }
-
 
             const index =
                 students.findIndex(
@@ -5436,7 +4334,6 @@ async function saveStudent(){
                         temporaryId
                 );
 
-
             if(index !== -1){
 
                 students[index] =
@@ -5444,19 +4341,16 @@ async function saveStudent(){
 
             }
 
-
             saveLocalData();
 
             renderTable();
 
             updateSidebarCounts();
 
-
             showMessage(
                 "Student added successfully.",
                 "success"
             );
-
 
         }catch(error){
 
@@ -5467,7 +4361,6 @@ async function saveStudent(){
                 data:data
 
             });
-
 
             showMessage(
                 "Saved offline. It will sync when internet returns.",
@@ -5486,7 +4379,6 @@ async function saveStudent(){
 
         });
 
-
         showMessage(
             "Saved offline. It will sync when internet returns.",
             "success"
@@ -5496,9 +4388,8 @@ async function saveStudent(){
 
 }
 
-
 /* =====================================================
-   CLOSE MODAL
+   CLOSE STUDENT MODAL
 ===================================================== */
 
 function closeModal(){
@@ -5510,7 +4401,6 @@ function closeModal(){
     );
 
 }
-
 
 /* =====================================================
    MESSAGE
@@ -5526,10 +4416,8 @@ function showMessage(
             "message"
         );
 
-
     box.textContent =
         message;
-
 
     box.className =
         "message show " +
@@ -5538,7 +4426,6 @@ function showMessage(
             ? "error"
             : "success-message"
         );
-
 
     setTimeout(
         function(){
@@ -5553,7 +4440,6 @@ function showMessage(
 
 }
 
-
 /* =====================================================
    ESCAPE HTML
 ===================================================== */
@@ -5561,29 +4447,13 @@ function showMessage(
 function escapeHtml(value){
 
     return String(value)
-        .replace(
-            /&/g,
-            "&amp;"
-        )
-        .replace(
-            /</g,
-            "&lt;"
-        )
-        .replace(
-            />/g,
-            "&gt;"
-        )
-        .replace(
-            /"/g,
-            "&quot;"
-        )
-        .replace(
-            /'/g,
-            "&#039;"
-        );
+        .replace(/&/g,"&amp;")
+        .replace(/</g,"&lt;")
+        .replace(/>/g,"&gt;")
+        .replace(/"/g,"&quot;")
+        .replace(/'/g,"&#039;");
 
 }
-
 
 /* =====================================================
    ESCAPE ATTRIBUTE
@@ -5592,37 +4462,24 @@ function escapeHtml(value){
 function escapeAttribute(value){
 
     return String(value)
-        .replace(
-            /\\/g,
-            "\\\\"
-        )
-        .replace(
-            /'/g,
-            "\\'"
-        )
-        .replace(
-            /"/g,
-            "&quot;"
-        );
+        .replace(/\\/g,"\\\\")
+        .replace(/'/g,"\\'")
+        .replace(/"/g,"&quot;");
 
 }
 
-
 /* =====================================================
-   CLOSE STUDENT MODAL OUTSIDE
+   MODAL OUTSIDE CLICK
 ===================================================== */
 
 document
-    .getElementById(
-        "studentModal"
-    )
+    .getElementById("studentModal")
     .addEventListener(
         "click",
         function(event){
 
             if(
-                event.target ===
-                this
+                event.target === this
             ){
 
                 closeModal();
@@ -5632,22 +4489,31 @@ document
         }
     );
 
-
-/* =====================================================
-   CLOSE FILE PREVIEW OUTSIDE
-===================================================== */
-
 document
-    .getElementById(
-        "filePreviewModal"
-    )
+    .getElementById("deleteModal")
     .addEventListener(
         "click",
         function(event){
 
             if(
-                event.target ===
-                this
+                event.target === this
+            ){
+
+                closeDeleteModal();
+
+            }
+
+        }
+    );
+
+document
+    .getElementById("filePreviewModal")
+    .addEventListener(
+        "click",
+        function(event){
+
+            if(
+                event.target === this
             ){
 
                 closeFilePreview();
@@ -5656,7 +4522,6 @@ document
 
         }
     );
-
 
 /* =====================================================
    SERVICE WORKER
