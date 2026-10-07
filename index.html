@@ -54,51 +54,50 @@ button{
 ========================= */
 
 .login-screen{
+    width:100%;
     min-height:100vh;
     display:flex;
-    justify-content:center;
     align-items:center;
-    background:linear-gradient(
-        135deg,
-        #073b72,
-        #0d6efd
-    );
+    justify-content:center;
+    background:linear-gradient(135deg,#073b72,#0b5ba7);
     padding:20px;
 }
 
-.login-card{
+.login-box{
     width:100%;
     max-width:420px;
     background:#fff;
     border-radius:16px;
     padding:40px;
-    box-shadow:0 20px 50px rgba(0,0,0,.2);
+    box-shadow:0 20px 60px rgba(0,0,0,.2);
 }
 
 .login-logo{
-    width:80px;
-    height:80px;
-    margin:0 auto 20px;
+    width:75px;
+    height:75px;
     border-radius:50%;
     background:#073b72;
     color:#fff;
     display:flex;
     align-items:center;
     justify-content:center;
-    font-size:28px;
+    margin:0 auto 20px;
+    font-size:30px;
     font-weight:bold;
 }
 
-.login-title{
+.login-box h1{
     text-align:center;
-    color:#073b72;
-    margin-bottom:6px;
+    color:var(--primary);
+    margin-bottom:8px;
+    font-size:24px;
 }
 
-.login-subtitle{
+.login-box p{
     text-align:center;
-    color:#6b7280;
+    color:var(--muted);
     margin-bottom:30px;
+    font-size:14px;
 }
 
 .form-group{
@@ -107,48 +106,49 @@ button{
 
 .form-group label{
     display:block;
-    margin-bottom:7px;
     font-weight:bold;
     font-size:14px;
+    margin-bottom:7px;
 }
 
 .form-group input{
     width:100%;
-    padding:12px 14px;
+    padding:13px 14px;
     border:1px solid var(--border);
     border-radius:8px;
     outline:none;
+    font-size:14px;
 }
 
 .form-group input:focus{
     border-color:var(--primary);
 }
 
-.password-wrap{
+.password-wrapper{
     position:relative;
 }
 
-.password-wrap input{
+.password-wrapper input{
     padding-right:45px;
 }
 
-.show-password{
+.password-toggle{
     position:absolute;
-    right:10px;
+    right:12px;
     top:50%;
     transform:translateY(-50%);
     border:0;
-    background:none;
-    color:#6b7280;
+    background:transparent;
+    font-size:18px;
 }
 
 .login-button{
     width:100%;
-    border:0;
-    background:var(--primary);
-    color:#fff;
     padding:13px;
+    border:0;
     border-radius:8px;
+    background:var(--primary);
+    color:white;
     font-weight:bold;
     font-size:15px;
 }
@@ -159,50 +159,57 @@ button{
 
 .login-error{
     color:var(--danger);
-    font-size:13px;
     text-align:center;
-    margin-top:12px;
+    font-size:13px;
+    margin-top:15px;
+    display:none;
 }
 
 /* =========================
    APP
 ========================= */
 
-.app{
+#app{
     display:none;
     min-height:100vh;
 }
 
 .header{
     background:var(--primary);
-    color:#fff;
-    padding:18px 28px;
+    color:white;
+    padding:18px 25px;
     display:flex;
     justify-content:space-between;
     align-items:center;
     gap:20px;
 }
 
-.header-title{
+.header-left h1{
     font-size:22px;
-    font-weight:bold;
+    margin-bottom:4px;
+}
+
+.header-left p{
+    font-size:13px;
+    opacity:.85;
 }
 
 .logout-button{
-    border:1px solid rgba(255,255,255,.5);
-    background:transparent;
-    color:#fff;
+    background:#fff;
+    color:var(--primary);
+    border:0;
     padding:9px 16px;
     border-radius:7px;
+    font-weight:bold;
 }
 
 .logout-button:hover{
-    background:rgba(255,255,255,.12);
+    background:#f1f1f1;
 }
 
 .container{
     width:100%;
-    max-width:1500px;
+    max-width:1600px;
     margin:auto;
     padding:25px;
 }
@@ -220,54 +227,55 @@ button{
 
 .dashboard-card{
     background:#fff;
-    border:1px solid var(--border);
     border-radius:12px;
     padding:20px;
+    border:1px solid var(--border);
+    box-shadow:0 2px 8px rgba(0,0,0,.04);
 }
 
-.dashboard-label{
-    color:var(--muted);
+.dashboard-card .label{
     font-size:13px;
+    color:var(--muted);
     margin-bottom:8px;
 }
 
-.dashboard-value{
+.dashboard-card .value{
     font-size:30px;
     font-weight:bold;
     color:var(--primary);
 }
 
 /* =========================
-   GROUP NAVIGATION
+   GROUP BUTTONS
 ========================= */
 
 .group-navigation{
     background:#fff;
     border:1px solid var(--border);
     border-radius:12px;
-    padding:12px;
+    padding:15px;
+    margin-bottom:20px;
     display:flex;
+    gap:10px;
     flex-wrap:wrap;
-    gap:8px;
-    margin-bottom:18px;
 }
 
 .group-button{
     border:1px solid var(--border);
     background:#fff;
-    color:#374151;
-    padding:10px 18px;
-    border-radius:7px;
+    color:var(--text);
+    padding:11px 18px;
+    border-radius:8px;
     font-weight:bold;
 }
 
 .group-button:hover{
-    background:#f3f4f6;
+    background:#f2f5f8;
 }
 
 .group-button.active{
     background:var(--primary);
-    color:#fff;
+    color:white;
     border-color:var(--primary);
 }
 
@@ -280,110 +288,121 @@ button{
     border:1px solid var(--border);
     border-radius:12px;
     padding:18px;
+    margin-bottom:20px;
+}
+
+.filters-title{
+    font-size:16px;
+    font-weight:bold;
+    margin-bottom:15px;
+    color:var(--primary);
+}
+
+.filter-grid{
     display:grid;
     grid-template-columns:2fr 1fr 1fr 1fr;
     gap:12px;
-    margin-bottom:18px;
 }
 
-.filter-input,
-.filter-select{
+.filter-control{
     width:100%;
     padding:11px 12px;
     border:1px solid var(--border);
     border-radius:7px;
-    background:#fff;
     outline:none;
+    background:white;
 }
 
-.filter-input:focus,
-.filter-select:focus{
+.filter-control:focus{
     border-color:var(--primary);
 }
 
 /* =========================
-   ACTION BAR
+   ACTIONS
 ========================= */
 
 .action-bar{
     display:flex;
+    justify-content:space-between;
+    align-items:center;
+    gap:12px;
+    margin-bottom:15px;
     flex-wrap:wrap;
-    gap:9px;
-    margin-bottom:18px;
+}
+
+.action-left,
+.action-right{
+    display:flex;
+    gap:8px;
+    flex-wrap:wrap;
 }
 
 .action-button{
     border:0;
     border-radius:7px;
-    padding:10px 15px;
+    padding:10px 14px;
     font-weight:bold;
 }
 
 .add-button{
     background:var(--primary);
-    color:#fff;
-}
-
-.select-button{
-    background:#6c757d;
-    color:#fff;
+    color:white;
 }
 
 .archive-button{
     background:var(--danger);
-    color:#fff;
+    color:white;
 }
 
 .restore-button{
     background:var(--success);
-    color:#fff;
+    color:white;
 }
 
-.action-button:hover{
-    opacity:.9;
+.select-button{
+    background:#6c757d;
+    color:white;
 }
 
 /* =========================
    TABLE
 ========================= */
 
-.table-container{
-    background:#fff;
-    border:1px solid var(--border);
+.table-wrapper{
+    width:100%;
+    overflow-x:auto;
+    background:white;
     border-radius:12px;
-    overflow:auto;
+    border:1px solid var(--border);
 }
 
 table{
     width:100%;
+    min-width:1200px;
     border-collapse:collapse;
-    min-width:1100px;
 }
 
 thead{
-    background:#f1f5f9;
-}
-
-th,
-td{
-    padding:13px 12px;
-    border-bottom:1px solid var(--border);
-    text-align:left;
-    vertical-align:middle;
+    background:var(--primary);
+    color:white;
 }
 
 th{
-    color:#374151;
+    padding:13px 12px;
+    text-align:left;
     font-size:13px;
     white-space:nowrap;
 }
 
 td{
-    font-size:14px;
+    padding:12px;
+    border-top:1px solid var(--border);
+    font-size:13px;
+    vertical-align:middle;
 }
 
 tbody tr:hover{
-    background:#fafafa;
+    background:#f8fafc;
 }
 
 .checkbox-cell{
@@ -393,18 +412,13 @@ tbody tr:hover{
 
 .student-name{
     font-weight:bold;
+    color:var(--primary);
 }
 
 .thesis-title{
-    max-width:300px;
+    max-width:280px;
     white-space:normal;
     line-height:1.4;
-}
-
-.empty-state{
-    text-align:center;
-    padding:50px 20px;
-    color:var(--muted);
 }
 
 /* =========================
@@ -415,20 +429,32 @@ tbody tr:hover{
     display:inline-block;
     padding:5px 9px;
     border-radius:20px;
-    font-size:12px;
+    font-size:11px;
     font-weight:bold;
     white-space:nowrap;
 }
 
 .complete{
     background:#d1e7dd;
-    color:#146c43;
+    color:#0f5132;
 }
 
 .pending{
     background:#f8d7da;
-    color:#b02a37;
+    color:#842029;
 }
+
+.progress{
+    background:#fff3cd;
+    color:#664d03;
+}
+
+.not-uploaded{
+    background:#e9ecef;
+    color:#495057;
+}
+
+/* PROGRAM COLORS */
 
 .program-phd{
     background:#1976d2;
@@ -437,7 +463,7 @@ tbody tr:hover{
 
 .program-maed{
     background:#8ecae6;
-    color:#123;
+    color:#073b72;
 }
 
 .program-mba{
@@ -452,7 +478,7 @@ tbody tr:hover{
 
 .program-mscj{
     background:#f5a6a6;
-    color:#4a1111;
+    color:#5c0000;
 }
 
 /* =========================
@@ -460,9 +486,7 @@ tbody tr:hover{
 ========================= */
 
 .file-box{
-    display:flex;
-    align-items:center;
-    min-width:180px;
+    min-width:190px;
 }
 
 .file-info{
@@ -473,65 +497,60 @@ tbody tr:hover{
 }
 
 .file-name{
-    max-width:150px;
+    max-width:180px;
     overflow:hidden;
     text-overflow:ellipsis;
     white-space:nowrap;
-    font-size:12px;
-    color:#374151;
+    font-size:11px;
+    color:#555;
 }
 
 .file-view-button{
-    border:1px solid var(--primary);
-    background:#fff;
-    color:var(--primary);
-    padding:4px 9px;
+    border:0;
+    background:var(--info);
+    color:white;
+    padding:5px 9px;
     border-radius:5px;
-    font-size:12px;
+    font-size:11px;
     font-weight:bold;
 }
 
 .file-view-button:hover{
-    background:var(--primary);
-    color:#fff;
+    opacity:.9;
 }
 
 /* =========================
-   ACTIONS
+   TABLE BUTTONS
 ========================= */
 
-.row-actions{
-    display:flex;
-    gap:6px;
-    flex-wrap:wrap;
-}
-
-.row-button{
-    border:0;
-    border-radius:5px;
-    padding:6px 9px;
-    font-size:12px;
-    font-weight:bold;
-}
-
 .edit-button{
-    background:#0d6efd;
-    color:#fff;
+    background:#ffc107;
+    color:#212529;
+    border:0;
+    padding:6px 10px;
+    border-radius:5px;
+    font-size:11px;
+    font-weight:bold;
 }
 
 .archive-row-button{
     background:#dc3545;
-    color:#fff;
+    color:white;
+    border:0;
+    padding:6px 10px;
+    border-radius:5px;
+    font-size:11px;
+    font-weight:bold;
 }
 
 .restore-row-button{
     background:#198754;
-    color:#fff;
-}
-
-.delete-button{
-    background:#6c757d;
-    color:#fff;
+    color:white;
+    border:0;
+    padding:6px 10px;
+    border-radius:5px;
+    font-size:11px;
+    font-weight:bold;
 }
 
 /* =========================
@@ -539,104 +558,93 @@ tbody tr:hover{
 ========================= */
 
 .modal{
-    display:none;
     position:fixed;
     inset:0;
     background:rgba(0,0,0,.55);
-    z-index:1000;
+    display:none;
+    align-items:center;
+    justify-content:center;
     padding:20px;
-    overflow:auto;
+    z-index:1000;
 }
 
 .modal.show{
     display:flex;
-    align-items:center;
-    justify-content:center;
 }
 
 .modal-content{
     width:100%;
     max-width:650px;
+    max-height:90vh;
+    overflow-y:auto;
     background:#fff;
     border-radius:12px;
-    box-shadow:0 20px 60px rgba(0,0,0,.3);
-    overflow:hidden;
+    padding:25px;
 }
 
 .modal-header{
-    padding:18px 20px;
-    background:var(--primary);
-    color:#fff;
     display:flex;
     justify-content:space-between;
     align-items:center;
+    margin-bottom:20px;
 }
 
-.modal-title{
-    font-size:18px;
-    font-weight:bold;
+.modal-header h2{
+    color:var(--primary);
+    font-size:20px;
 }
 
 .close-button{
     border:0;
     background:transparent;
-    color:#fff;
     font-size:25px;
-    line-height:1;
+    color:#666;
 }
 
-.modal-body{
-    padding:20px;
-}
-
-.modal-footer{
-    padding:15px 20px;
-    border-top:1px solid var(--border);
-    display:flex;
-    justify-content:flex-end;
-    gap:8px;
-}
-
-.modal-grid{
+.modal-form{
     display:grid;
     grid-template-columns:1fr 1fr;
     gap:15px;
 }
 
-.modal-group{
-    margin-bottom:15px;
+.modal-form .full{
+    grid-column:1 / -1;
 }
 
-.modal-group.full{
-    grid-column:1/-1;
-}
-
-.modal-group label{
+.modal-form label{
     display:block;
-    font-weight:bold;
     font-size:13px;
+    font-weight:bold;
     margin-bottom:6px;
 }
 
-.modal-group input,
-.modal-group select,
-.modal-group textarea{
+.modal-form input,
+.modal-form select,
+.modal-form textarea{
     width:100%;
-    padding:10px;
+    padding:10px 11px;
     border:1px solid var(--border);
     border-radius:7px;
     outline:none;
 }
 
-.modal-group textarea{
+.modal-form textarea{
     min-height:90px;
     resize:vertical;
 }
 
-.modal-group input:focus,
-.modal-group select:focus,
-.modal-group textarea:focus{
-    border-color:var(--primary);
+.modal-footer{
+    display:flex;
+    justify-content:flex-end;
+    gap:8px;
+    margin-top:20px;
+}
+
+.cancel-button{
+    border:1px solid var(--border);
+    background:#fff;
+    padding:10px 16px;
+    border-radius:7px;
 }
 
 .save-button{
@@ -648,36 +656,61 @@ tbody tr:hover{
     font-weight:bold;
 }
 
-.cancel-button{
-    border:1px solid var(--border);
-    background:#fff;
-    padding:10px 18px;
-    border-radius:7px;
-}
-
 /* =========================
    FILE VIEW MODAL
 ========================= */
 
 .file-modal-content{
-    width:100%;
-    max-width:1000px;
+    width:95%;
+    max-width:1100px;
     height:90vh;
     background:#fff;
     border-radius:12px;
-    overflow:hidden;
+    padding:15px;
     display:flex;
     flex-direction:column;
 }
 
+.file-modal-header{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    margin-bottom:10px;
+    gap:10px;
+}
+
+.file-modal-title{
+    font-weight:bold;
+    color:var(--primary);
+    overflow:hidden;
+    text-overflow:ellipsis;
+    white-space:nowrap;
+}
+
+.file-modal-actions{
+    display:flex;
+    gap:7px;
+}
+
+.file-modal-actions a{
+    text-decoration:none;
+    padding:7px 11px;
+    border-radius:5px;
+    background:var(--primary);
+    color:white;
+    font-size:12px;
+    font-weight:bold;
+}
+
 .file-preview{
     flex:1;
-    overflow:auto;
+    border:1px solid var(--border);
+    border-radius:7px;
+    overflow:hidden;
     display:flex;
-    justify-content:center;
     align-items:center;
-    padding:20px;
-    background:#f4f6f9;
+    justify-content:center;
+    background:#f5f5f5;
 }
 
 .file-preview iframe{
@@ -692,10 +725,35 @@ tbody tr:hover{
     object-fit:contain;
 }
 
-.file-message{
-    color:var(--muted);
+.no-preview{
     text-align:center;
     padding:30px;
+    color:var(--muted);
+}
+
+/* =========================
+   EMPTY
+========================= */
+
+.empty-state{
+    text-align:center;
+    padding:50px 20px;
+    color:var(--muted);
+}
+
+.empty-state h3{
+    margin-bottom:8px;
+    color:#555;
+}
+
+/* =========================
+   LOADING
+========================= */
+
+.loading{
+    text-align:center;
+    padding:40px;
+    color:var(--muted);
 }
 
 /* =========================
@@ -704,48 +762,45 @@ tbody tr:hover{
 
 .toast{
     position:fixed;
-    right:20px;
-    bottom:20px;
+    bottom:25px;
+    right:25px;
     background:#212529;
-    color:#fff;
+    color:white;
     padding:13px 18px;
-    border-radius:8px;
-    box-shadow:0 10px 30px rgba(0,0,0,.2);
-    transform:translateY(120px);
-    opacity:0;
-    transition:.25s;
-    z-index:2000;
+    border-radius:7px;
+    z-index:3000;
+    display:none;
+    box-shadow:0 5px 20px rgba(0,0,0,.2);
 }
 
 .toast.show{
-    transform:translateY(0);
-    opacity:1;
+    display:block;
 }
 
 /* =========================
    RESPONSIVE
 ========================= */
 
-@media(max-width:1000px){
+@media(max-width:900px){
 
     .dashboard{
         grid-template-columns:repeat(2,1fr);
     }
 
-    .filters{
+    .filter-grid{
         grid-template-columns:1fr 1fr;
     }
 
 }
 
-@media(max-width:650px){
+@media(max-width:600px){
 
     .header{
         padding:15px;
     }
 
-    .header-title{
-        font-size:17px;
+    .header-left h1{
+        font-size:18px;
     }
 
     .container{
@@ -753,22 +808,31 @@ tbody tr:hover{
     }
 
     .dashboard{
+        grid-template-columns:1fr 1fr;
+        gap:10px;
+    }
+
+    .dashboard-card{
+        padding:15px;
+    }
+
+    .dashboard-card .value{
+        font-size:24px;
+    }
+
+    .filter-grid{
         grid-template-columns:1fr;
     }
 
-    .filters{
+    .modal-form{
         grid-template-columns:1fr;
     }
 
-    .modal-grid{
-        grid-template-columns:1fr;
-    }
-
-    .modal-group.full{
+    .modal-form .full{
         grid-column:auto;
     }
 
-    .login-card{
+    .login-box{
         padding:25px;
     }
 
@@ -783,76 +847,67 @@ tbody tr:hover{
      LOGIN
 ========================= -->
 
-<div
-    id="loginScreen"
-    class="login-screen">
+<div class="login-screen" id="loginScreen">
 
-    <div class="login-card">
+    <div class="login-box">
 
         <div class="login-logo">
             GT
         </div>
 
-        <h1 class="login-title">
-            Graduate Tracker
-        </h1>
+        <h1>Graduate Tracker</h1>
 
-        <p class="login-subtitle">
-            Graduate Group Tracking System
-        </p>
+        <p>Graduate Group Tracking System</p>
 
-        <div class="form-group">
+        <form onsubmit="login(event)">
 
-            <label for="loginUsername">
-                Username
-            </label>
-
-            <input
-                type="text"
-                id="loginUsername"
-                placeholder="Enter username">
-
-        </div>
-
-        <div class="form-group">
-
-            <label for="loginPassword">
-                Password
-            </label>
-
-            <div class="password-wrap">
-
+            <div class="form-group">
+                <label>Username</label>
                 <input
-                    type="password"
-                    id="loginPassword"
-                    placeholder="Enter password">
+                    type="text"
+                    id="username"
+                    placeholder="Enter username"
+                    autocomplete="username"
+                    required>
+            </div>
 
-                <button
-                    type="button"
-                    class="show-password"
-                    onclick="togglePassword()">
+            <div class="form-group">
 
-                    👁
+                <label>Password</label>
 
-                </button>
+                <div class="password-wrapper">
+
+                    <input
+                        type="password"
+                        id="password"
+                        placeholder="Enter password"
+                        autocomplete="current-password"
+                        required>
+
+                    <button
+                        type="button"
+                        class="password-toggle"
+                        onclick="togglePassword()">
+                        👁
+                    </button>
+
+                </div>
 
             </div>
 
-        </div>
+            <button
+                type="submit"
+                class="login-button">
+                Login
+            </button>
 
-        <button
-            type="button"
-            class="login-button"
-            onclick="login()">
+            <div
+                class="login-error"
+                id="loginError">
+                Invalid username or password.
+            </div>
 
-            Login
-
-        </button>
-
-        <div
-            id="loginError"
-            class="login-error">
-        </div>
+        </form>
 
     </div>
 
@@ -860,26 +915,27 @@ tbody tr:hover{
 
 
 <!-- =========================
-     APPLICATION
+     APP
 ========================= -->
 
-<div
-    id="app"
-    class="app">
+<div id="app">
 
     <header class="header">
 
-        <div class="header-title">
-            Graduate Group Tracking System
+        <div class="header-left">
+
+            <h1>Graduate Group Tracking System</h1>
+
+            <p>
+                Student records, thesis status and file monitoring
+            </p>
+
         </div>
 
         <button
-            type="button"
             class="logout-button"
             onclick="logout()">
-
             Logout
-
         </button>
 
     </header>
@@ -892,62 +948,51 @@ tbody tr:hover{
         <section class="dashboard">
 
             <div class="dashboard-card">
-
-                <div class="dashboard-label">
+                <div class="label">
                     Total Students
                 </div>
 
                 <div
-                    id="totalStudents"
-                    class="dashboard-value">
+                    class="value"
+                    id="totalStudents">
                     0
                 </div>
-
             </div>
 
-
             <div class="dashboard-card">
-
-                <div class="dashboard-label">
+                <div class="label">
                     Files Complete
                 </div>
 
                 <div
-                    id="filesComplete"
-                    class="dashboard-value">
+                    class="value"
+                    id="filesComplete">
                     0
                 </div>
-
             </div>
 
-
             <div class="dashboard-card">
-
-                <div class="dashboard-label">
+                <div class="label">
                     Thesis Complete
                 </div>
 
                 <div
-                    id="thesisComplete"
-                    class="dashboard-value">
+                    class="value"
+                    id="thesisComplete">
                     0
                 </div>
-
             </div>
 
-
             <div class="dashboard-card">
-
-                <div class="dashboard-label">
+                <div class="label">
                     Overall Complete
                 </div>
 
                 <div
-                    id="overallComplete"
-                    class="dashboard-value">
+                    class="value"
+                    id="overallComplete">
                     0
                 </div>
-
             </div>
 
         </section>
@@ -958,43 +1003,31 @@ tbody tr:hover{
         <section class="group-navigation">
 
             <button
-                type="button"
                 class="group-button active"
-                data-group="All Groups"
-                onclick="setGroup('All Groups',this)">
-
+                data-group="ALL"
+                onclick="selectGroup('ALL')">
                 All Groups
-
             </button>
 
             <button
-                type="button"
                 class="group-button"
                 data-group="TAGAYTAY GROUP"
-                onclick="setGroup('TAGAYTAY GROUP',this)">
-
+                onclick="selectGroup('TAGAYTAY GROUP')">
                 TAGAYTAY GROUP
-
             </button>
 
             <button
-                type="button"
                 class="group-button"
                 data-group="GELINE GROUP"
-                onclick="setGroup('GELINE GROUP',this)">
-
+                onclick="selectGroup('GELINE GROUP')">
                 GELINE GROUP
-
             </button>
 
             <button
-                type="button"
                 class="group-button"
                 data-group="BORACAY GROUP"
-                onclick="setGroup('BORACAY GROUP',this)">
-
+                onclick="selectGroup('BORACAY GROUP')">
                 BORACAY GROUP
-
             </button>
 
         </section>
@@ -1004,84 +1037,89 @@ tbody tr:hover{
 
         <section class="filters">
 
-            <input
-                type="text"
-                id="searchInput"
-                class="filter-input"
-                placeholder="Search student name or thesis title..."
-                oninput="renderTable()">
+            <div class="filters-title">
+                Search & Filters
+            </div>
 
+            <div class="filter-grid">
 
-            <select
-                id="programFilter"
-                class="filter-select"
-                onchange="renderTable()">
+                <input
+                    type="text"
+                    id="searchInput"
+                    class="filter-control"
+                    placeholder="Search student name or thesis title..."
+                    oninput="renderTable()">
 
-                <option value="All">
-                    All Programs
-                </option>
+                <select
+                    id="programFilter"
+                    class="filter-control"
+                    onchange="renderTable()">
 
-                <option value="MAEd">
-                    MAEd
-                </option>
+                    <option value="ALL">
+                        All Programs
+                    </option>
 
-                <option value="PhD">
-                    PhD
-                </option>
+                    <option value="MAEd">
+                        MAEd
+                    </option>
 
-                <option value="MBA">
-                    MBA
-                </option>
+                    <option value="PhD">
+                        PhD
+                    </option>
 
-                <option value="MPA">
-                    MPA
-                </option>
+                    <option value="MBA">
+                        MBA
+                    </option>
 
-                <option value="MSCJ">
-                    MSCJ
-                </option>
+                    <option value="MPA">
+                        MPA
+                    </option>
 
-            </select>
+                    <option value="MSCJ">
+                        MSCJ
+                    </option>
 
+                </select>
 
-            <select
-                id="fileFilter"
-                class="filter-select"
-                onchange="renderTable()">
+                <select
+                    id="fileFilter"
+                    class="filter-control"
+                    onchange="renderTable()">
 
-                <option value="All">
-                    All Files
-                </option>
+                    <option value="ALL">
+                        All Files
+                    </option>
 
-                <option value="Complete">
-                    Complete
-                </option>
+                    <option value="Complete">
+                        Complete
+                    </option>
 
-                <option value="Not Yet Done">
-                    Not Yet Done
-                </option>
+                    <option value="Not Yet Done">
+                        Not Yet Done
+                    </option>
 
-            </select>
+                </select>
 
+                <select
+                    id="thesisFilter"
+                    class="filter-control"
+                    onchange="renderTable()">
 
-            <select
-                id="thesisFilter"
-                class="filter-select"
-                onchange="renderTable()">
+                    <option value="ALL">
+                        All Thesis Status
+                    </option>
 
-                <option value="All">
-                    All Thesis Status
-                </option>
+                    <option value="Complete">
+                        Complete
+                    </option>
 
-                <option value="Complete">
-                    Complete
-                </option>
+                    <option value="Pending">
+                        Pending
+                    </option>
 
-                <option value="Pending">
-                    Pending
-                </option>
+                </select>
 
-            </select>
+            </div>
 
         </section>
 
@@ -1090,48 +1128,44 @@ tbody tr:hover{
 
         <section class="action-bar">
 
-            <button
-                type="button"
-                class="action-button add-button"
-                onclick="openStudentModal()">
+            <div class="action-left">
 
-                + Add Student
+                <button
+                    class="action-button add-button"
+                    onclick="openStudentModal()">
+                    + Add Student
+                </button>
 
-            </button>
+                <button
+                    class="action-button select-button"
+                    onclick="toggleSelectAll()">
+                    Select All
+                </button>
 
-            <button
-                type="button"
-                class="action-button select-button"
-                onclick="selectAllVisible()">
+            </div>
 
-                Select All
+            <div class="action-right">
 
-            </button>
+                <button
+                    class="action-button archive-button"
+                    onclick="archiveSelected()">
+                    Archive Selected
+                </button>
 
-            <button
-                type="button"
-                class="action-button archive-button"
-                onclick="archiveSelected()">
+                <button
+                    class="action-button restore-button"
+                    onclick="restoreSelected()">
+                    Restore Selected
+                </button>
 
-                Archive Selected
-
-            </button>
-
-            <button
-                type="button"
-                class="action-button restore-button"
-                onclick="restoreSelected()">
-
-                Restore Selected
-
-            </button>
+            </div>
 
         </section>
 
 
         <!-- TABLE -->
 
-        <section class="table-container">
+        <section class="table-wrapper">
 
             <table>
 
@@ -1143,7 +1177,7 @@ tbody tr:hover{
                             <input
                                 type="checkbox"
                                 id="selectAllCheckbox"
-                                onchange="toggleAllVisible(this.checked)">
+                                onchange="toggleAllCheckboxes(this)">
                         </th>
 
                         <th>
@@ -1183,6 +1217,7 @@ tbody tr:hover{
                 </thead>
 
                 <tbody id="studentTableBody">
+
                 </tbody>
 
             </table>
@@ -1199,38 +1234,38 @@ tbody tr:hover{
 ========================= -->
 
 <div
-    id="studentModal"
-    class="modal">
+    class="modal"
+    id="studentModal">
 
     <div class="modal-content">
 
         <div class="modal-header">
 
-            <div
-                id="studentModalTitle"
-                class="modal-title">
-
+            <h2 id="modalTitle">
                 Add Student
-
-            </div>
+            </h2>
 
             <button
-                type="button"
                 class="close-button"
                 onclick="closeStudentModal()">
-
                 ×
-
             </button>
 
         </div>
 
 
-        <div class="modal-body">
+        <form
+            onsubmit="saveStudent(event)"
+            id="studentForm">
 
-            <div class="modal-grid">
+            <input
+                type="hidden"
+                id="studentId">
 
-                <div class="modal-group">
+
+            <div class="modal-form">
+
+                <div>
 
                     <label>
                         Student Name
@@ -1239,18 +1274,20 @@ tbody tr:hover{
                     <input
                         type="text"
                         id="studentName"
-                        placeholder="Enter student name">
+                        required>
 
                 </div>
 
 
-                <div class="modal-group">
+                <div>
 
                     <label>
                         Group
                     </label>
 
-                    <select id="studentGroup">
+                    <select
+                        id="studentGroup"
+                        required>
 
                         <option value="TAGAYTAY GROUP">
                             TAGAYTAY GROUP
@@ -1269,13 +1306,15 @@ tbody tr:hover{
                 </div>
 
 
-                <div class="modal-group">
+                <div>
 
                     <label>
                         Program
                     </label>
 
-                    <select id="studentProgram">
+                    <select
+                        id="studentProgram"
+                        required>
 
                         <option value="MAEd">
                             MAEd
@@ -1302,13 +1341,14 @@ tbody tr:hover{
                 </div>
 
 
-                <div class="modal-group">
+                <div>
 
                     <label>
                         Thesis Status
                     </label>
 
-                    <select id="studentThesisStatus">
+                    <select
+                        id="studentThesisStatus">
 
                         <option value="Pending">
                             Pending
@@ -1323,7 +1363,7 @@ tbody tr:hover{
                 </div>
 
 
-                <div class="modal-group full">
+                <div class="full">
 
                     <label>
                         Thesis Title
@@ -1331,37 +1371,53 @@ tbody tr:hover{
 
                     <textarea
                         id="studentThesisTitle"
-                        placeholder="Enter thesis title">
-                    </textarea>
+                        placeholder="Enter thesis title..."></textarea>
+
+                </div>
+
+
+                <div>
+
+                    <label>
+                        Overall Status
+                    </label>
+
+                    <select
+                        id="studentOverallStatus">
+
+                        <option value="Pending">
+                            Pending
+                        </option>
+
+                        <option value="Complete">
+                            Complete
+                        </option>
+
+                    </select>
 
                 </div>
 
             </div>
 
-        </div>
 
+            <div class="modal-footer">
 
-        <div class="modal-footer">
+                <button
+                    type="button"
+                    class="cancel-button"
+                    onclick="closeStudentModal()">
+                    Cancel
+                </button>
 
-            <button
-                type="button"
-                class="cancel-button"
-                onclick="closeStudentModal()">
+                <button
+                    type="submit"
+                    class="save-button">
+                    Save Student
+                </button>
 
-                Cancel
+            </div>
 
-            </button>
-
-            <button
-                type="button"
-                class="save-button"
-                onclick="saveStudent()">
-
-                Save Student
-
-            </button>
-
-        </div>
+        </form>
 
     </div>
 
@@ -1373,37 +1429,48 @@ tbody tr:hover{
 ========================= -->
 
 <div
-    id="fileModal"
-    class="modal">
+    class="modal"
+    id="fileModal">
 
     <div class="file-modal-content">
 
-        <div class="modal-header">
+        <div class="file-modal-header">
 
             <div
-                id="fileModalTitle"
-                class="modal-title">
+                class="file-modal-title"
+                id="fileModalTitle">
+                File
+            </div>
 
-                File Preview
+            <div class="file-modal-actions">
+
+                <a
+                    id="openFileButton"
+                    href="#"
+                    target="_blank">
+                    Open
+                </a>
+
+                <a
+                    id="downloadFileButton"
+                    href="#"
+                    download>
+                    Download
+                </a>
+
+                <button
+                    class="close-button"
+                    onclick="closeFileModal()">
+                    ×
+                </button>
 
             </div>
 
-            <button
-                type="button"
-                class="close-button"
-                onclick="closeFileModal()">
-
-                ×
-
-            </button>
-
         </div>
 
-
         <div
-            id="filePreview"
-            class="file-preview">
-
+            class="file-preview"
+            id="filePreview">
         </div>
 
     </div>
@@ -1414,16 +1481,16 @@ tbody tr:hover{
 <!-- TOAST -->
 
 <div
-    id="toast"
-    class="toast">
+    class="toast"
+    id="toast">
 </div>
 
 
 <script>
 
-/* =========================
-   SUPABASE
-========================= */
+/* =========================================================
+   SUPABASE CONFIGURATION
+========================================================= */
 
 const SUPABASE_URL =
     "https://yiruvpikzntyiijapknt.supabase.co";
@@ -1437,6 +1504,7 @@ const BUCKET_NAME =
 const TABLE_NAME =
     "students";
 
+
 const supabaseClient =
     window.supabase.createClient(
         SUPABASE_URL,
@@ -1444,9 +1512,9 @@ const supabaseClient =
     );
 
 
-/* =========================
-   STORAGE
-========================= */
+/* =========================================================
+   LOCAL STORAGE
+========================================================= */
 
 const STUDENTS_KEY =
     "graduateGroupStudents";
@@ -1457,13 +1525,6 @@ const PENDING_KEY =
 const FILES_KEY =
     "graduateStudentFiles";
 
-const LOGIN_KEY =
-    "graduateTrackerLoggedIn";
-
-
-/* =========================
-   DATA
-========================= */
 
 let students = [];
 
@@ -1472,48 +1533,26 @@ let studentFiles =
         localStorage.getItem(FILES_KEY) || "{}"
     );
 
-let currentGroup =
-    "All Groups";
-
-let editingStudentId =
-    null;
+let selectedGroup = "ALL";
 
 
-/* =========================
+/* =========================================================
    LOGIN
-========================= */
+========================================================= */
 
-function togglePassword(){
+function login(event){
 
-    const input =
-        document.getElementById(
-            "loginPassword"
-        );
-
-    input.type =
-        input.type === "password"
-        ? "text"
-        : "password";
-}
-
-
-function login(){
+    event.preventDefault();
 
     const username =
-        document
-            .getElementById("loginUsername")
-            .value
-            .trim();
+        document.getElementById("username").value.trim();
 
     const password =
-        document
-            .getElementById("loginPassword")
-            .value;
+        document.getElementById("password").value;
 
-    const error =
-        document.getElementById(
-            "loginError"
-        );
+    /*
+        Change these credentials if needed.
+    */
 
     if(
         username === "admin" &&
@@ -1521,134 +1560,161 @@ function login(){
     ){
 
         sessionStorage.setItem(
-            LOGIN_KEY,
+            "graduateTrackerLoggedIn",
             "true"
         );
 
-        showApp();
+        document.getElementById("loginScreen").style.display =
+            "none";
+
+        document.getElementById("app").style.display =
+            "block";
+
+        loadData();
 
     }else{
 
-        error.textContent =
-            "Invalid username or password.";
+        document.getElementById("loginError").style.display =
+            "block";
 
     }
+
 }
 
 
 function logout(){
 
     sessionStorage.removeItem(
-        LOGIN_KEY
+        "graduateTrackerLoggedIn"
     );
 
-    document
-        .getElementById("app")
-        .style.display = "none";
-
-    document
-        .getElementById("loginScreen")
-        .style.display = "flex";
+    location.reload();
 
 }
 
 
-/* =========================
-   APP START
-========================= */
+function togglePassword(){
 
-function showApp(){
+    const password =
+        document.getElementById("password");
 
-    document
-        .getElementById("loginScreen")
-        .style.display = "none";
-
-    document
-        .getElementById("app")
-        .style.display = "block";
-
-    loadData();
+    password.type =
+        password.type === "password"
+        ? "text"
+        : "password";
 
 }
 
 
-/* =========================
+/* =========================================================
+   INITIALIZATION
+========================================================= */
+
+document.addEventListener(
+    "DOMContentLoaded",
+    function(){
+
+        const loggedIn =
+            sessionStorage.getItem(
+                "graduateTrackerLoggedIn"
+            );
+
+        if(loggedIn === "true"){
+
+            document.getElementById("loginScreen").style.display =
+                "none";
+
+            document.getElementById("app").style.display =
+                "block";
+
+            loadData();
+
+        }
+
+    }
+);
+
+
+/* =========================================================
    LOAD DATA
-========================= */
+========================================================= */
 
 async function loadData(){
 
     students =
         JSON.parse(
-            localStorage.getItem(
-                STUDENTS_KEY
-            ) || "[]"
+            localStorage.getItem(STUDENTS_KEY) || "[]"
         );
+
+    studentFiles =
+        JSON.parse(
+            localStorage.getItem(FILES_KEY) || "{}"
+        );
+
+    renderTable();
+
+    updateDashboard();
+
+    /*
+        Try to load online database.
+    */
 
     try{
 
         const {
             data,
             error
-        } =
-        await supabaseClient
+        } = await supabaseClient
             .from(TABLE_NAME)
             .select("*")
-            .order(
-                "name",
-                {
-                    ascending:true
-                }
-            );
+            .order("name", {
+                ascending:true
+            });
 
-        if(
-            !error &&
-            Array.isArray(data)
-        ){
+        if(!error && data){
 
             students =
-                data.map(
-                    normalizeStudent
-                );
+                data.map(normalizeStudent);
 
             localStorage.setItem(
                 STUDENTS_KEY,
                 JSON.stringify(students)
             );
 
+            renderTable();
+
+            updateDashboard();
+
         }
 
     }catch(error){
 
         console.log(
-            "Supabase loading error:",
+            "Offline/local data mode:",
             error
         );
 
     }
 
-    renderTable();
-    updateDashboard();
-
 }
 
 
-/* =========================
-   NORMALIZE
-========================= */
+/* =========================================================
+   NORMALIZE STUDENT
+========================================================= */
 
 function normalizeStudent(student){
 
     return {
 
         id:
-            student.id ||
-            Date.now() +
-            Math.random(),
+            String(
+                student.id ??
+                Date.now()
+            ),
 
         name:
-            student.name ||
-            "",
+            student.name || "",
 
         group:
             student.group ||
@@ -1658,33 +1724,35 @@ function normalizeStudent(student){
             student.program ||
             "MAEd",
 
-        thesis_title:
-            student.thesis_title ||
-            "",
-
         thesis_status:
             student.thesis_status ||
             "Pending",
+
+        overall_status:
+            student.overall_status ||
+            "Pending",
+
+        thesis_title:
+            student.thesis_title ||
+            "",
 
         file_status:
             student.file_status ||
             "Not Yet Done",
 
         archived:
-            Boolean(
-                student.archived
-            )
+            Boolean(student.archived)
 
     };
 
 }
 
 
-/* =========================
-   SAVE LOCAL
-========================= */
+/* =========================================================
+   SAVE LOCAL DATA
+========================================================= */
 
-function saveLocal(){
+function saveLocalData(){
 
     localStorage.setItem(
         STUDENTS_KEY,
@@ -1699,115 +1767,107 @@ function saveLocal(){
 }
 
 
-/* =========================
-   GROUP
-========================= */
+/* =========================================================
+   GROUP SELECTION
+========================================================= */
 
-function setGroup(
-    group,
-    button
-){
+function selectGroup(group){
 
-    currentGroup =
-        group;
+    selectedGroup = group;
 
     document
-        .querySelectorAll(
-            ".group-button"
-        )
-        .forEach(
-            item =>
-                item.classList.remove(
-                    "active"
-                )
-        );
+        .querySelectorAll(".group-button")
+        .forEach(button => {
 
-    button.classList.add(
-        "active"
-    );
+            button.classList.toggle(
+                "active",
+                button.dataset.group === group
+            );
+
+        });
 
     renderTable();
 
 }
 
 
-/* =========================
-   PROGRAM BADGE
-========================= */
+/* =========================================================
+   PROGRAM CLASS
+========================================================= */
 
-function programBadge(
-    program
-){
+function getProgramClass(program){
 
-    let className =
-        "program-" +
-        String(program)
-            .toLowerCase();
+    const map = {
 
-    if(program === "PhD"){
-        className = "program-phd";
-    }
+        "PhD":
+            "program-phd",
 
-    if(program === "MAEd"){
-        className = "program-maed";
-    }
+        "MAEd":
+            "program-maed",
 
-    if(program === "MBA"){
-        className = "program-mba";
-    }
+        "MBA":
+            "program-mba",
 
-    if(program === "MPA"){
-        className = "program-mpa";
-    }
+        "MPA":
+            "program-mpa",
 
-    if(program === "MSCJ"){
-        className = "program-mscj";
-    }
+        "MSCJ":
+            "program-mscj"
 
-    return `
-        <span class="badge ${className}">
-            ${escapeHtml(program)}
-        </span>
-    `;
+    };
+
+    return map[program] || "";
 
 }
 
 
-/* =========================
+/* =========================================================
+   ESCAPE HTML
+========================================================= */
+
+function escapeHtml(value){
+
+    return String(value ?? "")
+        .replace(/&/g,"&amp;")
+        .replace(/</g,"&lt;")
+        .replace(/>/g,"&gt;")
+        .replace(/"/g,"&quot;")
+        .replace(/'/g,"&#039;");
+
+}
+
+
+function escapeAttribute(value){
+
+    return String(value ?? "")
+        .replace(/\\/g,"\\\\")
+        .replace(/'/g,"\\'");
+
+}
+
+
+/* =========================================================
    FILE STATUS
-========================= */
+========================================================= */
 
-function getFileStatus(
-    student
-){
+/*
+    IMPORTANT:
 
-    const file =
-        studentFiles[
-            String(student.id)
-        ];
+    There is NO + upload button anymore.
 
-    return (
-        file &&
-        file.path
-    )
-    ? "Complete"
-    : "Not Yet Done";
+    If a file exists:
+        Complete
 
-}
+    If no file exists:
+        Not Yet Done
 
+    Existing uploaded files can still be viewed.
+*/
 
-/* =========================
-   FILE DISPLAY
-========================= */
-
-function fileUploadButton(
-    student
-){
+function fileUploadButton(student){
 
     const file =
-        studentFiles[
-            String(student.id)
-        ];
+        studentFiles[String(student.id)];
 
     const hasFile =
         !!(
@@ -1831,9 +1891,7 @@ function fileUploadButton(
                     ? "complete"
                     : "pending"
                 }">
-
                     ${status}
-
                 </span>
 
                 ${
@@ -1842,24 +1900,16 @@ function fileUploadButton(
 
                         <span
                             class="file-name"
-                            title="${escapeHtml(
-                                file.name || ""
-                            )}">
+                            title="${escapeHtml(file.name)}">
 
-                            ${escapeHtml(
-                                file.name || ""
-                            )}
+                            ${escapeHtml(file.name)}
 
                         </span>
 
                         <button
                             type="button"
                             class="file-view-button"
-                            onclick="viewStudentFile(
-                                '${escapeAttribute(
-                                    student.id
-                                )}'
-                            )">
+                            onclick="viewStudentFile('${escapeAttribute(student.id)}')">
 
                             View
 
@@ -1878,202 +1928,158 @@ function fileUploadButton(
 }
 
 
-/* =========================
-   OVERALL STATUS
-========================= */
-
-function getOverallStatus(
-    student
-){
-
-    const fileStatus =
-        getFileStatus(student);
-
-    const thesisStatus =
-        student.thesis_status ||
-        "Pending";
-
-    if(
-        fileStatus === "Complete" &&
-        thesisStatus === "Complete"
-    ){
-
-        return `
-            <span class="badge complete">
-                Complete
-            </span>
-        `;
-
-    }
-
-    return `
-        <span class="badge pending">
-            Not Yet Done
-        </span>
-    `;
-
-}
-
-
-/* =========================
-   VISIBLE STUDENTS
-========================= */
-
-function getVisibleStudents(){
-
-    const search =
-        document
-            .getElementById(
-                "searchInput"
-            )
-            .value
-            .trim()
-            .toLowerCase();
-
-    const program =
-        document
-            .getElementById(
-                "programFilter"
-            )
-            .value;
-
-    const fileStatus =
-        document
-            .getElementById(
-                "fileFilter"
-            )
-            .value;
-
-    const thesisStatus =
-        document
-            .getElementById(
-                "thesisFilter"
-            )
-            .value;
-
-    return students
-
-        .filter(
-            student =>
-                !student.archived
-        )
-
-        .filter(
-            student =>
-                currentGroup ===
-                "All Groups"
-                ||
-                student.group ===
-                currentGroup
-        )
-
-        .filter(
-            student =>
-                program === "All"
-                ||
-                student.program ===
-                program
-        )
-
-        .filter(
-            student => {
-
-                if(
-                    fileStatus ===
-                    "All"
-                ){
-
-                    return true;
-
-                }
-
-                return (
-                    getFileStatus(
-                        student
-                    ) === fileStatus
-                );
-
-            }
-        )
-
-        .filter(
-            student =>
-                thesisStatus === "All"
-                ||
-                (
-                    student.thesis_status ||
-                    "Pending"
-                ) === thesisStatus
-        )
-
-        .filter(
-            student => {
-
-                if(!search){
-                    return true;
-                }
-
-                return (
-
-                    String(
-                        student.name
-                    )
-                    .toLowerCase()
-                    .includes(search)
-
-                    ||
-
-                    String(
-                        student.thesis_title
-                    )
-                    .toLowerCase()
-                    .includes(search)
-
-                    ||
-
-                    String(
-                        student.group
-                    )
-                    .toLowerCase()
-                    .includes(search)
-
-                );
-
-            }
-        )
-
-        .sort(
-            (a,b) =>
-                String(a.name)
-                    .localeCompare(
-                        String(b.name)
-                    )
-        );
-
-}
-
-
-/* =========================
+/* =========================================================
    RENDER TABLE
-========================= */
+========================================================= */
 
 function renderTable(){
 
-    const body =
+    const tbody =
         document.getElementById(
             "studentTableBody"
         );
 
-    const visible =
-        getVisibleStudents();
+    const search =
+        document.getElementById(
+            "searchInput"
+        ).value
+        .trim()
+        .toLowerCase();
 
-    document.getElementById(
-        "selectAllCheckbox"
-    ).checked = false;
+    const program =
+        document.getElementById(
+            "programFilter"
+        ).value;
 
-    if(!visible.length){
+    const fileFilter =
+        document.getElementById(
+            "fileFilter"
+        ).value;
 
-        body.innerHTML = `
+    const thesisFilter =
+        document.getElementById(
+            "thesisFilter"
+        ).value;
+
+
+    let filtered =
+        students.filter(student => {
+
+            /*
+                Archived students are hidden
+                from the main table.
+            */
+
+            if(student.archived){
+                return false;
+            }
+
+
+            if(
+                selectedGroup !== "ALL" &&
+                student.group !== selectedGroup
+            ){
+
+                return false;
+
+            }
+
+
+            if(
+                program !== "ALL" &&
+                student.program !== program
+            ){
+
+                return false;
+
+            }
+
+
+            const file =
+                studentFiles[
+                    String(student.id)
+                ];
+
+            const hasFile =
+                !!(
+                    file &&
+                    file.path
+                );
+
+            const actualFileStatus =
+                hasFile
+                ? "Complete"
+                : "Not Yet Done";
+
+
+            if(
+                fileFilter !== "ALL" &&
+                actualFileStatus !== fileFilter
+            ){
+
+                return false;
+
+            }
+
+
+            if(
+                thesisFilter !== "ALL" &&
+                student.thesis_status !== thesisFilter
+            ){
+
+                return false;
+
+            }
+
+
+            if(search){
+
+                const name =
+                    String(
+                        student.name || ""
+                    ).toLowerCase();
+
+                const thesis =
+                    String(
+                        student.thesis_title || ""
+                    ).toLowerCase();
+
+                if(
+                    !name.includes(search) &&
+                    !thesis.includes(search)
+                ){
+
+                    return false;
+
+                }
+
+            }
+
+            return true;
+
+        });
+
+
+    /*
+        Sort alphabetically by student name.
+    */
+
+    filtered.sort(
+        (a,b) =>
+            String(a.name || "")
+                .localeCompare(
+                    String(b.name || ""),
+                    undefined,
+                    {
+                        sensitivity:"base"
+                    }
+                )
+    );
+
+
+    if(filtered.length === 0){
+
+        tbody.innerHTML = `
 
             <tr>
 
@@ -2081,7 +2087,13 @@ function renderTable(){
                     colspan="9"
                     class="empty-state">
 
-                    No students found.
+                    <h3>
+                        No student records found
+                    </h3>
+
+                    <p>
+                        Try changing your search or filters.
+                    </p>
 
                 </td>
 
@@ -2089,301 +2101,547 @@ function renderTable(){
 
         `;
 
-        updateDashboard();
+        return;
+
+    }
+
+
+    tbody.innerHTML =
+        filtered.map(student => {
+
+            const thesisComplete =
+                student.thesis_status ===
+                "Complete";
+
+
+            const overallComplete =
+                student.overall_status ===
+                "Complete";
+
+
+            return `
+
+                <tr>
+
+                    <td class="checkbox-cell">
+
+                        <input
+                            type="checkbox"
+                            class="student-checkbox"
+                            value="${escapeAttribute(student.id)}">
+
+                    </td>
+
+
+                    <td>
+
+                        <div class="student-name">
+
+                            ${escapeHtml(student.name)}
+
+                        </div>
+
+                    </td>
+
+
+                    <td>
+
+                        ${escapeHtml(student.group)}
+
+                    </td>
+
+
+                    <td>
+
+                        <span
+                            class="badge ${getProgramClass(student.program)}">
+
+                            ${escapeHtml(student.program)}
+
+                        </span>
+
+                    </td>
+
+
+                    <td>
+
+                        <div class="thesis-title">
+
+                            ${
+                                student.thesis_title
+                                ? escapeHtml(student.thesis_title)
+                                : '<span style="color:#999;">No thesis title</span>'
+                            }
+
+                        </div>
+
+                    </td>
+
+
+                    <td>
+
+                        <span
+                            class="badge ${
+                                thesisComplete
+                                ? "complete"
+                                : "pending"
+                            }">
+
+                            ${
+                                thesisComplete
+                                ? "Complete"
+                                : "Pending"
+                            }
+
+                        </span>
+
+                    </td>
+
+
+                    <td>
+
+                        ${fileUploadButton(student)}
+
+                    </td>
+
+
+                    <td>
+
+                        <span
+                            class="badge ${
+                                overallComplete
+                                ? "complete"
+                                : "progress"
+                            }">
+
+                            ${
+                                overallComplete
+                                ? "Complete"
+                                : "Pending"
+                            }
+
+                        </span>
+
+                    </td>
+
+
+                    <td>
+
+                        <div
+                            style="
+                                display:flex;
+                                gap:5px;
+                                flex-wrap:wrap;
+                            ">
+
+                            <button
+                                class="edit-button"
+                                onclick="editStudent('${escapeAttribute(student.id)}')">
+
+                                Edit
+
+                            </button>
+
+                            <button
+                                class="archive-row-button"
+                                onclick="archiveStudent('${escapeAttribute(student.id)}')">
+
+                                Archive
+
+                            </button>
+
+                        </div>
+
+                    </td>
+
+                </tr>
+
+            `;
+
+        }).join("");
+
+
+    document.getElementById(
+        "selectAllCheckbox"
+    ).checked = false;
+
+}
+
+
+/* =========================================================
+   DASHBOARD
+========================================================= */
+
+function updateDashboard(){
+
+    const activeStudents =
+        students.filter(
+            student =>
+                !student.archived
+        );
+
+
+    const total =
+        activeStudents.length;
+
+
+    const files =
+        activeStudents.filter(student => {
+
+            const file =
+                studentFiles[
+                    String(student.id)
+                ];
+
+            return !!(
+                file &&
+                file.path
+            );
+
+        }).length;
+
+
+    const thesis =
+        activeStudents.filter(
+            student =>
+                student.thesis_status ===
+                "Complete"
+        ).length;
+
+
+    const overall =
+        activeStudents.filter(
+            student =>
+                student.overall_status ===
+                "Complete"
+        ).length;
+
+
+    document.getElementById(
+        "totalStudents"
+    ).textContent = total;
+
+
+    document.getElementById(
+        "filesComplete"
+    ).textContent = files;
+
+
+    document.getElementById(
+        "thesisComplete"
+    ).textContent = thesis;
+
+
+    document.getElementById(
+        "overallComplete"
+    ).textContent = overall;
+
+}
+
+
+/* =========================================================
+   SELECT ALL
+========================================================= */
+
+function toggleAllCheckboxes(master){
+
+    document
+        .querySelectorAll(".student-checkbox")
+        .forEach(checkbox => {
+
+            checkbox.checked =
+                master.checked;
+
+        });
+
+}
+
+
+function toggleSelectAll(){
+
+    const master =
+        document.getElementById(
+            "selectAllCheckbox"
+        );
+
+    master.checked =
+        !master.checked;
+
+    toggleAllCheckboxes(master);
+
+}
+
+
+/* =========================================================
+   GET SELECTED
+========================================================= */
+
+function getSelectedIds(){
+
+    return Array.from(
+        document.querySelectorAll(
+            ".student-checkbox:checked"
+        )
+    ).map(
+        checkbox =>
+            String(checkbox.value)
+    );
+
+}
+
+
+/* =========================================================
+   ARCHIVE SELECTED
+========================================================= */
+
+async function archiveSelected(){
+
+    const ids =
+        getSelectedIds();
+
+    if(ids.length === 0){
+
+        showToast(
+            "Please select at least one student."
+        );
 
         return;
 
     }
 
 
-    body.innerHTML =
-        visible.map(
-            student => {
+    if(
+        !confirm(
+            `Archive ${ids.length} selected student(s)?`
+        )
+    ){
 
-                const fileStatus =
-                    getFileStatus(
-                        student
-                    );
+        return;
 
-                const thesisStatus =
-                    student.thesis_status ||
-                    "Pending";
-
-                return `
-
-                    <tr>
-
-                        <td class="checkbox-cell">
-
-                            <input
-                                type="checkbox"
-                                class="student-checkbox"
-                                value="${escapeAttribute(
-                                    student.id
-                                )}">
-
-                        </td>
+    }
 
 
-                        <td>
+    students =
+        students.map(student => {
 
-                            <div class="student-name">
+            if(
+                ids.includes(
+                    String(student.id)
+                )
+            ){
 
-                                ${escapeHtml(
-                                    student.name
-                                )}
-
-                            </div>
-
-                        </td>
-
-
-                        <td>
-
-                            ${escapeHtml(
-                                student.group
-                            )}
-
-                        </td>
-
-
-                        <td>
-
-                            ${programBadge(
-                                student.program
-                            )}
-
-                        </td>
-
-
-                        <td>
-
-                            <div class="thesis-title">
-
-                                ${
-                                    student.thesis_title
-                                    ? escapeHtml(
-                                        student.thesis_title
-                                    )
-                                    : "No thesis title"
-                                }
-
-                            </div>
-
-                        </td>
-
-
-                        <td>
-
-                            <span class="badge ${
-                                thesisStatus ===
-                                "Complete"
-                                ? "complete"
-                                : "pending"
-                            }">
-
-                                ${escapeHtml(
-                                    thesisStatus
-                                )}
-
-                            </span>
-
-                        </td>
-
-
-                        <td>
-
-                            ${fileUploadButton(
-                                student
-                            )}
-
-                        </td>
-
-
-                        <td>
-
-                            ${getOverallStatus(
-                                student
-                            )}
-
-                        </td>
-
-
-                        <td>
-
-                            <div class="row-actions">
-
-                                <button
-                                    type="button"
-                                    class="row-button edit-button"
-                                    onclick="editStudent(
-                                        '${escapeAttribute(
-                                            student.id
-                                        )}'
-                                    )">
-
-                                    Edit
-
-                                </button>
-
-
-                                ${
-                                    student.archived
-                                    ? `
-
-                                        <button
-                                            type="button"
-                                            class="row-button restore-row-button"
-                                            onclick="restoreStudent(
-                                                '${escapeAttribute(
-                                                    student.id
-                                                )}'
-                                            )">
-
-                                            Restore
-
-                                        </button>
-
-                                    `
-                                    :
-                                    `
-
-                                        <button
-                                            type="button"
-                                            class="row-button archive-row-button"
-                                            onclick="archiveStudent(
-                                                '${escapeAttribute(
-                                                    student.id
-                                                )}'
-                                            )">
-
-                                            Archive
-
-                                        </button>
-
-                                    `
-                                }
-
-                            </div>
-
-                        </td>
-
-                    </tr>
-
-                `;
+                return {
+                    ...student,
+                    archived:true
+                };
 
             }
-        )
-        .join("");
+
+            return student;
+
+        });
+
+
+    saveLocalData();
+
+    renderTable();
 
     updateDashboard();
 
+
+    /*
+        Update Supabase.
+    */
+
+    try{
+
+        await supabaseClient
+            .from(TABLE_NAME)
+            .update({
+                archived:true
+            })
+            .in(
+                "id",
+                ids
+            );
+
+    }catch(error){
+
+        console.log(error);
+
+    }
+
+
+    showToast(
+        "Selected students archived."
+    );
+
 }
 
 
-/* =========================
-   DASHBOARD
-========================= */
+/* =========================================================
+   RESTORE SELECTED
+========================================================= */
 
-function updateDashboard(){
+async function restoreSelected(){
 
-    const active =
-        students.filter(
-            student =>
-                !student.archived
+    const ids =
+        getSelectedIds();
+
+    if(ids.length === 0){
+
+        showToast(
+            "Please select at least one student."
         );
 
-    const completeFiles =
-        active.filter(
-            student =>
-                getFileStatus(
-                    student
-                ) === "Complete"
-        ).length;
+        return;
 
-    const completeThesis =
-        active.filter(
-            student =>
-                (
-                    student.thesis_status ||
-                    "Pending"
-                ) === "Complete"
-        ).length;
+    }
 
-    const completeOverall =
-        active.filter(
-            student =>
-                getFileStatus(
-                    student
-                ) === "Complete"
-                &&
-                (
-                    student.thesis_status ||
-                    "Pending"
-                ) === "Complete"
-        ).length;
 
-    document.getElementById(
-        "totalStudents"
-    ).textContent =
-        active.length;
+    students =
+        students.map(student => {
 
-    document.getElementById(
-        "filesComplete"
-    ).textContent =
-        completeFiles;
+            if(
+                ids.includes(
+                    String(student.id)
+                )
+            ){
 
-    document.getElementById(
-        "thesisComplete"
-    ).textContent =
-        completeThesis;
+                return {
+                    ...student,
+                    archived:false
+                };
 
-    document.getElementById(
-        "overallComplete"
-    ).textContent =
-        completeOverall;
+            }
+
+            return student;
+
+        });
+
+
+    saveLocalData();
+
+    renderTable();
+
+    updateDashboard();
+
+
+    try{
+
+        await supabaseClient
+            .from(TABLE_NAME)
+            .update({
+                archived:false
+            })
+            .in(
+                "id",
+                ids
+            );
+
+    }catch(error){
+
+        console.log(error);
+
+    }
+
+
+    showToast(
+        "Selected students restored."
+    );
 
 }
 
 
-/* =========================
-   ADD STUDENT
-========================= */
+/* =========================================================
+   ARCHIVE ONE STUDENT
+========================================================= */
+
+async function archiveStudent(id){
+
+    if(
+        !confirm(
+            "Archive this student?"
+        )
+    ){
+
+        return;
+
+    }
+
+
+    students =
+        students.map(student => {
+
+            if(
+                String(student.id) ===
+                String(id)
+            ){
+
+                return {
+                    ...student,
+                    archived:true
+                };
+
+            }
+
+            return student;
+
+        });
+
+
+    saveLocalData();
+
+    renderTable();
+
+    updateDashboard();
+
+
+    try{
+
+        await supabaseClient
+            .from(TABLE_NAME)
+            .update({
+                archived:true
+            })
+            .eq(
+                "id",
+                id
+            );
+
+    }catch(error){
+
+        console.log(error);
+
+    }
+
+
+    showToast(
+        "Student archived."
+    );
+
+}
+
+
+/* =========================================================
+   OPEN ADD STUDENT
+========================================================= */
 
 function openStudentModal(){
 
-    editingStudentId =
-        null;
+    document.getElementById(
+        "studentForm"
+    ).reset();
 
     document.getElementById(
-        "studentModalTitle"
+        "studentId"
+    ).value = "";
+
+    document.getElementById(
+        "modalTitle"
     ).textContent =
         "Add Student";
 
-    document.getElementById(
-        "studentName"
-    ).value = "";
-
-    document.getElementById(
-        "studentGroup"
-    ).value =
-        currentGroup !== "All Groups"
-        ? currentGroup
-        : "TAGAYTAY GROUP";
-
-    document.getElementById(
-        "studentProgram"
-    ).value =
-        "MAEd";
-
-    document.getElementById(
-        "studentThesisStatus"
-    ).value =
-        "Pending";
-
-    document.getElementById(
-        "studentThesisTitle"
-    ).value = "";
 
     document.getElementById(
         "studentModal"
@@ -2392,9 +2650,22 @@ function openStudentModal(){
 }
 
 
-/* =========================
+/* =========================================================
+   CLOSE STUDENT MODAL
+========================================================= */
+
+function closeStudentModal(){
+
+    document.getElementById(
+        "studentModal"
+    ).classList.remove("show");
+
+}
+
+
+/* =========================================================
    EDIT STUDENT
-========================= */
+========================================================= */
 
 function editStudent(id){
 
@@ -2406,42 +2677,59 @@ function editStudent(id){
         );
 
     if(!student){
+
         return;
+
     }
 
-    editingStudentId =
-        student.id;
 
     document.getElementById(
-        "studentModalTitle"
-    ).textContent =
-        "Edit Student";
+        "studentId"
+    ).value =
+        student.id;
+
 
     document.getElementById(
         "studentName"
     ).value =
-        student.name || "";
+        student.name;
+
 
     document.getElementById(
         "studentGroup"
     ).value =
-        student.group || "TAGAYTAY GROUP";
+        student.group;
+
 
     document.getElementById(
         "studentProgram"
     ).value =
-        student.program || "MAEd";
+        student.program;
+
 
     document.getElementById(
         "studentThesisStatus"
     ).value =
-        student.thesis_status ||
-        "Pending";
+        student.thesis_status;
+
 
     document.getElementById(
         "studentThesisTitle"
     ).value =
-        student.thesis_title || "";
+        student.thesis_title;
+
+
+    document.getElementById(
+        "studentOverallStatus"
+    ).value =
+        student.overall_status;
+
+
+    document.getElementById(
+        "modalTitle"
+    ).textContent =
+        "Edit Student";
+
 
     document.getElementById(
         "studentModal"
@@ -2450,80 +2738,61 @@ function editStudent(id){
 }
 
 
-/* =========================
-   CLOSE STUDENT MODAL
-========================= */
-
-function closeStudentModal(){
-
-    document.getElementById(
-        "studentModal"
-    ).classList.remove("show");
-
-}
-
-
-/* =========================
+/* =========================================================
    SAVE STUDENT
-========================= */
+========================================================= */
 
-async function saveStudent(){
+async function saveStudent(event){
+
+    event.preventDefault();
+
+
+    const id =
+        document.getElementById(
+            "studentId"
+        ).value.trim();
+
 
     const name =
-        document
-            .getElementById(
-                "studentName"
-            )
-            .value
-            .trim();
+        document.getElementById(
+            "studentName"
+        ).value.trim();
+
 
     const group =
-        document
-            .getElementById(
-                "studentGroup"
-            )
-            .value;
+        document.getElementById(
+            "studentGroup"
+        ).value;
+
 
     const program =
-        document
-            .getElementById(
-                "studentProgram"
-            )
-            .value;
+        document.getElementById(
+            "studentProgram"
+        ).value;
+
 
     const thesisStatus =
-        document
-            .getElementById(
-                "studentThesisStatus"
-            )
-            .value;
+        document.getElementById(
+            "studentThesisStatus"
+        ).value;
+
 
     const thesisTitle =
-        document
-            .getElementById(
-                "studentThesisTitle"
-            )
-            .value
-            .trim();
+        document.getElementById(
+            "studentThesisTitle"
+        ).value.trim();
 
 
-    if(!name){
-
-        showToast(
-            "Please enter the student name."
-        );
-
-        return;
-
-    }
+    const overallStatus =
+        document.getElementById(
+            "studentOverallStatus"
+        ).value;
 
 
     const existingFile =
-        editingStudentId
-        ? studentFiles[
-            String(editingStudentId)
-        ]
-        : null;
+        studentFiles[
+            String(id)
+        ];
 
 
     const fileStatus =
@@ -2533,453 +2802,174 @@ async function saveStudent(){
         : "Not Yet Done";
 
 
-    if(editingStudentId){
+    const studentData = {
 
-        const index =
-            students.findIndex(
-                student =>
-                    String(student.id) ===
-                    String(editingStudentId)
+        name:name,
+
+        group:group,
+
+        program:program,
+
+        thesis_status:
+            thesisStatus,
+
+        overall_status:
+            overallStatus,
+
+        thesis_title:
+            thesisTitle,
+
+        file_status:
+            fileStatus,
+
+        archived:false
+
+    };
+
+
+    try{
+
+        if(id){
+
+            /*
+                UPDATE EXISTING
+            */
+
+            const index =
+                students.findIndex(
+                    student =>
+                        String(student.id) ===
+                        String(id)
+                );
+
+
+            if(index !== -1){
+
+                students[index] = {
+
+                    ...students[index],
+
+                    ...studentData
+
+                };
+
+            }
+
+
+            const {
+                error
+            } = await supabaseClient
+                .from(TABLE_NAME)
+                .update(studentData)
+                .eq("id",id);
+
+
+            if(error){
+
+                console.log(
+                    "Supabase update:",
+                    error
+                );
+
+            }
+
+
+            showToast(
+                "Student updated successfully."
             );
 
-        if(index !== -1){
 
-            students[index] = {
+        }else{
 
-                ...students[index],
+            /*
+                ADD NEW
+            */
 
-                name:name,
+            const newId =
+                Date.now().toString();
 
-                group:group,
 
-                program:program,
+            const newStudent = {
 
-                thesis_title:
-                    thesisTitle,
+                id:newId,
 
-                thesis_status:
-                    thesisStatus,
-
-                file_status:
-                    fileStatus
+                ...studentData
 
             };
 
-        }
 
-    }else{
-
-        const newStudent = {
-
-            id:
-                Date.now(),
-
-            name:name,
-
-            group:group,
-
-            program:program,
-
-            thesis_title:
-                thesisTitle,
-
-            thesis_status:
-                thesisStatus,
-
-            file_status:
-                fileStatus,
-
-            archived:false
-
-        };
-
-        students.push(
-            newStudent
-        );
-
-    }
+            students.push(
+                newStudent
+            );
 
 
-    saveLocal();
-
-    closeStudentModal();
-
-    renderTable();
-
-    showToast(
-        editingStudentId
-        ? "Student updated."
-        : "Student added."
-    );
-
-
-    try{
-
-        const student =
-            editingStudentId
-            ? students.find(
-                item =>
-                    String(item.id) ===
-                    String(editingStudentId)
-            )
-            : students[
-                students.length - 1
-            ];
-
-        if(student){
-
-            await supabaseClient
+            const {
+                error
+            } = await supabaseClient
                 .from(TABLE_NAME)
-                .upsert({
+                .insert([
+                    newStudent
+                ]);
 
-                    id:student.id,
 
-                    name:student.name,
+            if(error){
 
-                    group:student.group,
-
-                    program:student.program,
-
-                    thesis_title:
-                        student.thesis_title,
-
-                    thesis_status:
-                        student.thesis_status,
-
-                    file_status:
-                        student.file_status,
-
-                    archived:
-                        student.archived || false
-
-                });
-
-        }
-
-    }catch(error){
-
-        console.log(
-            "Supabase save error:",
-            error
-        );
-
-    }
-
-}
-
-
-/* =========================
-   ARCHIVE
-========================= */
-
-async function archiveStudent(id){
-
-    const student =
-        students.find(
-            item =>
-                String(item.id) ===
-                String(id)
-        );
-
-    if(!student){
-        return;
-    }
-
-    student.archived =
-        true;
-
-    saveLocal();
-
-    renderTable();
-
-    showToast(
-        "Student archived."
-    );
-
-    try{
-
-        await supabaseClient
-            .from(TABLE_NAME)
-            .update({
-                archived:true
-            })
-            .eq(
-                "id",
-                student.id
-            );
-
-    }catch(error){
-
-        console.log(error);
-
-    }
-
-}
-
-
-/* =========================
-   RESTORE
-========================= */
-
-async function restoreStudent(id){
-
-    const student =
-        students.find(
-            item =>
-                String(item.id) ===
-                String(id)
-        );
-
-    if(!student){
-        return;
-    }
-
-    student.archived =
-        false;
-
-    saveLocal();
-
-    renderTable();
-
-    showToast(
-        "Student restored."
-    );
-
-    try{
-
-        await supabaseClient
-            .from(TABLE_NAME)
-            .update({
-                archived:false
-            })
-            .eq(
-                "id",
-                student.id
-            );
-
-    }catch(error){
-
-        console.log(error);
-
-    }
-
-}
-
-
-/* =========================
-   SELECT ALL
-========================= */
-
-function selectAllVisible(){
-
-    const checkboxes =
-        document.querySelectorAll(
-            ".student-checkbox"
-        );
-
-    const allSelected =
-        Array.from(
-            checkboxes
-        ).every(
-            checkbox =>
-                checkbox.checked
-        );
-
-    checkboxes.forEach(
-        checkbox =>
-            checkbox.checked =
-                !allSelected
-    );
-
-    document.getElementById(
-        "selectAllCheckbox"
-    ).checked =
-        !allSelected;
-
-}
-
-
-function toggleAllVisible(
-    checked
-){
-
-    document
-        .querySelectorAll(
-            ".student-checkbox"
-        )
-        .forEach(
-            checkbox =>
-                checkbox.checked =
-                    checked
-        );
-
-}
-
-
-/* =========================
-   GET SELECTED
-========================= */
-
-function getSelectedIds(){
-
-    return Array
-        .from(
-            document.querySelectorAll(
-                ".student-checkbox:checked"
-            )
-        )
-        .map(
-            checkbox =>
-                checkbox.value
-        );
-
-}
-
-
-/* =========================
-   ARCHIVE SELECTED
-========================= */
-
-async function archiveSelected(){
-
-    const ids =
-        getSelectedIds();
-
-    if(!ids.length){
-
-        showToast(
-            "Please select at least one student."
-        );
-
-        return;
-
-    }
-
-    ids.forEach(
-        id => {
-
-            const student =
-                students.find(
-                    item =>
-                        String(item.id) ===
-                        String(id)
+                console.log(
+                    "Supabase insert:",
+                    error
                 );
 
-            if(student){
-                student.archived = true;
             }
 
-        }
-    );
 
-    saveLocal();
-
-    renderTable();
-
-    showToast(
-        `${ids.length} student(s) archived.`
-    );
-
-
-    try{
-
-        await supabaseClient
-            .from(TABLE_NAME)
-            .update({
-                archived:true
-            })
-            .in(
-                "id",
-                ids
+            showToast(
+                "Student added successfully."
             );
+
+        }
+
+
+        saveLocalData();
+
+        closeStudentModal();
+
+        renderTable();
+
+        updateDashboard();
+
 
     }catch(error){
 
-        console.log(error);
-
-    }
-
-}
-
-
-/* =========================
-   RESTORE SELECTED
-========================= */
-
-async function restoreSelected(){
-
-    const ids =
-        getSelectedIds();
-
-    if(!ids.length){
+        console.error(error);
 
         showToast(
-            "Please select at least one student."
+            "Saved locally."
         );
 
-        return;
+        saveLocalData();
 
-    }
+        closeStudentModal();
 
-    ids.forEach(
-        id => {
+        renderTable();
 
-            const student =
-                students.find(
-                    item =>
-                        String(item.id) ===
-                        String(id)
-                );
-
-            if(student){
-                student.archived = false;
-            }
-
-        }
-    );
-
-    saveLocal();
-
-    renderTable();
-
-    showToast(
-        `${ids.length} student(s) restored.`
-    );
-
-
-    try{
-
-        await supabaseClient
-            .from(TABLE_NAME)
-            .update({
-                archived:false
-            })
-            .in(
-                "id",
-                ids
-            );
-
-    }catch(error){
-
-        console.log(error);
+        updateDashboard();
 
     }
 
 }
 
 
-/* =========================
-   VIEW FILE
-========================= */
+/* =========================================================
+   VIEW STUDENT FILE
+========================================================= */
 
-async function viewStudentFile(
-    id
-){
+async function viewStudentFile(id){
 
     const file =
         studentFiles[
             String(id)
         ];
+
 
     if(
         !file ||
@@ -2987,41 +2977,12 @@ async function viewStudentFile(
     ){
 
         showToast(
-            "No file uploaded."
+            "No uploaded file found."
         );
 
         return;
 
     }
-
-    const preview =
-        document.getElementById(
-            "filePreview"
-        );
-
-    const title =
-        document.getElementById(
-            "fileModalTitle"
-        );
-
-
-    title.textContent =
-        file.name ||
-        "File Preview";
-
-
-    preview.innerHTML = `
-
-        <div class="file-message">
-            Loading file...
-        </div>
-
-    `;
-
-
-    document.getElementById(
-        "fileModal"
-    ).classList.add("show");
 
 
     try{
@@ -3030,9 +2991,17 @@ async function viewStudentFile(
             file.url || "";
 
 
+        /*
+            Create a fresh signed URL
+            when necessary.
+        */
+
         if(!signedUrl){
 
-            const result =
+            const {
+                data,
+                error
+            } =
                 await supabaseClient
                     .storage
                     .from(BUCKET_NAME)
@@ -3041,59 +3010,85 @@ async function viewStudentFile(
                         3600
                     );
 
-            if(result.error){
 
-                throw result.error;
+            if(error){
+
+                throw error;
 
             }
 
+
             signedUrl =
-                result.data.signedUrl;
+                data.signedUrl;
 
         }
 
 
-        const lowerName =
+        document.getElementById(
+            "fileModalTitle"
+        ).textContent =
+            file.name || "File";
+
+
+        document.getElementById(
+            "openFileButton"
+        ).href =
+            signedUrl;
+
+
+        document.getElementById(
+            "downloadFileButton"
+        ).href =
+            signedUrl;
+
+
+        const preview =
+            document.getElementById(
+                "filePreview"
+            );
+
+
+        const type =
             String(
-                file.name || ""
-            )
-            .toLowerCase();
+                file.type || ""
+            ).toLowerCase();
 
 
         if(
-            lowerName.endsWith(".pdf")
+            type.includes("pdf") ||
+            /\.pdf$/i.test(file.name || "")
         ){
 
             preview.innerHTML = `
 
                 <iframe
-                    src="${escapeAttribute(
-                        signedUrl
-                    )}">
+                    src="${signedUrl}">
                 </iframe>
 
             `;
 
         }else if(
-
-            lowerName.endsWith(".jpg")
-            ||
-            lowerName.endsWith(".jpeg")
-            ||
-            lowerName.endsWith(".png")
-            ||
-            lowerName.endsWith(".gif")
-            ||
-            lowerName.endsWith(".webp")
-
+            type.startsWith("image/")
         ){
 
             preview.innerHTML = `
 
                 <img
-                    src="${escapeAttribute(
-                        signedUrl
-                    )}"
+                    src="${signedUrl}"
+                    alt="Uploaded file">
+
+            `;
+
+        }else if(
+            /\.(jpg|jpeg|png|gif|webp)$/i.test(
+                file.name || ""
+            )
+        ){
+
+            preview.innerHTML = `
+
+                <img
+                    src="${signedUrl}"
                     alt="Uploaded file">
 
             `;
@@ -3102,22 +3097,16 @@ async function viewStudentFile(
 
             preview.innerHTML = `
 
-                <div class="file-message">
+                <div class="no-preview">
 
-                    File preview is not available
-                    for this file type.
+                    <h3>
+                        Preview not available
+                    </h3>
 
-                    <br><br>
-
-                    <a
-                        href="${escapeAttribute(
-                            signedUrl
-                        )}"
-                        target="_blank">
-
-                        Open File
-
-                    </a>
+                    <p>
+                        Use the Open or Download button
+                        to access this file.
+                    </p>
 
                 </div>
 
@@ -3126,28 +3115,30 @@ async function viewStudentFile(
         }
 
 
+        document.getElementById(
+            "fileModal"
+        ).classList.add("show");
+
+
     }catch(error){
 
-        console.error(error);
+        console.error(
+            "File view error:",
+            error
+        );
 
-        preview.innerHTML = `
-
-            <div class="file-message">
-
-                Unable to preview this file.
-
-            </div>
-
-        `;
+        showToast(
+            "Unable to open this file."
+        );
 
     }
 
 }
 
 
-/* =========================
+/* =========================================================
    CLOSE FILE MODAL
-========================= */
+========================================================= */
 
 function closeFileModal(){
 
@@ -3162,15 +3153,14 @@ function closeFileModal(){
 }
 
 
-/* =========================
+/* =========================================================
    TOAST
-========================= */
+========================================================= */
 
 let toastTimer = null;
 
-function showToast(
-    message
-){
+
+function showToast(message){
 
     const toast =
         document.getElementById(
@@ -3184,9 +3174,11 @@ function showToast(
         "show"
     );
 
+
     clearTimeout(
         toastTimer
     );
+
 
     toastTimer =
         setTimeout(
@@ -3203,159 +3195,312 @@ function showToast(
 }
 
 
-/* =========================
-   ESCAPE HTML
-========================= */
+/* =========================================================
+   CLOSE MODALS WHEN CLICKING OUTSIDE
+========================================================= */
 
-function escapeHtml(
-    value
-){
+window.addEventListener(
+    "click",
+    function(event){
 
-    return String(
-        value ?? ""
-    )
-    .replace(
-        /&/g,
-        "&amp;"
-    )
-    .replace(
-        /</g,
-        "&lt;"
-    )
-    .replace(
-        />/g,
-        "&gt;"
-    )
-    .replace(
-        /"/g,
-        "&quot;"
-    )
-    .replace(
-        /'/g,
-        "&#039;"
+        const studentModal =
+            document.getElementById(
+                "studentModal"
+            );
+
+        const fileModal =
+            document.getElementById(
+                "fileModal"
+            );
+
+
+        if(
+            event.target ===
+            studentModal
+        ){
+
+            closeStudentModal();
+
+        }
+
+
+        if(
+            event.target ===
+            fileModal
+        ){
+
+            closeFileModal();
+
+        }
+
+    }
+);
+
+
+/* =========================================================
+   ESC KEY
+========================================================= */
+
+document.addEventListener(
+    "keydown",
+    function(event){
+
+        if(
+            event.key === "Escape"
+        ){
+
+            closeStudentModal();
+
+            closeFileModal();
+
+        }
+
+    }
+);
+
+
+/* =========================================================
+   TEST SUPABASE STORAGE
+========================================================= */
+
+async function testStudentFilesBucket(){
+
+    try{
+
+        const {
+            data,
+            error
+        } =
+            await supabaseClient
+                .storage
+                .listBuckets();
+
+
+        if(error){
+
+            console.error(
+                "Storage error:",
+                error
+            );
+
+            showToast(
+                "Storage connection failed."
+            );
+
+            return;
+
+        }
+
+
+        const bucket =
+            data.find(
+                item =>
+                    item.name ===
+                    BUCKET_NAME
+            );
+
+
+        if(bucket){
+
+            showToast(
+                "student-files bucket is connected."
+            );
+
+        }else{
+
+            showToast(
+                "student-files bucket not found."
+            );
+
+        }
+
+    }catch(error){
+
+        console.error(error);
+
+        showToast(
+            "Storage test failed."
+        );
+
+    }
+
+}
+
+
+/* =========================================================
+   MANUAL REFRESH
+========================================================= */
+
+async function refreshData(){
+
+    await loadData();
+
+    showToast(
+        "Data refreshed."
     );
 
 }
 
 
-function escapeAttribute(
-    value
-){
+/* =========================================================
+   UPDATE FILE STATUS FROM EXISTING FILES
+========================================================= */
 
-    return String(
-        value ?? ""
-    )
-    .replace(
-        /&/g,
-        "&amp;"
-    )
-    .replace(
-        /"/g,
-        "&quot;"
-    )
-    .replace(
-        /'/g,
-        "&#039;"
-    )
-    .replace(
-        /</g,
-        "&lt;"
-    )
-    .replace(
-        />/g,
-        "&gt;"
-    );
+function getFileStatus(student){
+
+    const file =
+        studentFiles[
+            String(student.id)
+        ];
+
+    if(
+        file &&
+        file.path
+    ){
+
+        return "Complete";
+
+    }
+
+    return "Not Yet Done";
 
 }
 
 
-/* =========================
-   MODAL CLICK OUTSIDE
-========================= */
+/* =========================================================
+   FILE FILTER SELECT-ALL SUPPORT
+========================================================= */
 
-document
-    .getElementById(
-        "studentModal"
-    )
-    .addEventListener(
-        "click",
-        function(event){
+function getVisibleStudents(){
+
+    const search =
+        document.getElementById(
+            "searchInput"
+        )?.value
+        .trim()
+        .toLowerCase() || "";
+
+
+    const program =
+        document.getElementById(
+            "programFilter"
+        )?.value || "ALL";
+
+
+    const fileFilter =
+        document.getElementById(
+            "fileFilter"
+        )?.value || "ALL";
+
+
+    const thesisFilter =
+        document.getElementById(
+            "thesisFilter"
+        )?.value || "ALL";
+
+
+    return students.filter(student => {
+
+        if(student.archived){
+            return false;
+        }
+
+
+        if(
+            selectedGroup !== "ALL" &&
+            student.group !== selectedGroup
+        ){
+
+            return false;
+
+        }
+
+
+        if(
+            program !== "ALL" &&
+            student.program !== program
+        ){
+
+            return false;
+
+        }
+
+
+        const actualFileStatus =
+            getFileStatus(student);
+
+
+        if(
+            fileFilter !== "ALL" &&
+            actualFileStatus !== fileFilter
+        ){
+
+            return false;
+
+        }
+
+
+        if(
+            thesisFilter !== "ALL" &&
+            student.thesis_status !== thesisFilter
+        ){
+
+            return false;
+
+        }
+
+
+        if(search){
+
+            const name =
+                String(
+                    student.name || ""
+                ).toLowerCase();
+
+            const title =
+                String(
+                    student.thesis_title || ""
+                ).toLowerCase();
+
 
             if(
-                event.target === this
+                !name.includes(search) &&
+                !title.includes(search)
             ){
 
-                closeStudentModal();
+                return false;
 
             }
 
         }
-    );
 
 
-document
-    .getElementById(
-        "fileModal"
-    )
-    .addEventListener(
-        "click",
-        function(event){
+        return true;
 
-            if(
-                event.target === this
-            ){
+    });
 
-                closeFileModal();
-
-            }
-
-        }
-    );
+}
 
 
-/* =========================
-   ENTER LOGIN
-========================= */
-
-document
-    .getElementById(
-        "loginPassword"
-    )
-    .addEventListener(
-        "keydown",
-        function(event){
-
-            if(
-                event.key === "Enter"
-            ){
-
-                login();
-
-            }
-
-        }
-    );
-
-
-/* =========================
-   START
-========================= */
+/* =========================================================
+   FINAL INITIAL RENDER
+========================================================= */
 
 if(
     sessionStorage.getItem(
-        LOGIN_KEY
+        "graduateTrackerLoggedIn"
     ) === "true"
 ){
 
-    showApp();
+    document.getElementById(
+        "loginScreen"
+    ).style.display =
+        "none";
 
-}else{
-
-    document
-        .getElementById(
-            "loginScreen"
-        )
-        .style.display = "flex";
+    document.getElementById(
+        "app"
+    ).style.display =
+        "block";
 
 }
 
