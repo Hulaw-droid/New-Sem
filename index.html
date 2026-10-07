@@ -670,6 +670,22 @@ tr:hover{
     white-space:nowrap;
 }
 
+.student-type{
+    background:#f1f4f7;
+    color:#39424e;
+    padding:5px 8px;
+    border-radius:5px;
+    font-size:10px;
+    font-weight:bold;
+    white-space:nowrap;
+}
+
+.created-date{
+    white-space:nowrap;
+    color:#555;
+    font-size:10px;
+}
+
 /* =====================================================
    STATUS DROPDOWNS
 ===================================================== */
@@ -1452,6 +1468,10 @@ tr:hover{
 
                         <th>Program</th>
 
+                        <th>Advance / Regular</th>
+
+                        <th>Created Date</th>
+
                         <th>Tuition Fee</th>
 
                         <th>Grad Fee</th>
@@ -1547,6 +1567,36 @@ tr:hover{
                 <option value="MSCJ">MSCJ</option>
 
             </select>
+
+        </div>
+
+        <div class="form-group">
+
+            <label>Advance / Regular</label>
+
+            <select id="studentType">
+
+                <option value="Regular">
+                    Regular
+                </option>
+
+                <option value="Advance">
+                    Advance
+                </option>
+
+            </select>
+
+        </div>
+
+        <div class="form-group">
+
+            <label>Created Date</label>
+
+            <input
+                type="date"
+                id="studentCreatedDate"
+                readonly
+            >
 
         </div>
 
@@ -3338,6 +3388,25 @@ function renderTable(){
 
                     <td>
 
+                        <span class="student-type">
+                            ${escapeHtml(
+                                student.student_type ||
+                                "Regular"
+                            )}
+                        </span>
+
+                    </td>
+
+                    <td class="created-date">
+
+                        ${escapeHtml(
+                            formatCreatedDate(student)
+                        )}
+
+                    </td>
+
+                    <td>
+
                         ${fileUploadButton(
                             student
                         )}
@@ -4299,6 +4368,89 @@ function updateSidebarCounts(){
 }
 
 /* =====================================================
+   CREATED DATE / STUDENT TYPE
+===================================================== */
+
+function getTodayDate(){
+
+    const now = new Date();
+
+    const year = now.getFullYear();
+
+    const month = String(
+        now.getMonth() + 1
+    ).padStart(2,"0");
+
+    const day = String(
+        now.getDate()
+    ).padStart(2,"0");
+
+    return year + "-" + month + "-" + day;
+
+}
+
+function getCreatedDateValue(student){
+
+    if(student.created_date){
+
+        return String(
+            student.created_date
+        ).substring(0,10);
+
+    }
+
+    if(student.created_at){
+
+        return String(
+            student.created_at
+        ).substring(0,10);
+
+    }
+
+    return getTodayDate();
+
+}
+
+function getCreatedDateForSave(id){
+
+    const student =
+        students.find(
+            s =>
+                String(s.id) ===
+                String(id)
+        );
+
+    return student
+        ? getCreatedDateValue(student)
+        : getTodayDate();
+
+}
+
+function formatCreatedDate(student){
+
+    const value =
+        getCreatedDateValue(student);
+
+    if(!value){
+
+        return "-";
+
+    }
+
+    const parts =
+        value.split("-");
+
+    if(parts.length === 3){
+
+        return parts[1] + "/" + parts[2] + "/" + parts[0];
+
+    }
+
+    return value;
+
+}
+
+/* =====================================================
    ADD MODAL
 ===================================================== */
 
@@ -4330,6 +4482,16 @@ function openAddModal(){
         "studentProgram"
     ).value =
         "MAEd";
+
+    document.getElementById(
+        "studentType"
+    ).value =
+        "Regular";
+
+    document.getElementById(
+        "studentCreatedDate"
+    ).value =
+        getTodayDate();
 
     document.getElementById(
         "studentFileStatus"
@@ -4404,6 +4566,17 @@ function editStudent(id){
     ).value =
         student.program ||
         "MAEd";
+
+    document.getElementById(
+        "studentType"
+    ).value =
+        student.student_type ||
+        "Regular";
+
+    document.getElementById(
+        "studentCreatedDate"
+    ).value =
+        getCreatedDateValue(student);
 
     document.getElementById(
         "studentFileStatus"
@@ -4501,6 +4674,16 @@ async function saveStudent(){
             document.getElementById(
                 "studentProgram"
             ).value,
+
+        student_type:
+            document.getElementById(
+                "studentType"
+            ).value,
+
+        created_date:
+            id
+            ? getCreatedDateForSave(id)
+            : getTodayDate(),
 
         file_status:
             document.getElementById(
