@@ -717,9 +717,9 @@ tr:hover{
 
 .file-status-select.pending-select,
 .table-status-select.pending-select{
-    background:#eef1f4;
-    color:#555;
-    border:1px solid #d5dadd;
+    background:#f8d7da;
+    color:#842029;
+    border:1px solid #f1aeb5;
 }
 
 /* =====================================================
@@ -1281,7 +1281,7 @@ tr:hover{
         <div class="card">
 
             <h3>
-                Files Complete
+                Tuition Fee Paid
             </h3>
 
             <div
@@ -1296,7 +1296,7 @@ tr:hover{
         <div class="card">
 
             <h3>
-                Thesis Complete
+                Grad Fee Paid
             </h3>
 
             <div
@@ -1357,18 +1357,18 @@ tr:hover{
                 id="fileFilter"
                 onchange="renderTable()"
             >
-                <option value="ALL">All File Status</option>
-                <option value="Complete">Complete</option>
-                <option value="Not Yet Done">Not Yet Done</option>
+                <option value="ALL">All Tuition Fee Status</option>
+                <option value="Paid">Paid</option>
+                <option value="Not Yet Paid">Not Yet Paid</option>
             </select>
 
             <select
                 id="thesisFilter"
                 onchange="renderTable()"
             >
-                <option value="ALL">All Thesis Status</option>
-                <option value="Complete">Complete</option>
-                <option value="Not Yet Done">Not Yet Done</option>
+                <option value="ALL">All Grad Fee Status</option>
+                <option value="Paid">Paid</option>
+                <option value="Not Yet Paid">Not Yet Paid</option>
             </select>
 
             <button
@@ -1452,9 +1452,9 @@ tr:hover{
 
                         <th>Program</th>
 
-                        <th>Files</th>
+                        <th>Tuition Fee</th>
 
-                        <th>Thesis</th>
+                        <th>Grad Fee</th>
 
                         <th>Overall</th>
 
@@ -1550,40 +1550,40 @@ tr:hover{
 
         </div>
 
-        <!-- FILE STATUS DROPDOWN -->
+        <!-- TUITION FEE STATUS DROPDOWN -->
 
         <div class="form-group">
 
-            <label>File Status</label>
+            <label>Tuition Fee</label>
 
             <select id="studentFileStatus">
 
-                <option value="Not Yet Done">
-                    Not Yet Done
+                <option value="Not Yet Paid">
+                    Not Yet Paid
                 </option>
 
-                <option value="Complete">
-                    Complete
+                <option value="Paid">
+                    Paid
                 </option>
 
             </select>
 
         </div>
 
-        <!-- THESIS STATUS DROPDOWN -->
+        <!-- GRAD FEE STATUS DROPDOWN -->
 
         <div class="form-group">
 
-            <label>Thesis Status</label>
+            <label>Grad Fee</label>
 
             <select id="studentThesisStatus">
 
-                <option value="Not Yet Done">
-                    Not Yet Done
+                <option value="Not Yet Paid">
+                    Not Yet Paid
                 </option>
 
-                <option value="Complete">
-                    Complete
+                <option value="Paid">
+                    Paid
                 </option>
 
             </select>
@@ -2023,17 +2023,17 @@ function saveStudentFiles(){
 
 function getFileStatus(student){
 
-    return student.file_status === "Complete"
-        ? "Complete"
-        : "Not Yet Done";
+    return student.file_status === "Paid"
+        ? "Paid"
+        : "Not Yet Paid";
 
 }
 
 function getThesisStatus(student){
 
-    return student.thesis_status === "Complete"
-        ? "Complete"
-        : "Not Yet Done";
+    return student.thesis_status === "Paid"
+        ? "Paid"
+        : "Not Yet Paid";
 
 }
 
@@ -2059,6 +2059,7 @@ function statusSelect(
         escapeAttribute(id);
 
     const selectClass =
+        status === "Paid" ||
         status === "Complete"
         ? "complete-select"
         : "pending-select";
@@ -2082,6 +2083,16 @@ function statusSelect(
 
     }
 
+    const firstOption =
+        type === "overall"
+        ? "Complete"
+        : "Paid";
+
+    const secondOption =
+        type === "overall"
+        ? "Not Yet Done"
+        : "Not Yet Paid";
+
     return `
 
         <select
@@ -2091,17 +2102,17 @@ function statusSelect(
         >
 
             <option
-                value="Complete"
-                ${status === "Complete" ? "selected" : ""}
+                value="${firstOption}"
+                ${status === firstOption ? "selected" : ""}
             >
-                Complete
+                ${firstOption}
             </option>
 
             <option
-                value="Not Yet Done"
-                ${status === "Not Yet Done" ? "selected" : ""}
+                value="${secondOption}"
+                ${status === secondOption ? "selected" : ""}
             >
-                Not Yet Done
+                ${secondOption}
             </option>
 
         </select>
@@ -2162,14 +2173,14 @@ function fileUploadButton(student){
 }
 
 /* =====================================================
-   UPDATE FILE STATUS
+   UPDATE TUITION FEE STATUS
 ===================================================== */
 
 async function updateFileStatus(id,status){
 
     if(
-        status !== "Complete" &&
-        status !== "Not Yet Done"
+        status !== "Paid" &&
+        status !== "Not Yet Paid"
     ){
 
         return;
@@ -2180,20 +2191,20 @@ async function updateFileStatus(id,status){
         id,
         "file_status",
         status,
-        "Files Status"
+        "Tuition Fee Status"
     );
 
 }
 
 /* =====================================================
-   UPDATE THESIS STATUS
+   UPDATE GRAD FEE STATUS
 ===================================================== */
 
 async function updateThesisStatus(id,status){
 
     if(
-        status !== "Complete" &&
-        status !== "Not Yet Done"
+        status !== "Paid" &&
+        status !== "Not Yet Paid"
     ){
 
         return;
@@ -2204,7 +2215,7 @@ async function updateThesisStatus(id,status){
         id,
         "thesis_status",
         status,
-        "Thesis Status"
+        "Grad Fee Status"
     );
 
 }
@@ -2478,7 +2489,7 @@ async function uploadStudentFile(id){
                 };
 
                 student.file_status =
-                    "Complete";
+                    "Paid";
 
                 saveStudentFiles();
 
@@ -2496,7 +2507,7 @@ async function uploadStudentFile(id){
                         await supabaseClient
                             .from("students")
                             .update({
-                                file_status:"Complete"
+                                file_status:"Paid"
                             })
                             .eq(
                                 "id",
@@ -2506,7 +2517,7 @@ async function uploadStudentFile(id){
                     if(error){
 
                         console.log(
-                            "File status update failed:",
+                            "Tuition fee status update failed:",
                             error
                         );
 
@@ -4151,7 +4162,7 @@ function statusBadge(status){
     let cls =
         "pending";
 
-    if(status === "Complete"){
+    if(status === "Complete" || status === "Paid"){
 
         cls =
             "complete";
@@ -4210,7 +4221,7 @@ function updateDashboard(){
         data.filter(
             s =>
                 getFileStatus(s) ===
-                "Complete"
+                "Paid"
         ).length;
 
     document.getElementById(
@@ -4219,7 +4230,7 @@ function updateDashboard(){
         data.filter(
             s =>
                 getThesisStatus(s) ===
-                "Complete"
+                "Paid"
         ).length;
 
     document.getElementById(
@@ -4323,12 +4334,12 @@ function openAddModal(){
     document.getElementById(
         "studentFileStatus"
     ).value =
-        "Not Yet Done";
+        "Not Yet Paid";
 
     document.getElementById(
         "studentThesisStatus"
     ).value =
-        "Not Yet Done";
+        "Not Yet Paid";
 
     document.getElementById(
         "studentOverallStatus"
@@ -4444,6 +4455,32 @@ async function saveStudent(){
 
         showMessage(
             "Please enter the student name.",
+            "error"
+        );
+
+        return;
+
+    }
+
+    /* =================================================
+       DUPLICATE NAME CHECK
+    ================================================= */
+
+    const duplicate =
+        students.some(
+            student =>
+                String(student.name || "")
+                    .trim()
+                    .toLowerCase() ===
+                name.toLowerCase() &&
+                String(student.id) !==
+                String(id)
+        );
+
+    if(duplicate){
+
+        showMessage(
+            "Student name already exists.",
             "error"
         );
 
