@@ -1909,7 +1909,22 @@ document.addEventListener(
 
         updateConnection();
 
-        await loadData();
+        /*
+         * IMPORTANT:
+         * Load local data FIRST.
+         * This prevents the table from becoming empty
+         * while Supabase is loading.
+         */
+        loadLocalData();
+
+        /*
+         * Then synchronize with Supabase.
+         */
+        if(navigator.onLine){
+
+            await loadOnlineData();
+
+        }
 
         window.addEventListener(
             "online",
@@ -2000,13 +2015,15 @@ function updateConnection(){
 
 async function loadData(){
 
+    /*
+     * Always show the saved local data first.
+     * This prevents an empty screen during refresh.
+     */
+    loadLocalData();
+
     if(navigator.onLine){
 
         await loadOnlineData();
-
-    }else{
-
-        loadLocalData();
 
     }
 
@@ -2040,9 +2057,17 @@ async function loadOnlineData(){
 
         }
 
+        /*
+         * Supabase is the main/shared database.
+         * Once the request succeeds, use its data.
+         */
         students =
             data || [];
 
+        /*
+         * Save the successful database result locally.
+         * This makes refresh/offline mode work.
+         */
         saveLocalData();
 
         selectedIds.clear();
@@ -2051,7 +2076,48 @@ async function loadOnlineData(){
 
         updateSidebarCounts();
 
+        /*
+         * Synchronize any changes that were waiting
+         * while the browser was offline.
+         */
         await syncPendingChanges();
+
+        /*
+         * Load one more time after pending changes
+         * have synchronized.
+         */
+        if(pendingChanges.length === 0){
+
+            const {
+                data:latestData,
+                error:latestError
+            } =
+                await supabaseClient
+                    .from("students")
+                    .select("*")
+                    .order(
+                        "name",
+                        {
+                            ascending:true
+                        }
+                    );
+
+            if(!latestError){
+
+                students =
+                    latestData || [];
+
+                saveLocalData();
+
+                selectedIds.clear();
+
+                renderTable();
+
+                updateSidebarCounts();
+
+            }
+
+        }
 
     }catch(error){
 
@@ -2060,10 +2126,15 @@ async function loadOnlineData(){
             error
         );
 
+        /*
+         * IMPORTANT:
+         * If Supabase cannot be reached, NEVER clear
+         * the current records. Keep the local records.
+         */
         loadLocalData();
 
         showMessage(
-            "Internet connection failed. Using offline data.",
+            "Internet connection failed. Using saved offline data.",
             "error"
         );
 
@@ -2079,16 +2150,31 @@ function loadLocalData(){
 
     try{
 
-        students =
-            JSON.parse(
-                localStorage.getItem(
-                    LOCAL_KEY
-                ) || "[]"
+        const saved =
+            localStorage.getItem(
+                LOCAL_KEY
             );
+
+        if(saved){
+
+            const parsed =
+                JSON.parse(saved);
+
+            if(Array.isArray(parsed)){
+
+                students =
+                    parsed;
+
+            }
+
+        }
 
     }catch(error){
 
-        students = [];
+        console.log(
+            "Local data loading failed:",
+            error
+        );
 
     }
 
@@ -2104,10 +2190,21 @@ function loadLocalData(){
 
 function saveLocalData(){
 
-    localStorage.setItem(
-        LOCAL_KEY,
-        JSON.stringify(students)
-    );
+    try{
+
+        localStorage.setItem(
+            LOCAL_KEY,
+            JSON.stringify(students)
+        );
+
+    }catch(error){
+
+        console.log(
+            "Could not save local data:",
+            error
+        );
+
+    }
 
 }
 
@@ -2929,6 +3026,10 @@ function addPendingChange(change){
 
 }
 
+/* =====================================================
+   SYNC PENDING CHANGES
+===================================================== */
+
 async function syncPendingChanges(){
 
     if(
@@ -2955,17 +3056,63 @@ async function syncPendingChanges(){
             ){
 
                 const {
+                    data:inserted,
                     error
                 } =
                     await supabaseClient
                         .from("students")
                         .insert([
                             change.data
-                        ]);
+                        ])
+                        .select()
+                        .single();
 
                 if(error){
 
                     throw error;
+
+                }
+
+                /*
+                 * Replace the temporary offline record
+                 * with the real Supabase record.
+                 */
+                const temporaryIndex =
+                    students.findIndex(
+                        s =>
+                            s.id ===
+                            change.tempId
+                    );
+
+                if(
+                    temporaryIndex !== -1 &&
+                    inserted
+                ){
+
+                    students[
+                        temporaryIndex
+                    ] =
+                        inserted;
+
+                }else if(inserted){
+
+                    /*
+                     * Prevent duplicate records.
+                     */
+                    const alreadyExists =
+                        students.some(
+                            s =>
+                                String(s.id) ===
+                                String(inserted.id)
+                        );
+
+                    if(!alreadyExists){
+
+                        students.push(
+                            inserted
+                        );
+
+                    }
 
                 }
 
@@ -2997,6 +3144,11 @@ async function syncPendingChanges(){
 
         }catch(error){
 
+            console.log(
+                "Pending sync failed:",
+                error
+            );
+
             remaining.push(
                 change
             );
@@ -3009,6 +3161,8 @@ async function syncPendingChanges(){
         remaining;
 
     savePending();
+
+    saveLocalData();
 
 }
 
@@ -5004,12 +5158,14 @@ async function saveStudent(){
 
                 type:"insert",
 
+                tempId:temporaryId,
+
                 data:data
 
             });
 
             showMessage(
-                "Saved offline. It will sync when internet returns.",
+                "Saved locally. It will sync when internet returns.",
                 "success"
             );
 
@@ -5020,6 +5176,8 @@ async function saveStudent(){
         addPendingChange({
 
             type:"insert",
+
+            tempId:temporaryId,
 
             data:data
 
