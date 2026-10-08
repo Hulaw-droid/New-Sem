@@ -1311,12 +1311,12 @@ tr:hover{
         <div class="card">
 
             <h3>
-                Overall Complete
+                Files Complete
             </h3>
 
             <div
                 class="number"
-                id="overallComplete"
+                id="FilesComplete"
             >
                 0
             </div>
@@ -1456,7 +1456,7 @@ tr:hover{
 
                         <th>Grad Fee</th>
 
-                        <th>Overall</th>
+                        <th>Files</th>
 
                         <th>Thesis Title</th>
 
@@ -1590,13 +1590,13 @@ tr:hover{
 
         </div>
 
-        <!-- OVERALL STATUS DROPDOWN -->
+        <!-- Files STATUS DROPDOWN -->
 
         <div class="form-group">
 
-            <label>Overall Status</label>
+            <label>Files Status</label>
 
-            <select id="studentOverallStatus">
+            <select id="studentFilesStatus">
 
                 <option value="Not Yet Done">
                     Not Yet Done
@@ -1891,7 +1891,7 @@ async function loadOnlineData(){
 
     try{
 
-        /* First sync pending offline changes. */
+        /* First try to send every saved local change to Supabase. */
         await syncPendingChanges();
 
         const { data, error } =
@@ -1904,13 +1904,80 @@ async function loadOnlineData(){
             throw error;
         }
 
-        /* Only replace local data after a successful Supabase response. */
         if(Array.isArray(data)){
-            students = data;
+
+            /*
+               IMPORTANT:
+               Never blindly do: students = data
+               because an unsynced local student/update can still exist.
+               Keep those local records until their pending operation succeeds.
+            */
+            const pendingInserts =
+                pendingChanges.filter(c => c.type === "insert");
+
+            const pendingUpdates =
+                pendingChanges.filter(c => c.type === "update");
+
+            const serverStudents = [...data];
+
+            /* Keep local unsynced inserts. */
+            pendingInserts.forEach(change => {
+
+                const tempId =
+                    change.tempId ||
+                    (change.data && change.data.id);
+
+                if(!tempId){
+                    return;
+                }
+
+                const localStudent =
+                    students.find(s =>
+                        String(s.id) === String(tempId)
+                    );
+
+                if(localStudent){
+                    const alreadyThere =
+                        serverStudents.some(s =>
+                            String(s.id) === String(localStudent.id)
+                        );
+
+                    if(!alreadyThere){
+                        serverStudents.push(localStudent);
+                    }
+                }
+            });
+
+            /* Keep local versions of records whose updates are still pending. */
+            pendingUpdates.forEach(change => {
+
+                const localStudent =
+                    students.find(s =>
+                        String(s.id) === String(change.id)
+                    );
+
+                if(!localStudent){
+                    return;
+                }
+
+                const index =
+                    serverStudents.findIndex(s =>
+                        String(s.id) === String(change.id)
+                    );
+
+                if(index !== -1){
+                    serverStudents[index] = localStudent;
+                }else{
+                    serverStudents.push(localStudent);
+                }
+            });
+
+            students = serverStudents;
             saveLocalData();
             selectedIds.clear();
             renderTable();
             updateSidebarCounts();
+            updateDashboard();
         }
 
     }catch(error){
@@ -2008,9 +2075,9 @@ function getThesisStatus(student){
 
 }
 
-function getOverallStatus(student){
+function getFilesStatus(student){
 
-    return student.overall_status === "Complete"
+    return student.Files_status === "Complete"
         ? "Complete"
         : "Not Yet Done";
 
@@ -2047,20 +2114,20 @@ function statusSelect(
         functionName =
             "updateThesisStatus";
 
-    }else if(type === "overall"){
+    }else if(type === "Files"){
 
         functionName =
-            "updateOverallStatus";
+            "updateFilesStatus";
 
     }
 
     const firstOption =
-        type === "overall"
+        type === "Files"
         ? "Complete"
         : "Paid";
 
     const secondOption =
-        type === "overall"
+        type === "Files"
         ? "Not Yet Done"
         : "Not Yet Paid";
 
@@ -2192,10 +2259,10 @@ async function updateThesisStatus(id,status){
 }
 
 /* =====================================================
-   UPDATE OVERALL STATUS
+   UPDATE Files STATUS
 ===================================================== */
 
-async function updateOverallStatus(id,status){
+async function updateFilesStatus(id,status){
 
     if(
         status !== "Complete" &&
@@ -2208,9 +2275,9 @@ async function updateOverallStatus(id,status){
 
     await updateStudentStatus(
         id,
-        "overall_status",
+        "Files_status",
         status,
-        "Overall Status"
+        "Files Status"
     );
 
 }
@@ -2812,10 +2879,17 @@ async function syncPendingChanges(){
 
             if(change.type === "insert"){
 
+                /* Do not send the temporary local ID to Supabase. */
+                const insertData = {
+                    ...(change.data || {})
+                };
+
+                delete insertData.id;
+
                 const { data: inserted, error } =
                     await supabaseClient
                         .from("students")
-                        .insert([change.data])
+                        .insert([insertData])
                         .select()
                         .single();
 
@@ -2823,9 +2897,13 @@ async function syncPendingChanges(){
                     throw error;
                 }
 
-                /* Replace the temporary offline record with the real DB row. */
+                /* Replace the temporary local record with the real DB row. */
                 if(inserted){
-                    const tempId = change.tempId || change.data.id;
+
+                    const tempId =
+                        change.tempId ||
+                        (change.data && change.data.id);
+
                     const index = students.findIndex(s =>
                         String(s.id) === String(tempId)
                     );
@@ -2873,6 +2951,7 @@ async function syncPendingChanges(){
     saveLocalData();
     renderTable();
     updateSidebarCounts();
+    updateDashboard();
 }
 
 /* =====================================================
@@ -3257,8 +3336,8 @@ function renderTable(){
                 const thesisStatus =
                     getThesisStatus(student);
 
-                const overallStatus =
-                    getOverallStatus(student);
+                const FilesStatus =
+                    getFilesStatus(student);
 
                 row.innerHTML = `
 
@@ -3328,8 +3407,8 @@ function renderTable(){
 
                         ${statusSelect(
                             student.id,
-                            "overall",
-                            overallStatus
+                            "Files",
+                            FilesStatus
                         )}
 
                     </td>
@@ -4204,11 +4283,11 @@ function updateDashboard(){
         ).length;
 
     document.getElementById(
-        "overallComplete"
+        "FilesComplete"
     ).textContent =
         data.filter(
             s =>
-                getOverallStatus(s) ===
+                getFilesStatus(s) ===
                 "Complete"
         ).length;
 
@@ -4312,7 +4391,7 @@ function openAddModal(){
         "Not Yet Paid";
 
     document.getElementById(
-        "studentOverallStatus"
+        "studentFilesStatus"
     ).value =
         "Not Yet Done";
 
@@ -4386,9 +4465,9 @@ function editStudent(id){
         getThesisStatus(student);
 
     document.getElementById(
-        "studentOverallStatus"
+        "studentFilesStatus"
     ).value =
-        getOverallStatus(student);
+        getFilesStatus(student);
 
     document.getElementById(
         "studentThesisTitle"
@@ -4482,9 +4561,9 @@ async function saveStudent(){
                 "studentThesisStatus"
             ).value,
 
-        overall_status:
+        Files_status:
             document.getElementById(
-                "studentOverallStatus"
+                "studentFilesStatus"
             ).value,
 
         thesis_title:
@@ -4642,6 +4721,7 @@ async function saveStudent(){
     renderTable();
 
     updateSidebarCounts();
+    updateDashboard();
 
     closeModal();
 
@@ -4655,9 +4735,9 @@ async function saveStudent(){
             } =
                 await supabaseClient
                     .from("students")
-                    .insert([
-                        data
-                    ])
+                    .insert([{
+                        ...data
+                    }])
                     .select()
                     .single();
 
@@ -4686,6 +4766,7 @@ async function saveStudent(){
             renderTable();
 
             updateSidebarCounts();
+            updateDashboard();
 
             showMessage(
                 "Student added successfully.",
@@ -4716,6 +4797,8 @@ async function saveStudent(){
         addPendingChange({
 
             type:"insert",
+
+            tempId:temporaryId,
 
             data:data
 
