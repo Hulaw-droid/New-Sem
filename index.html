@@ -670,22 +670,6 @@ tr:hover{
     white-space:nowrap;
 }
 
-.student-type{
-    background:#f1f4f7;
-    color:#39424e;
-    padding:5px 8px;
-    border-radius:5px;
-    font-size:10px;
-    font-weight:bold;
-    white-space:nowrap;
-}
-
-.created-date{
-    white-space:nowrap;
-    color:#555;
-    font-size:10px;
-}
-
 /* =====================================================
    STATUS DROPDOWNS
 ===================================================== */
@@ -1361,69 +1345,30 @@ tr:hover{
                 id="programFilter"
                 onchange="renderTable()"
             >
-
-                <option value="ALL">
-                    All Programs
-                </option>
-
-                <option value="MAEd">
-                    MAEd
-                </option>
-
-                <option value="PhD">
-                    PhD
-                </option>
-
-                <option value="MBA">
-                    MBA
-                </option>
-
-                <option value="MPA">
-                    MPA
-                </option>
-
-                <option value="MSCJ">
-                    MSCJ
-                </option>
-
+                <option value="ALL">All Programs</option>
+                <option value="MAEd">MAEd</option>
+                <option value="PhD">PhD</option>
+                <option value="MBA">MBA</option>
+                <option value="MPA">MPA</option>
+                <option value="MSCJ">MSCJ</option>
             </select>
 
             <select
                 id="fileFilter"
                 onchange="renderTable()"
             >
-
-                <option value="ALL">
-                    All Tuition Fee Status
-                </option>
-
-                <option value="Paid">
-                    Paid
-                </option>
-
-                <option value="Not Yet Paid">
-                    Not Yet Paid
-                </option>
-
+                <option value="ALL">All Tuition Fee Status</option>
+                <option value="Paid">Paid</option>
+                <option value="Not Yet Paid">Not Yet Paid</option>
             </select>
 
             <select
                 id="thesisFilter"
                 onchange="renderTable()"
             >
-
-                <option value="ALL">
-                    All Grad Fee Status
-                </option>
-
-                <option value="Paid">
-                    Paid
-                </option>
-
-                <option value="Not Yet Paid">
-                    Not Yet Paid
-                </option>
-
+                <option value="ALL">All Grad Fee Status</option>
+                <option value="Paid">Paid</option>
+                <option value="Not Yet Paid">Not Yet Paid</option>
             </select>
 
             <button
@@ -1507,10 +1452,6 @@ tr:hover{
 
                         <th>Program</th>
 
-                        <th>Advance / Regular</th>
-
-                        <th>Created Date</th>
-
                         <th>Tuition Fee</th>
 
                         <th>Grad Fee</th>
@@ -1561,9 +1502,7 @@ tr:hover{
 
         <div class="form-group">
 
-            <label>
-                Student Name
-            </label>
+            <label>Student Name</label>
 
             <input
                 type="text"
@@ -1575,9 +1514,7 @@ tr:hover{
 
         <div class="form-group">
 
-            <label>
-                Group
-            </label>
+            <label>Group</label>
 
             <select id="studentGroup">
 
@@ -1599,75 +1536,25 @@ tr:hover{
 
         <div class="form-group">
 
-            <label>
-                Program
-            </label>
+            <label>Program</label>
 
             <select id="studentProgram">
 
-                <option value="MAEd">
-                    MAEd
-                </option>
-
-                <option value="PhD">
-                    PhD
-                </option>
-
-                <option value="MBA">
-                    MBA
-                </option>
-
-                <option value="MPA">
-                    MPA
-                </option>
-
-                <option value="MSCJ">
-                    MSCJ
-                </option>
+                <option value="MAEd">MAEd</option>
+                <option value="PhD">PhD</option>
+                <option value="MBA">MBA</option>
+                <option value="MPA">MPA</option>
+                <option value="MSCJ">MSCJ</option>
 
             </select>
 
         </div>
 
-        <div class="form-group">
-
-            <label>
-                Advance / Regular
-            </label>
-
-            <select id="studentType">
-
-                <option value="Regular">
-                    Regular
-                </option>
-
-                <option value="Advance">
-                    Advance
-                </option>
-
-            </select>
-
-        </div>
+        <!-- TUITION FEE STATUS DROPDOWN -->
 
         <div class="form-group">
 
-            <label>
-                Created Date
-            </label>
-
-            <input
-                type="date"
-                id="studentCreatedDate"
-                readonly
-            >
-
-        </div>
-
-        <div class="form-group">
-
-            <label>
-                Tuition Fee
-            </label>
+            <label>Tuition Fee</label>
 
             <select id="studentFileStatus">
 
@@ -1683,11 +1570,11 @@ tr:hover{
 
         </div>
 
+        <!-- GRAD FEE STATUS DROPDOWN -->
+
         <div class="form-group">
 
-            <label>
-                Grad Fee
-            </label>
+            <label>Grad Fee</label>
 
             <select id="studentThesisStatus">
 
@@ -1703,11 +1590,11 @@ tr:hover{
 
         </div>
 
+        <!-- OVERALL STATUS DROPDOWN -->
+
         <div class="form-group">
 
-            <label>
-                Overall Status
-            </label>
+            <label>Overall Status</label>
 
             <select id="studentOverallStatus">
 
@@ -1725,9 +1612,7 @@ tr:hover{
 
         <div class="form-group">
 
-            <label>
-                Thesis Title
-            </label>
+            <label>Thesis Title</label>
 
             <input
                 type="text"
@@ -1909,61 +1794,34 @@ document.addEventListener(
 
         updateConnection();
 
-        /*
-         * IMPORTANT:
-         * Load local data FIRST.
-         * This prevents the table from becoming empty
-         * while Supabase is loading.
-         */
+        /* Load saved data immediately so refresh never shows a blank table. */
         loadLocalData();
 
-        /*
-         * Then synchronize with Supabase.
-         */
+        /* Then synchronize with Supabase when online. */
         if(navigator.onLine){
-
             await loadOnlineData();
-
         }
-
-        window.addEventListener(
-            "online",
-            async function(){
-
-                updateConnection();
-
-                await syncPendingChanges();
-
-                await loadOnlineData();
-
-            }
-        );
-
-        window.addEventListener(
-            "offline",
-            function(){
-
-                updateConnection();
-
-            }
-        );
 
         if("serviceWorker" in navigator){
-
             navigator.serviceWorker
                 .register("service-worker.js")
-                .catch(
-                    error =>
-                        console.log(
-                            "Service Worker:",
-                            error
-                        )
+                .catch(error =>
+                    console.log("Service Worker:", error)
                 );
-
         }
-
     }
 );
+
+window.addEventListener("online", async function(){
+    updateConnection();
+    await syncPendingChanges();
+    await loadOnlineData();
+});
+
+window.addEventListener("offline", function(){
+    updateConnection();
+    saveLocalData();
+});
 
 /* =====================================================
    CONNECTION
@@ -2015,18 +1873,14 @@ function updateConnection(){
 
 async function loadData(){
 
-    /*
-     * Always show the saved local data first.
-     * This prevents an empty screen during refresh.
-     */
+    /* Always restore the last saved copy first. */
     loadLocalData();
 
-    if(navigator.onLine){
-
-        await loadOnlineData();
-
+    if(!navigator.onLine){
+        return;
     }
 
+    await loadOnlineData();
 }
 
 /* =====================================================
@@ -2037,109 +1891,42 @@ async function loadOnlineData(){
 
     try{
 
-        const {
-            data,
-            error
-        } =
+        /* First sync pending offline changes. */
+        await syncPendingChanges();
+
+        const { data, error } =
             await supabaseClient
                 .from("students")
                 .select("*")
-                .order(
-                    "name",
-                    {
-                        ascending:true
-                    }
-                );
+                .order("name", { ascending:true });
 
         if(error){
-
             throw error;
-
         }
 
-        /*
-         * Supabase is the main/shared database.
-         * Once the request succeeds, use its data.
-         */
-        students =
-            data || [];
-
-        /*
-         * Save the successful database result locally.
-         * This makes refresh/offline mode work.
-         */
-        saveLocalData();
-
-        selectedIds.clear();
-
-        renderTable();
-
-        updateSidebarCounts();
-
-        /*
-         * Synchronize any changes that were waiting
-         * while the browser was offline.
-         */
-        await syncPendingChanges();
-
-        /*
-         * Load one more time after pending changes
-         * have synchronized.
-         */
-        if(pendingChanges.length === 0){
-
-            const {
-                data:latestData,
-                error:latestError
-            } =
-                await supabaseClient
-                    .from("students")
-                    .select("*")
-                    .order(
-                        "name",
-                        {
-                            ascending:true
-                        }
-                    );
-
-            if(!latestError){
-
-                students =
-                    latestData || [];
-
-                saveLocalData();
-
-                selectedIds.clear();
-
-                renderTable();
-
-                updateSidebarCounts();
-
-            }
-
+        /* Only replace local data after a successful Supabase response. */
+        if(Array.isArray(data)){
+            students = data;
+            saveLocalData();
+            selectedIds.clear();
+            renderTable();
+            updateSidebarCounts();
         }
 
     }catch(error){
 
-        console.log(
-            "Online loading failed:",
-            error
-        );
+        console.log("Online loading failed:", error);
 
-        /*
-         * IMPORTANT:
-         * If Supabase cannot be reached, NEVER clear
-         * the current records. Keep the local records.
-         */
+        /* NEVER clear the table when Supabase fails. */
         loadLocalData();
 
-        showMessage(
-            "Internet connection failed. Using saved offline data.",
-            "error"
-        );
-
+        if(navigator.onLine){
+            showMessage(
+                "Unable to update from Supabase. Your saved data was kept.",
+                "error"
+            );
+        }
     }
-
 }
 
 /* =====================================================
@@ -2150,38 +1937,29 @@ function loadLocalData(){
 
     try{
 
-        const saved =
-            localStorage.getItem(
-                LOCAL_KEY
-            );
+        const saved = localStorage.getItem(LOCAL_KEY);
 
-        if(saved){
-
-            const parsed =
-                JSON.parse(saved);
-
+        if(saved !== null){
+            const parsed = JSON.parse(saved);
             if(Array.isArray(parsed)){
-
-                students =
-                    parsed;
-
+                students = parsed;
             }
+        }
 
+        if(!Array.isArray(students)){
+            students = [];
         }
 
     }catch(error){
-
-        console.log(
-            "Local data loading failed:",
-            error
-        );
-
+        console.log("Local data load failed:", error);
+        /* Keep the current in-memory data if parsing fails. */
+        if(!Array.isArray(students)){
+            students = [];
+        }
     }
 
     renderTable();
-
     updateSidebarCounts();
-
 }
 
 /* =====================================================
@@ -2190,21 +1968,10 @@ function loadLocalData(){
 
 function saveLocalData(){
 
-    try{
-
-        localStorage.setItem(
-            LOCAL_KEY,
-            JSON.stringify(students)
-        );
-
-    }catch(error){
-
-        console.log(
-            "Could not save local data:",
-            error
-        );
-
-    }
+    localStorage.setItem(
+        LOCAL_KEY,
+        JSON.stringify(students)
+    );
 
 }
 
@@ -3006,164 +2773,106 @@ function closeFilePreview(){
 ===================================================== */
 
 function savePending(){
-
-    localStorage.setItem(
-        PENDING_KEY,
-        JSON.stringify(
-            pendingChanges
-        )
-    );
-
+    localStorage.setItem(PENDING_KEY, JSON.stringify(pendingChanges));
 }
 
 function addPendingChange(change){
 
-    pendingChanges.push(
-        change
-    );
+    /* Prevent duplicate pending updates for the same record/field. */
+    if(change.type === "update"){
+        const existing = pendingChanges.findIndex(c =>
+            c.type === "update" &&
+            String(c.id) === String(change.id) &&
+            JSON.stringify(Object.keys(c.data || {}).sort()) ===
+            JSON.stringify(Object.keys(change.data || {}).sort())
+        );
 
+        if(existing !== -1){
+            pendingChanges[existing] = change;
+            savePending();
+            return;
+        }
+    }
+
+    pendingChanges.push(change);
     savePending();
-
 }
-
-/* =====================================================
-   SYNC PENDING CHANGES
-===================================================== */
 
 async function syncPendingChanges(){
 
-    if(
-        !navigator.onLine ||
-        pendingChanges.length === 0
-    ){
-
+    if(!navigator.onLine || pendingChanges.length === 0){
         return;
-
     }
 
     const remaining = [];
 
-    for(
-        const change
-        of pendingChanges
-    ){
+    for(const change of pendingChanges){
 
         try{
 
-            if(
-                change.type ===
-                "insert"
-            ){
+            if(change.type === "insert"){
 
-                const {
-                    data:inserted,
-                    error
-                } =
+                const { data: inserted, error } =
                     await supabaseClient
                         .from("students")
-                        .insert([
-                            change.data
-                        ])
+                        .insert([change.data])
                         .select()
                         .single();
 
                 if(error){
-
                     throw error;
-
                 }
 
-                /*
-                 * Replace the temporary offline record
-                 * with the real Supabase record.
-                 */
-                const temporaryIndex =
-                    students.findIndex(
-                        s =>
-                            s.id ===
-                            change.tempId
+                /* Replace the temporary offline record with the real DB row. */
+                if(inserted){
+                    const tempId = change.tempId || change.data.id;
+                    const index = students.findIndex(s =>
+                        String(s.id) === String(tempId)
                     );
 
-                if(
-                    temporaryIndex !== -1 &&
-                    inserted
-                ){
-
-                    students[
-                        temporaryIndex
-                    ] =
-                        inserted;
-
-                }else if(inserted){
-
-                    /*
-                     * Prevent duplicate records.
-                     */
-                    const alreadyExists =
-                        students.some(
-                            s =>
-                                String(s.id) ===
-                                String(inserted.id)
-                        );
-
-                    if(!alreadyExists){
-
-                        students.push(
-                            inserted
-                        );
-
+                    if(index !== -1){
+                        students[index] = inserted;
+                    }else{
+                        students.push(inserted);
                     }
-
                 }
 
-            }else if(
-                change.type ===
-                "update"
-            ){
+            }else if(change.type === "update"){
 
-                const {
-                    error
-                } =
+                const { error } =
                     await supabaseClient
                         .from("students")
-                        .update(
-                            change.data
-                        )
-                        .eq(
-                            "id",
-                            change.id
-                        );
+                        .update(change.data)
+                        .eq("id", change.id);
 
                 if(error){
-
                     throw error;
-
                 }
 
+            }else if(change.type === "delete"){
+
+                const { error } =
+                    await supabaseClient
+                        .from("students")
+                        .delete()
+                        .eq("id", change.id);
+
+                if(error){
+                    throw error;
+                }
             }
 
         }catch(error){
-
-            console.log(
-                "Pending sync failed:",
-                error
-            );
-
-            remaining.push(
-                change
-            );
-
+            console.log("Sync failed:", error);
+            remaining.push(change);
         }
-
     }
 
-    pendingChanges =
-        remaining;
-
+    pendingChanges = remaining;
     savePending();
-
     saveLocalData();
-
+    renderTable();
+    updateSidebarCounts();
 }
 
 /* =====================================================
@@ -3443,7 +3152,7 @@ function renderTable(){
             <tr>
 
                 <td
-                    colspan="12"
+                    colspan="10"
                     class="empty-state"
                 >
 
@@ -3593,25 +3302,6 @@ function renderTable(){
 
                         ${programBadge(
                             student.program
-                        )}
-
-                    </td>
-
-                    <td>
-
-                        <span class="student-type">
-                            ${escapeHtml(
-                                student.student_type ||
-                                "Regular"
-                            )}
-                        </span>
-
-                    </td>
-
-                    <td class="created-date">
-
-                        ${escapeHtml(
-                            formatCreatedDate(student)
                         )}
 
                     </td>
@@ -4408,25 +4098,15 @@ function programBadge(program){
     let cls = "";
 
     if(program === "PhD"){
-
         cls = "phd";
-
     }else if(program === "MAEd"){
-
         cls = "maed";
-
     }else if(program === "MBA"){
-
         cls = "mba";
-
     }else if(program === "MPA"){
-
         cls = "mpa";
-
     }else if(program === "MSCJ"){
-
         cls = "mscj";
-
     }
 
     return `
@@ -4452,10 +4132,7 @@ function statusBadge(status){
     let cls =
         "pending";
 
-    if(
-        status === "Complete" ||
-        status === "Paid"
-    ){
+    if(status === "Complete" || status === "Paid"){
 
         cls =
             "complete";
@@ -4592,112 +4269,6 @@ function updateSidebarCounts(){
 }
 
 /* =====================================================
-   CREATED DATE / STUDENT TYPE
-===================================================== */
-
-function getTodayDate(){
-
-    const now = new Date();
-
-    const year =
-        now.getFullYear();
-
-    const month =
-        String(
-            now.getMonth() + 1
-        ).padStart(
-            2,
-            "0"
-        );
-
-    const day =
-        String(
-            now.getDate()
-        ).padStart(
-            2,
-            "0"
-        );
-
-    return year +
-        "-" +
-        month +
-        "-" +
-        day;
-
-}
-
-function getCreatedDateValue(student){
-
-    if(student.created_date){
-
-        return String(
-            student.created_date
-        ).substring(
-            0,
-            10
-        );
-
-    }
-
-    if(student.created_at){
-
-        return String(
-            student.created_at
-        ).substring(
-            0,
-            10
-        );
-
-    }
-
-    return getTodayDate();
-
-}
-
-function getCreatedDateForSave(id){
-
-    const student =
-        students.find(
-            s =>
-                String(s.id) ===
-                String(id)
-        );
-
-    return student
-        ? getCreatedDateValue(student)
-        : getTodayDate();
-
-}
-
-function formatCreatedDate(student){
-
-    const value =
-        getCreatedDateValue(student);
-
-    if(!value){
-
-        return "-";
-
-    }
-
-    const parts =
-        value.split("-");
-
-    if(parts.length === 3){
-
-        return parts[1] +
-            "/" +
-            parts[2] +
-            "/" +
-            parts[0];
-
-    }
-
-    return value;
-
-}
-
-/* =====================================================
    ADD MODAL
 ===================================================== */
 
@@ -4729,16 +4300,6 @@ function openAddModal(){
         "studentProgram"
     ).value =
         "MAEd";
-
-    document.getElementById(
-        "studentType"
-    ).value =
-        "Regular";
-
-    document.getElementById(
-        "studentCreatedDate"
-    ).value =
-        getTodayDate();
 
     document.getElementById(
         "studentFileStatus"
@@ -4813,17 +4374,6 @@ function editStudent(id){
     ).value =
         student.program ||
         "MAEd";
-
-    document.getElementById(
-        "studentType"
-    ).value =
-        student.student_type ||
-        "Regular";
-
-    document.getElementById(
-        "studentCreatedDate"
-    ).value =
-        getCreatedDateValue(student);
 
     document.getElementById(
         "studentFileStatus"
@@ -4921,16 +4471,6 @@ async function saveStudent(){
             document.getElementById(
                 "studentProgram"
             ).value,
-
-        student_type:
-            document.getElementById(
-                "studentType"
-            ).value,
-
-        created_date:
-            id
-            ? getCreatedDateForSave(id)
-            : getTodayDate(),
 
         file_status:
             document.getElementById(
@@ -5165,7 +4705,7 @@ async function saveStudent(){
             });
 
             showMessage(
-                "Saved locally. It will sync when internet returns.",
+                "Saved offline. It will sync when internet returns.",
                 "success"
             );
 
@@ -5176,8 +4716,6 @@ async function saveStudent(){
         addPendingChange({
 
             type:"insert",
-
-            tempId:temporaryId,
 
             data:data
 
@@ -5251,26 +4789,11 @@ function showMessage(
 function escapeHtml(value){
 
     return String(value)
-        .replace(
-            /&/g,
-            "&amp;"
-        )
-        .replace(
-            /</g,
-            "&lt;"
-        )
-        .replace(
-            />/g,
-            "&gt;"
-        )
-        .replace(
-            /"/g,
-            "&quot;"
-        )
-        .replace(
-            /'/g,
-            "&#039;"
-        );
+        .replace(/&/g,"&amp;")
+        .replace(/</g,"&lt;")
+        .replace(/>/g,"&gt;")
+        .replace(/"/g,"&quot;")
+        .replace(/'/g,"&#039;");
 
 }
 
@@ -5281,18 +4804,9 @@ function escapeHtml(value){
 function escapeAttribute(value){
 
     return String(value)
-        .replace(
-            /\\/g,
-            "\\\\"
-        )
-        .replace(
-            /'/g,
-            "\\'"
-        )
-        .replace(
-            /"/g,
-            "&quot;"
-        );
+        .replace(/\\/g,"\\\\")
+        .replace(/'/g,"\\'")
+        .replace(/"/g,"&quot;");
 
 }
 
@@ -5301,9 +4815,7 @@ function escapeAttribute(value){
 ===================================================== */
 
 document
-    .getElementById(
-        "studentModal"
-    )
+    .getElementById("studentModal")
     .addEventListener(
         "click",
         function(event){
@@ -5320,9 +4832,7 @@ document
     );
 
 document
-    .getElementById(
-        "deleteModal"
-    )
+    .getElementById("deleteModal")
     .addEventListener(
         "click",
         function(event){
@@ -5339,9 +4849,7 @@ document
     );
 
 document
-    .getElementById(
-        "filePreviewModal"
-    )
+    .getElementById("filePreviewModal")
     .addEventListener(
         "click",
         function(event){
