@@ -1370,6 +1370,16 @@ tr:hover{
             </select>
 
             <select
+                id="trimesterFilter"
+                onchange="renderTable()"
+            >
+                <option value="ALL">All Trimesters</option>
+                <option value="1st Trimester">1st Trimester</option>
+                <option value="2nd Trimester">2nd Trimester</option>
+                <option value="3rd Trimester">3rd Trimester</option>
+            </select>
+
+            <select
                 id="fileFilter"
                 onchange="renderTable()"
             >
@@ -1470,7 +1480,7 @@ tr:hover{
 
                         <th>Advance / Regular</th>
 
-                        <th>Created Date</th>
+                        <th>Trimester</th>
 
                         <th>Tuition Fee</th>
 
@@ -1590,13 +1600,23 @@ tr:hover{
 
         <div class="form-group">
 
-            <label>Created Date</label>
+            <label>Trimester</label>
 
-            <input
-                type="date"
-                id="studentCreatedDate"
-                readonly
-            >
+            <select id="studentTrimester">
+
+                <option value="1st Trimester">
+                    1st Trimester
+                </option>
+
+                <option value="2nd Trimester">
+                    2nd Trimester
+                </option>
+
+                <option value="3rd Trimester">
+                    3rd Trimester
+                </option>
+
+            </select>
 
         </div>
 
@@ -3082,6 +3102,11 @@ function getFilteredStudents(){
             "programFilter"
         ).value;
 
+    const trimester =
+        document.getElementById(
+            "trimesterFilter"
+        ).value;
+
     const file =
         document.getElementById(
             "fileFilter"
@@ -3148,6 +3173,15 @@ function getFilteredStudents(){
             if(
                 program !== "ALL" &&
                 student.program !== program
+            ){
+
+                return false;
+
+            }
+
+            if(
+                trimester !== "ALL" &&
+                student.trimester !== trimester
             ){
 
                 return false;
@@ -3400,7 +3434,8 @@ function renderTable(){
                     <td class="created-date">
 
                         ${escapeHtml(
-                            formatCreatedDate(student)
+                            student.trimester ||
+                            "-"
                         )}
 
                     </td>
@@ -4368,50 +4403,29 @@ function updateSidebarCounts(){
 }
 
 /* =====================================================
-   CREATED DATE / STUDENT TYPE
+   TRIMESTER / STUDENT TYPE
 ===================================================== */
 
-function getTodayDate(){
+function getTrimesterValue(student){
 
-    const now = new Date();
+    if(
+        student.trimester ===
+        "1st Trimester" ||
+        student.trimester ===
+        "2nd Trimester" ||
+        student.trimester ===
+        "3rd Trimester"
+    ){
 
-    const year = now.getFullYear();
-
-    const month = String(
-        now.getMonth() + 1
-    ).padStart(2,"0");
-
-    const day = String(
-        now.getDate()
-    ).padStart(2,"0");
-
-    return year + "-" + month + "-" + day;
-
-}
-
-function getCreatedDateValue(student){
-
-    if(student.created_date){
-
-        return String(
-            student.created_date
-        ).substring(0,10);
+        return student.trimester;
 
     }
 
-    if(student.created_at){
-
-        return String(
-            student.created_at
-        ).substring(0,10);
-
-    }
-
-    return getTodayDate();
+    return "1st Trimester";
 
 }
 
-function getCreatedDateForSave(id){
+function getTrimesterForSave(id){
 
     const student =
         students.find(
@@ -4421,32 +4435,8 @@ function getCreatedDateForSave(id){
         );
 
     return student
-        ? getCreatedDateValue(student)
-        : getTodayDate();
-
-}
-
-function formatCreatedDate(student){
-
-    const value =
-        getCreatedDateValue(student);
-
-    if(!value){
-
-        return "-";
-
-    }
-
-    const parts =
-        value.split("-");
-
-    if(parts.length === 3){
-
-        return parts[1] + "/" + parts[2] + "/" + parts[0];
-
-    }
-
-    return value;
+        ? getTrimesterValue(student)
+        : "1st Trimester";
 
 }
 
@@ -4489,9 +4479,9 @@ function openAddModal(){
         "Regular";
 
     document.getElementById(
-        "studentCreatedDate"
+        "studentTrimester"
     ).value =
-        getTodayDate();
+        "1st Trimester";
 
     document.getElementById(
         "studentFileStatus"
@@ -4574,9 +4564,9 @@ function editStudent(id){
         "Regular";
 
     document.getElementById(
-        "studentCreatedDate"
+        "studentTrimester"
     ).value =
-        getCreatedDateValue(student);
+        getTrimesterValue(student);
 
     document.getElementById(
         "studentFileStatus"
@@ -4680,10 +4670,10 @@ async function saveStudent(){
                 "studentType"
             ).value,
 
-        created_date:
-            id
-            ? getCreatedDateForSave(id)
-            : getTodayDate(),
+        trimester:
+            document.getElementById(
+                "studentTrimester"
+            ).value,
 
         file_status:
             document.getElementById(
