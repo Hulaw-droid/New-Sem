@@ -22,24 +22,10 @@
 
 *{
     box-sizing:border-box;
-}
-
-html,body{
     margin:0;
     padding:0;
-    width:100%;
-    min-height:100%;
-}
-
-body{
     font-family:Arial,Helvetica,sans-serif;
-    background:#f4f6f9;
-    color:#222;
 }
-
-/* =====================================================
-   ROOT
-===================================================== */
 
 :root{
     --primary:#073b72;
@@ -60,64 +46,81 @@ body{
 }
 
 /* =====================================================
-   HEADER
+   BODY
 ===================================================== */
 
-.header{
-    height:64px;
-    background:var(--primary);
-    color:white;
-    display:flex;
-    align-items:center;
-    justify-content:space-between;
-    padding:0 20px;
-    position:sticky;
-    top:0;
-    z-index:100;
-    box-shadow:0 2px 8px rgba(0,0,0,.15);
-}
-
-.header-title{
-    font-size:20px;
-    font-weight:bold;
-}
-
-.connection-status{
-    display:flex;
-    align-items:center;
-    gap:7px;
-    font-size:12px;
-    padding:7px 12px;
-    border-radius:20px;
-    background:rgba(255,255,255,.15);
-}
-
-.connection-dot{
-    width:9px;
-    height:9px;
-    border-radius:50%;
-    background:#ffc107;
-}
-
-.connection-dot.online{
-    background:#20c997;
-}
-
-.connection-dot.offline{
-    background:#dc3545;
+body{
+    background:var(--background);
+    color:var(--text);
+    min-height:100vh;
 }
 
 /* =====================================================
-   OFFLINE BANNER
+   HEADER
+===================================================== */
+
+header{
+    background:linear-gradient(135deg,#073b72,#0b4e91);
+    color:white;
+    padding:18px 28px;
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    box-shadow:0 3px 12px rgba(0,0,0,.14);
+    position:sticky;
+    top:0;
+    z-index:100;
+}
+
+.header-left{
+    display:flex;
+    align-items:center;
+    gap:13px;
+}
+
+.header-logo{
+    width:42px;
+    height:42px;
+    border-radius:10px;
+    background:rgba(255,255,255,.14);
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    font-size:21px;
+    font-weight:bold;
+}
+
+.header-left h1{
+    font-size:21px;
+    margin-bottom:4px;
+}
+
+.header-left small{
+    opacity:.8;
+    font-size:12px;
+}
+
+.connection{
+    font-size:12px;
+    font-weight:bold;
+    background:rgba(255,255,255,.1);
+    padding:8px 12px;
+    border-radius:20px;
+}
+
+/* =====================================================
+   OFFLINE
 ===================================================== */
 
 .offline-banner{
     display:none;
     background:#fff3cd;
     color:#664d03;
+    padding:10px;
+    text-align:center;
+    font-weight:bold;
+    font-size:12px;
     border-bottom:1px solid #ffe69c;
-    padding:10px 18px;
-    font-size:13px;
 }
 
 .offline-banner.show{
@@ -128,9 +131,9 @@ body{
    LAYOUT
 ===================================================== */
 
-.app-layout{
+.main-layout{
     display:flex;
-    min-height:calc(100vh - 64px);
+    min-height:calc(100vh - 78px);
 }
 
 /* =====================================================
@@ -138,91 +141,172 @@ body{
 ===================================================== */
 
 .sidebar{
-    width:245px;
+    width:250px;
     background:white;
     border-right:1px solid var(--border);
-    padding:18px 12px;
+    padding:22px 14px;
     flex-shrink:0;
+    position:sticky;
+    top:78px;
+    height:calc(100vh - 78px);
+    overflow-y:auto;
+}
+
+.sidebar-brand{
+    padding:0 12px 18px;
+    border-bottom:1px solid var(--border);
+    margin-bottom:17px;
+}
+
+.sidebar-brand strong{
+    display:block;
+    color:var(--primary);
+    font-size:14px;
+    margin-bottom:4px;
+}
+
+.sidebar-brand span{
+    color:#8a9299;
+    font-size:11px;
 }
 
 .sidebar-title{
-    font-size:12px;
-    color:var(--muted);
+    font-size:10px;
     font-weight:bold;
+    color:#8a9299;
     text-transform:uppercase;
-    margin:5px 10px 10px;
+    letter-spacing:1px;
+    padding:5px 12px 10px;
 }
 
-.sidebar-item{
+.group-button{
     width:100%;
+    border:0;
+    background:transparent;
+    color:#39424e;
+    padding:11px 12px;
+    margin-bottom:5px;
+    border-radius:9px;
     display:flex;
     align-items:center;
-    justify-content:space-between;
-    border:none;
-    background:white;
-    color:#333;
-    padding:11px 12px;
-    border-radius:7px;
-    margin-bottom:4px;
-    cursor:pointer;
+    gap:10px;
     text-align:left;
-    font-size:14px;
+    cursor:pointer;
+    font-size:12px;
+    font-weight:bold;
+    transition:.2s;
 }
 
-.sidebar-item:hover{
-    background:var(--primary-light);
-    color:var(--primary);
+.group-button:hover{
+    background:#f0f4f8;
 }
 
-.sidebar-item.active{
+.group-button.active{
     background:var(--primary);
     color:white;
-    font-weight:bold;
+    box-shadow:0 3px 8px rgba(7,59,114,.2);
 }
 
-.sidebar-count{
-    font-size:11px;
-    min-width:24px;
+.group-icon{
+    width:29px;
+    height:29px;
+    border-radius:8px;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    background:#e8f0f8;
+    color:var(--primary);
+    font-size:12px;
+    font-weight:bold;
+    flex-shrink:0;
+}
+
+.group-button.active .group-icon{
+    background:rgba(255,255,255,.18);
+    color:white;
+}
+
+.group-name{
+    flex:1;
+}
+
+.group-count{
+    min-width:25px;
     text-align:center;
-    padding:2px 6px;
-    border-radius:12px;
+    padding:3px 6px;
+    border-radius:20px;
     background:#eef1f4;
     color:#555;
+    font-size:10px;
 }
 
-.sidebar-item.active .sidebar-count{
+.group-button.active .group-count{
     background:rgba(255,255,255,.2);
     color:white;
 }
 
+.sidebar-divider{
+    border:0;
+    border-top:1px solid var(--border);
+    margin:17px 5px;
+}
+
+.archive-button{
+    width:100%;
+    border:0;
+    background:#f8f9fa;
+    color:#555;
+    padding:11px 12px;
+    border-radius:9px;
+    display:flex;
+    align-items:center;
+    gap:10px;
+    cursor:pointer;
+    font-weight:bold;
+    font-size:12px;
+}
+
+.archive-button:hover{
+    background:#f0f2f4;
+}
+
+.archive-button.active{
+    background:#fff3cd;
+    color:#664d03;
+}
+
 /* =====================================================
-   MAIN
+   CONTENT
 ===================================================== */
 
-.main{
+.content{
     flex:1;
     min-width:0;
-    padding:22px;
+    padding:25px;
 }
 
-.page-heading{
-    display:flex;
-    justify-content:space-between;
-    align-items:center;
-    gap:15px;
-    margin-bottom:18px;
+.container{
+    max-width:1600px;
+    margin:auto;
 }
 
-.page-heading h2{
-    margin:0;
+/* =====================================================
+   PAGE INTRO
+===================================================== */
+
+.page-intro{
+    margin-bottom:20px;
+}
+
+.page-intro h2{
     color:var(--primary);
     font-size:23px;
+    margin-bottom:5px;
 }
 
-.page-heading p{
-    margin:5px 0 0;
+.page-intro p{
     color:var(--muted);
-    font-size:13px;
+    font-size:12px;
 }
 
 /* =====================================================
@@ -232,32 +316,27 @@ body{
 .message{
     display:none;
     padding:12px 15px;
-    border-radius:8px;
     margin-bottom:15px;
-    font-size:13px;
-    white-space:pre-wrap;
+    border-radius:8px;
+    font-weight:bold;
+    font-size:12px;
+    border:1px solid transparent;
 }
 
 .message.show{
     display:block;
 }
 
-.message.success{
-    background:var(--success-light);
-    color:#0f5132;
-    border:1px solid #badbcc;
-}
-
-.message.error{
-    background:var(--danger-light);
+.error{
+    background:#f8d7da;
     color:#842029;
-    border:1px solid #f1aeb5;
+    border-color:#f1aeb5;
 }
 
-.message.warning{
-    background:var(--warning-light);
-    color:#664d03;
-    border:1px solid #ffecb5;
+.success-message{
+    background:#d1e7dd;
+    color:#0f5132;
+    border-color:#a3cfbb;
 }
 
 /* =====================================================
@@ -267,29 +346,45 @@ body{
 .dashboard{
     display:grid;
     grid-template-columns:repeat(4,1fr);
-    gap:14px;
-    margin-bottom:18px;
+    gap:15px;
+    margin-bottom:20px;
 }
 
-.dashboard-card{
+.card{
     background:white;
-    border:1px solid var(--border);
-    border-radius:10px;
-    padding:17px;
+    padding:18px;
+    border-radius:11px;
     box-shadow:var(--shadow);
+    border:1px solid #edf0f3;
+    position:relative;
+    overflow:hidden;
 }
 
-.dashboard-label{
-    font-size:12px;
-    color:var(--muted);
+.card::after{
+    content:"";
+    position:absolute;
+    right:-20px;
+    bottom:-25px;
+    width:80px;
+    height:80px;
+    border-radius:50%;
+    background:var(--primary-light);
 }
 
-.dashboard-number{
-    display:block;
-    margin-top:6px;
-    font-size:27px;
+.card h3{
+    font-size:11px;
+    color:#68717a;
+    margin-bottom:9px;
+    text-transform:uppercase;
+    letter-spacing:.3px;
+}
+
+.number{
+    font-size:29px;
     font-weight:bold;
     color:var(--primary);
+    position:relative;
+    z-index:1;
 }
 
 /* =====================================================
@@ -298,173 +393,385 @@ body{
 
 .controls{
     background:white;
-    border:1px solid var(--border);
-    border-radius:10px;
-    padding:13px;
-    margin-bottom:15px;
+    padding:16px;
+    border-radius:11px;
+    margin-bottom:20px;
+    box-shadow:var(--shadow);
+    border:1px solid #edf0f3;
+}
+
+.controls-label{
+    font-size:11px;
+    color:#68717a;
+    font-weight:bold;
+    margin-bottom:10px;
+}
+
+.controls-row{
     display:flex;
     flex-wrap:wrap;
-    gap:8px;
-    box-shadow:var(--shadow);
+    gap:9px;
 }
 
-.control-input,
-.control-select{
-    height:40px;
-    padding:0 11px;
-    border:1px solid #ced4da;
+input,
+select{
+    padding:10px 12px;
+    border:1px solid #ccd2d8;
     border-radius:7px;
+    font-size:12px;
     background:white;
-    color:#333;
     outline:none;
+    color:#333;
 }
 
-.control-input{
-    min-width:240px;
-    flex:1;
-}
-
-.control-input:focus,
-.control-select:focus{
+input:focus,
+select:focus{
     border-color:var(--primary);
-    box-shadow:0 0 0 2px rgba(7,59,114,.1);
+    box-shadow:0 0 0 3px rgba(7,59,114,.08);
 }
 
-/* =====================================================
-   BUTTONS
-===================================================== */
+.search{
+    flex:1;
+    min-width:220px;
+}
 
-.btn{
-    border:none;
+button{
+    border:0;
     border-radius:7px;
     padding:10px 14px;
     cursor:pointer;
-    font-size:13px;
-    font-weight:600;
+    font-weight:bold;
+    font-size:12px;
+    transition:.15s;
 }
 
-.btn-primary{
+button:hover{
+    transform:translateY(-1px);
+    opacity:.93;
+}
+
+button:active{
+    transform:translateY(0);
+}
+
+.primary{
     background:var(--primary);
     color:white;
 }
 
-.btn-primary:hover{
+.primary:hover{
     background:var(--primary-dark);
 }
 
-.btn-secondary{
-    background:#6c757d;
-    color:white;
-}
-
-.btn-secondary:hover{
-    background:#5c636a;
-}
-
-.btn-danger{
-    background:var(--danger);
-    color:white;
-}
-
-.btn-danger:hover{
-    background:#bb2d3b;
-}
-
-.btn-success{
+.success{
     background:var(--success);
     color:white;
 }
 
-.btn-small{
-    padding:6px 9px;
-    font-size:11px;
+.warning{
+    background:var(--warning);
+    color:white;
+}
+
+.danger{
+    background:var(--danger);
+    color:white;
+}
+
+.secondary{
+    background:#6c757d;
+    color:white;
+}
+
+.archive-selected{
+    display:none;
+    background:var(--danger);
+    color:white;
+}
+
+.archive-selected.show{
+    display:block;
 }
 
 /* =====================================================
    TABLE
 ===================================================== */
 
-.table-container{
+.table-box{
     background:white;
-    border:1px solid var(--border);
-    border-radius:10px;
-    overflow:auto;
+    border-radius:11px;
+    overflow:hidden;
     box-shadow:var(--shadow);
+    border:1px solid #edf0f3;
+}
+
+.table-header{
+    padding:17px 18px;
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    border-bottom:1px solid var(--border);
+}
+
+.table-header h2{
+    color:var(--primary);
+    font-size:17px;
+}
+
+.table-header-right{
+    display:flex;
+    align-items:center;
+    gap:9px;
+    color:#6c757d;
+    font-size:11px;
+}
+
+.record-pill{
+    background:#f1f4f7;
+    padding:6px 9px;
+    border-radius:20px;
+}
+
+.table-wrap{
+    overflow-x:auto;
 }
 
 table{
     width:100%;
-    min-width:1150px;
     border-collapse:collapse;
+    min-width:1150px;
 }
 
-thead th{
-    background:#f7f9fb;
-    color:#444;
-    font-size:12px;
-    font-weight:bold;
-    padding:12px 10px;
-    border-bottom:1px solid var(--border);
+th{
+    background:#073b72;
+    color:white;
+    padding:12px;
     text-align:left;
+    font-size:11px;
     white-space:nowrap;
+    letter-spacing:.2px;
 }
 
-tbody td{
-    padding:11px 10px;
-    border-bottom:1px solid var(--border);
+td{
+    padding:11px 12px;
+    border-bottom:1px solid #edf0f2;
     font-size:12px;
     vertical-align:middle;
 }
 
-tbody tr:hover{
-    background:#fafbfd;
+tr:hover{
+    background:#f8fbff;
+}
+
+.checkbox-cell{
+    width:42px;
+    text-align:center;
+}
+
+.student-checkbox,
+#selectAll{
+    width:16px;
+    height:16px;
+    cursor:pointer;
 }
 
 .student-name{
     font-weight:bold;
-    color:#222;
+    min-width:170px;
+    color:#29313a;
 }
 
-.thesis-title{
-    max-width:250px;
+.thesis-cell{
+    width:280px;
+    max-width:280px;
     white-space:normal;
+    word-break:break-word;
+    overflow-wrap:anywhere;
+    line-height:1.45;
+    color:#454b52;
 }
 
-.status-badge{
+.actions{
+    display:flex;
+    gap:5px;
+    white-space:nowrap;
+}
+
+.actions button{
+    padding:7px 9px;
+    font-size:10px;
+}
+
+/* =====================================================
+   BADGES
+===================================================== */
+
+.badge{
     display:inline-block;
-    padding:4px 8px;
-    border-radius:20px;
+    padding:5px 9px;
+    border-radius:15px;
     font-size:10px;
     font-weight:bold;
     white-space:nowrap;
 }
 
-.status-paid,
-.status-complete{
+.complete{
     background:#d1e7dd;
     color:#0f5132;
 }
 
-.status-not-paid,
-.status-not-done{
+.pending{
     background:#f8d7da;
     color:#842029;
 }
 
-.program-badge{
-    display:inline-block;
-    padding:4px 8px;
+.progress{
+    background:#fff3cd;
+    color:#664d03;
+}
+
+.not-uploaded{
+    background:#eef1f4;
+    color:#555;
+}
+
+.phd{
+    background:#1976d2;
+    color:white;
+}
+
+.maed{
+    background:#8ecae6;
+    color:#123;
+}
+
+.mba{
+    background:#8e6bbf;
+    color:white;
+}
+
+.mpa{
+    background:#176b3a;
+    color:white;
+}
+
+.mscj{
+    background:#f5a6a6;
+    color:#333;
+}
+
+.group{
+    background:#e8f0f8;
+    color:#073b72;
+    padding:5px 8px;
+    border-radius:5px;
+    font-size:10px;
+    font-weight:bold;
+    white-space:nowrap;
+}
+
+/* =====================================================
+   STATUS DROPDOWNS
+===================================================== */
+
+.file-box{
+    display:flex;
+    align-items:center;
+    gap:7px;
+}
+
+.file-info{
+    display:flex;
+    flex-direction:column;
+    gap:4px;
+    min-width:0;
+}
+
+.file-name{
+    display:block;
+    font-size:10px;
+    color:#555;
+    max-width:130px;
+    white-space:nowrap;
+    overflow:hidden;
+    text-overflow:ellipsis;
+}
+
+.file-status-select,
+.table-status-select{
+    min-width:125px;
+    padding:6px 8px;
     border-radius:15px;
     font-size:10px;
     font-weight:bold;
-    background:#e8f0f8;
-    color:#073b72;
+    cursor:pointer;
+    outline:none;
 }
 
-.empty-row{
+.file-status-select.complete-select,
+.table-status-select.complete-select{
+    background:#d1e7dd;
+    color:#0f5132;
+    border:1px solid #a3cfbb;
+}
+
+.file-status-select.pending-select,
+.table-status-select.pending-select{
+    background:#f8d7da;
+    color:#842029;
+    border:1px solid #f1aeb5;
+}
+
+/* =====================================================
+   EMPTY STATE
+===================================================== */
+
+.empty-state{
+    padding:60px 20px !important;
     text-align:center;
-    padding:40px !important;
-    color:var(--muted);
+    color:#777;
+}
+
+.empty-icon{
+    width:55px;
+    height:55px;
+    margin:0 auto 14px;
+    border-radius:50%;
+    background:#eef3f8;
+    color:var(--primary);
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    font-size:24px;
+}
+
+.empty-state strong{
+    display:block;
+    color:#495057;
+    font-size:14px;
+    margin-bottom:5px;
+}
+
+.empty-state span{
+    font-size:11px;
+    color:#8a9299;
+}
+
+/* =====================================================
+   ARCHIVED
+===================================================== */
+
+.archived-row{
+    background:#fafafa;
+}
+
+.archived-row:hover{
+    background:#f3f3f3;
+}
+
+.restore-button{
+    background:#198754;
+    color:white;
 }
 
 /* =====================================================
@@ -472,87 +779,168 @@ tbody tr:hover{
 ===================================================== */
 
 .modal{
-    display:none;
     position:fixed;
     inset:0;
-    background:rgba(0,0,0,.55);
-    z-index:500;
-    align-items:center;
+    background:rgba(3,20,35,.58);
+    backdrop-filter:blur(2px);
+    display:none;
     justify-content:center;
-    padding:15px;
+    align-items:center;
+    padding:20px;
+    z-index:999;
 }
 
 .modal.show{
     display:flex;
 }
 
-.modal-box{
-    width:min(650px,100%);
+.modal-content{
+    background:white;
+    width:600px;
+    max-width:100%;
     max-height:90vh;
     overflow-y:auto;
-    background:white;
-    border-radius:11px;
-    padding:22px;
-    box-shadow:0 10px 40px rgba(0,0,0,.25);
+    border-radius:12px;
+    padding:25px;
+    box-shadow:0 15px 40px rgba(0,0,0,.2);
 }
 
-.modal-title{
-    margin:0 0 18px;
+.modal-content h2{
     color:var(--primary);
-    font-size:20px;
-}
-
-.form-grid{
-    display:grid;
-    grid-template-columns:1fr 1fr;
-    gap:13px;
+    margin-bottom:20px;
+    font-size:19px;
 }
 
 .form-group{
-    display:flex;
-    flex-direction:column;
-    gap:5px;
-}
-
-.form-group.full{
-    grid-column:1/-1;
+    margin-bottom:15px;
 }
 
 .form-group label{
-    font-size:12px;
+    display:block;
     font-weight:bold;
+    margin-bottom:6px;
+    font-size:12px;
     color:#444;
 }
 
 .form-group input,
-.form-group select,
-.form-group textarea{
+.form-group select{
     width:100%;
-    padding:10px;
-    border:1px solid #ced4da;
-    border-radius:7px;
-    font:inherit;
-    outline:none;
 }
 
-.form-group input:focus,
-.form-group select:focus,
-.form-group textarea:focus{
-    border-color:var(--primary);
+.modal-buttons{
+    display:flex;
+    justify-content:flex-end;
+    gap:10px;
+    margin-top:20px;
 }
 
-.modal-actions{
+/* =====================================================
+   DELETE MODAL
+===================================================== */
+
+.confirm-icon{
+    width:55px;
+    height:55px;
+    border-radius:50%;
+    background:#f8d7da;
+    color:#842029;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    font-size:25px;
+    margin-bottom:15px;
+}
+
+.confirm-text{
+    color:#666;
+    font-size:13px;
+    line-height:1.5;
+}
+
+/* =====================================================
+   FILE PREVIEW
+===================================================== */
+
+.file-preview-modal-content{
+    background:white;
+    width:900px;
+    max-width:95%;
+    max-height:92vh;
+    overflow:auto;
+    border-radius:12px;
+    padding:20px;
+}
+
+.file-preview-header{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    gap:15px;
+    border-bottom:1px solid var(--border);
+    padding-bottom:15px;
+    margin-bottom:15px;
+}
+
+.file-preview-header h2{
+    color:var(--primary);
+    font-size:17px;
+    word-break:break-word;
+}
+
+.file-preview-close{
+    background:#f1f3f5;
+    color:#555;
+    font-size:18px;
+    width:35px;
+    height:35px;
+    padding:0;
+}
+
+.file-preview-area{
+    width:100%;
+    min-height:200px;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    background:#f6f8fa;
+    border:1px solid var(--border);
+    border-radius:8px;
+    padding:15px;
+}
+
+.file-preview-image{
+    max-width:100%;
+    max-height:65vh;
+    object-fit:contain;
+    border-radius:5px;
+}
+
+.file-preview-frame{
+    width:100%;
+    height:65vh;
+    border:0;
+    background:white;
+}
+
+.file-preview-message{
+    text-align:center;
+    padding:50px 20px;
+    color:#666;
+}
+
+.file-preview-actions{
     display:flex;
     justify-content:flex-end;
     gap:8px;
-    margin-top:20px;
+    margin-top:15px;
 }
 
 /* =====================================================
    RESPONSIVE
 ===================================================== */
 
-@media(max-width:1000px){
+@media(max-width:1100px){
 
     .dashboard{
         grid-template-columns:repeat(2,1fr);
@@ -560,75 +948,131 @@ tbody tr:hover{
 
 }
 
-@media(max-width:750px){
+@media(max-width:800px){
 
-    .app-layout{
+    .sidebar{
+        width:190px;
+    }
+
+    .content{
+        padding:15px;
+    }
+
+}
+
+@media(max-width:600px){
+
+    header{
+        padding:13px;
+    }
+
+    .header-left h1{
+        font-size:16px;
+    }
+
+    .header-left small{
+        font-size:10px;
+    }
+
+    .header-logo{
+        width:36px;
+        height:36px;
+    }
+
+    .connection{
+        font-size:9px;
+        padding:6px 8px;
+    }
+
+    .main-layout{
         display:block;
     }
 
     .sidebar{
+        position:static;
         width:100%;
-        display:flex;
-        overflow-x:auto;
-        padding:8px;
-        border-right:none;
+        height:auto;
+        border-right:0;
         border-bottom:1px solid var(--border);
+        padding:10px;
+    }
+
+    .sidebar-brand{
+        display:none;
     }
 
     .sidebar-title{
         display:none;
     }
 
-    .sidebar-item{
-        min-width:150px;
-        margin-right:5px;
+    .group-button{
+        display:inline-flex;
+        width:auto;
+        margin-right:4px;
     }
 
-    .main{
-        padding:12px;
+    .sidebar-divider{
+        display:none;
     }
 
-}
-
-@media(max-width:550px){
-
-    .header{
-        padding:0 12px;
-    }
-
-    .header-title{
-        font-size:15px;
-    }
-
-    .connection-status{
-        font-size:10px;
+    .archive-button{
+        width:auto;
+        display:inline-flex;
+        margin-top:5px;
     }
 
     .dashboard{
         grid-template-columns:1fr 1fr;
-        gap:8px;
+        gap:9px;
     }
 
-    .dashboard-card{
-        padding:12px;
+    .card{
+        padding:14px;
     }
 
-    .dashboard-number{
-        font-size:22px;
+    .number{
+        font-size:24px;
     }
 
-    .form-grid{
-        grid-template-columns:1fr;
+    .content{
+        padding:10px;
     }
 
-    .form-group.full{
-        grid-column:auto;
+    .page-intro h2{
+        font-size:19px;
     }
 
-    .control-input{
-        min-width:100%;
+    .controls-row{
+        flex-direction:column;
     }
 
+    .search{
+        width:100%;
+        min-width:0;
+    }
+
+}
+
+/* =====================================================
+   SCROLLBAR
+===================================================== */
+
+::-webkit-scrollbar{
+    width:8px;
+    height:8px;
+}
+
+::-webkit-scrollbar-track{
+    background:#f1f3f5;
+}
+
+::-webkit-scrollbar-thumb{
+    background:#c5ccd3;
+    border-radius:10px;
+}
+
+::-webkit-scrollbar-thumb:hover{
+    background:#aeb6be;
 }
 
 </style>
@@ -637,249 +1081,351 @@ tbody tr:hover{
 
 <body>
 
-<header class="header">
+<header>
 
-    <div class="header-title">
-        Graduate Group Tracking System
+    <div class="header-left">
+
+        <div class="header-logo">
+            G
+        </div>
+
+        <div>
+
+            <h1>
+                Graduate Group Tracking System
+            </h1>
+
+            <small>
+                Graduate Student Monitoring System
+            </small>
+
+        </div>
+
     </div>
 
-    <div class="connection-status">
-        <span id="connectionDot" class="connection-dot"></span>
-        <span id="connectionText">Checking...</span>
+    <div
+        class="connection"
+        id="connectionStatus"
+    >
+        Connecting...
     </div>
 
 </header>
 
-<div id="offlineBanner" class="offline-banner">
-    You are offline. Cached data is being used.
-    Any changes made offline will be synchronized with Supabase when the internet returns.
+<div
+    id="offlineBanner"
+    class="offline-banner"
+>
+    OFFLINE MODE — Changes will be saved on this device and synchronized when internet returns.
 </div>
 
-<div class="app-layout">
+<div class="main-layout">
 
-    <aside class="sidebar">
+<aside class="sidebar">
 
-        <div class="sidebar-title">
-            Groups
-        </div>
+    <div class="sidebar-brand">
 
-        <button class="sidebar-item active"
-                data-group="ALL"
-                onclick="selectGroup('ALL',this)">
-            <span>All Groups</span>
-            <span id="countAll" class="sidebar-count">0</span>
-        </button>
+        <strong>
+            Graduate Records
+        </strong>
 
-        <button class="sidebar-item"
-                data-group="TAGAYTAY GROUP"
-                onclick="selectGroup('TAGAYTAY GROUP',this)">
-            <span>TAGAYTAY GROUP</span>
-            <span id="countTagaytay" class="sidebar-count">0</span>
-        </button>
+        <span>
+            Student Management Portal
+        </span>
 
-        <button class="sidebar-item"
-                data-group="GELINE GROUP"
-                onclick="selectGroup('GELINE GROUP',this)">
-            <span>GELINE GROUP</span>
-            <span id="countGeline" class="sidebar-count">0</span>
-        </button>
+    </div>
 
-        <button class="sidebar-item"
-                data-group="BORACAY GROUP"
-                onclick="selectGroup('BORACAY GROUP',this)">
-            <span>BORACAY GROUP</span>
-            <span id="countBoracay" class="sidebar-count">0</span>
-        </button>
+    <div class="sidebar-title">
+        Groups
+    </div>
 
-        <button class="sidebar-item"
-                data-group="ARCHIVED"
-                onclick="selectGroup('ARCHIVED',this)">
-            <span>Archived Students</span>
-            <span id="countArchived" class="sidebar-count">0</span>
-        </button>
+    <button
+        class="group-button active"
+        id="groupBtnAll"
+        onclick="selectGroup('ALL')"
+    >
 
-    </aside>
+        <span class="group-icon">☰</span>
 
-    <main class="main">
+        <span class="group-name">
+            All Groups
+        </span>
 
-        <div class="page-heading">
+        <span
+            class="group-count"
+            id="countAll"
+        >0</span>
 
-            <div>
+    </button>
 
-                <h2 id="pageTitle">
-                    All Groups
-                </h2>
+    <button
+        class="group-button"
+        id="groupBtnTagaytay"
+        onclick="selectGroup('TAGAYTAY GROUP')"
+    >
 
-                <p id="pageDescription">
-                    Graduate student records
-                </p>
+        <span class="group-icon">T</span>
 
+        <span class="group-name">
+            TAGAYTAY GROUP
+        </span>
+
+        <span
+            class="group-count"
+            id="countTagaytay"
+        >0</span>
+
+    </button>
+
+    <button
+        class="group-button"
+        id="groupBtnGeline"
+        onclick="selectGroup('GELINE GROUP')"
+    >
+
+        <span class="group-icon">G</span>
+
+        <span class="group-name">
+            GELINE GROUP
+        </span>
+
+        <span
+            class="group-count"
+            id="countGeline"
+        >0</span>
+
+    </button>
+
+    <button
+        class="group-button"
+        id="groupBtnBoracay"
+        onclick="selectGroup('BORACAY GROUP')"
+    >
+
+        <span class="group-icon">B</span>
+
+        <span class="group-name">
+            BORACAY GROUP
+        </span>
+
+        <span
+            class="group-count"
+            id="countBoracay"
+        >0</span>
+
+    </button>
+
+    <hr class="sidebar-divider">
+
+    <button
+        class="archive-button"
+        id="archiveViewButton"
+        onclick="showArchived()"
+    >
+
+        <span class="group-icon">
+            ▣
+        </span>
+
+        <span class="group-name">
+            Archived Students
+        </span>
+
+        <span
+            class="group-count"
+            id="archiveCount"
+        >0</span>
+
+    </button>
+
+</aside>
+
+<main class="content">
+
+<div class="container">
+
+    <div class="page-intro">
+
+        <h2 id="pageTitle">
+            Student Records
+        </h2>
+
+        <p>
+            Manage and monitor graduate student records and completion status.
+        </p>
+
+    </div>
+
+    <div
+        id="message"
+        class="message"
+    ></div>
+
+    <div class="dashboard">
+
+        <div class="card">
+
+            <h3>
+                Total Students
+            </h3>
+
+            <div
+                class="number"
+                id="totalCount"
+            >
+                0
             </div>
 
         </div>
 
-        <div id="message"
-             class="message">
-        </div>
+        <div class="card">
 
-        <!-- =================================================
-             DASHBOARD
-        ================================================== -->
+            <h3>
+                Tuition Fee Paid
+            </h3>
 
-        <div class="dashboard">
-
-            <div class="dashboard-card">
-
-                <div class="dashboard-label">
-                    Total Students
-                </div>
-
-                <span id="totalStudents"
-                      class="dashboard-number">
-                    0
-                </span>
-
-            </div>
-
-            <div class="dashboard-card">
-
-                <div class="dashboard-label">
-                    Tuition Fee Paid
-                </div>
-
-                <span id="tuitionPaid"
-                      class="dashboard-number">
-                    0
-                </span>
-
-            </div>
-
-            <div class="dashboard-card">
-
-                <div class="dashboard-label">
-                    Grad Fee Paid
-                </div>
-
-                <span id="gradPaid"
-                      class="dashboard-number">
-                    0
-                </span>
-
-            </div>
-
-            <div class="dashboard-card">
-
-                <div class="dashboard-label">
-                    Files Complete
-                </div>
-
-                <span id="filesComplete"
-                      class="dashboard-number">
-                    0
-                </span>
-
+            <div
+                class="number"
+                id="filesComplete"
+            >
+                0
             </div>
 
         </div>
 
-        <!-- =================================================
-             CONTROLS
-        ================================================== -->
+        <div class="card">
 
-        <div class="controls">
+            <h3>
+                Grad Fee Paid
+            </h3>
+
+            <div
+                class="number"
+                id="thesisComplete"
+            >
+                0
+            </div>
+
+        </div>
+
+        <div class="card">
+
+            <h3>
+                Overall Complete
+            </h3>
+
+            <div
+                class="number"
+                id="overallComplete"
+            >
+                0
+            </div>
+
+        </div>
+
+    </div>
+
+    <div class="controls">
+
+        <div class="controls-label">
+            SEARCH AND FILTERS
+        </div>
+
+        <div class="controls-row">
 
             <input
+                type="text"
                 id="searchInput"
-                class="control-input"
-                type="search"
-                placeholder="Search student or thesis title"
+                class="search"
+                placeholder="Search student name or thesis title..."
+                oninput="renderTable()"
             >
 
-            <select id="programFilter"
-                    class="control-select">
-
-                <option value="">
-                    All Programs
-                </option>
-
-                <option value="MAEd">
-                    MAEd
-                </option>
-
-                <option value="PhD">
-                    PhD
-                </option>
-
-                <option value="MBA">
-                    MBA
-                </option>
-
-                <option value="MPA">
-                    MPA
-                </option>
-
-                <option value="MSCJ">
-                    MSCJ
-                </option>
-
+            <select
+                id="programFilter"
+                onchange="renderTable()"
+            >
+                <option value="ALL">All Programs</option>
+                <option value="MAEd">MAEd</option>
+                <option value="PhD">PhD</option>
+                <option value="MBA">MBA</option>
+                <option value="MPA">MPA</option>
+                <option value="MSCJ">MSCJ</option>
             </select>
 
-            <select id="tuitionFilter"
-                    class="control-select">
-
-                <option value="">
-                    Tuition Fee: All
-                </option>
-
-                <option value="Paid">
-                    Paid
-                </option>
-
-                <option value="Not Yet Paid">
-                    Not Yet Paid
-                </option>
-
+            <select
+                id="fileFilter"
+                onchange="renderTable()"
+            >
+                <option value="ALL">All Tuition Fee Status</option>
+                <option value="Paid">Paid</option>
+                <option value="Not Yet Paid">Not Yet Paid</option>
             </select>
 
-            <select id="gradFilter"
-                    class="control-select">
-
-                <option value="">
-                    Grad Fee: All
-                </option>
-
-                <option value="Paid">
-                    Paid
-                </option>
-
-                <option value="Not Yet Paid">
-                    Not Yet Paid
-                </option>
-
+            <select
+                id="thesisFilter"
+                onchange="renderTable()"
+            >
+                <option value="ALL">All Grad Fee Status</option>
+                <option value="Paid">Paid</option>
+                <option value="Not Yet Paid">Not Yet Paid</option>
             </select>
 
-            <button class="btn btn-primary"
-                    onclick="openStudentModal()">
-                Add Student
+            <button
+                class="primary"
+                onclick="openAddModal()"
+            >
+                + Add Student
             </button>
 
-            <button class="btn btn-secondary"
-                    onclick="manualRefresh()">
-                Refresh
+            <button
+                class="secondary"
+                onclick="loadData()"
+            >
+                ↻ Refresh
             </button>
 
-            <button class="btn btn-danger"
-                    onclick="archiveSelected()">
+            <button
+                class="archive-selected"
+                id="archiveSelectedButton"
+                onclick="archiveSelected()"
+            >
                 Archive Selected
             </button>
 
         </div>
 
-        <!-- =================================================
-             TABLE
-        ================================================== -->
+    </div>
 
-        <div class="table-container">
+    <div class="table-box">
+
+        <div class="table-header">
+
+            <h2 id="tableTitle">
+                Student Records
+            </h2>
+
+            <div class="table-header-right">
+
+                <span
+                    class="record-pill"
+                    id="selectedCount"
+                >
+                    0 selected
+                </span>
+
+                <span
+                    class="record-pill"
+                    id="recordCount"
+                >
+                    0 records
+                </span>
+
+            </div>
+
+        </div>
+
+        <div class="table-wrap">
 
             <table>
 
@@ -887,66 +1433,50 @@ tbody tr:hover{
 
                     <tr>
 
-                        <th>
+                        <th class="checkbox-cell">
+
                             <input
                                 type="checkbox"
                                 id="selectAll"
-                                onchange="toggleAll(this)"
+                                onchange="toggleSelectAll()"
+                                title="Select all"
                             >
+
                         </th>
 
-                        <th>
-                            Student Name
-                        </th>
+                        <th>#</th>
 
-                        <th>
-                            Group
-                        </th>
+                        <th>Student Name</th>
 
-                        <th>
-                            Program
-                        </th>
+                        <th>Group</th>
 
-                        <th>
-                            Tuition Fee
-                        </th>
+                        <th>Program</th>
 
-                        <th>
-                            Grad Fee
-                        </th>
+                        <th>Tuition Fee</th>
 
-                        <th>
-                            Files
-                        </th>
+                        <th>Grad Fee</th>
 
-                        <th>
-                            Thesis Title
-                        </th>
+                        <th>Overall</th>
 
-                        <th>
-                            Actions
-                        </th>
+                        <th>Thesis Title</th>
+
+                        <th>Actions</th>
 
                     </tr>
 
                 </thead>
 
-                <tbody id="studentTable">
-
-                    <tr>
-                        <td colspan="9"
-                            class="empty-row">
-                            Loading...
-                        </td>
-                    </tr>
-
-                </tbody>
+                <tbody id="studentTableBody"></tbody>
 
             </table>
 
         </div>
 
-    </main>
+    </div>
+
+</div>
+
+</main>
 
 </div>
 
@@ -954,222 +1484,205 @@ tbody tr:hover{
      STUDENT MODAL
 ===================================================== -->
 
-<div id="studentModal"
-     class="modal">
+<div
+    class="modal"
+    id="studentModal"
+>
 
-    <div class="modal-box">
+    <div class="modal-content">
 
-        <h2 id="studentModalTitle"
-            class="modal-title">
+        <h2 id="modalTitle">
             Add Student
         </h2>
 
-        <form id="studentForm">
+        <input
+            type="hidden"
+            id="studentId"
+        >
 
-            <input type="hidden"
-                   id="studentId">
+        <div class="form-group">
 
-            <div class="form-grid">
+            <label>Student Name</label>
 
-                <div class="form-group full">
+            <input
+                type="text"
+                id="studentName"
+                placeholder="Enter student name"
+            >
 
-                    <label>
-                        Student Name
-                    </label>
+        </div>
 
-                    <input
-                        type="text"
-                        id="studentName"
-                        required
-                    >
+        <div class="form-group">
 
-                </div>
+            <label>Group</label>
 
-                <div class="form-group">
+            <select id="studentGroup">
 
-                    <label>
-                        Group
-                    </label>
+                <option value="TAGAYTAY GROUP">
+                    TAGAYTAY GROUP
+                </option>
 
-                    <select id="studentGroup"
-                            required>
+                <option value="GELINE GROUP">
+                    GELINE GROUP
+                </option>
 
-                        <option value="TAGAYTAY GROUP">
-                            TAGAYTAY GROUP
-                        </option>
+                <option value="BORACAY GROUP">
+                    BORACAY GROUP
+                </option>
 
-                        <option value="GELINE GROUP">
-                            GELINE GROUP
-                        </option>
+            </select>
 
-                        <option value="BORACAY GROUP">
-                            BORACAY GROUP
-                        </option>
+        </div>
 
-                    </select>
+        <div class="form-group">
 
-                </div>
+            <label>Program</label>
 
-                <div class="form-group">
+            <select id="studentProgram">
 
-                    <label>
-                        Program
-                    </label>
+                <option value="MAEd">MAEd</option>
+                <option value="PhD">PhD</option>
+                <option value="MBA">MBA</option>
+                <option value="MPA">MPA</option>
+                <option value="MSCJ">MSCJ</option>
 
-                    <select id="studentProgram"
-                            required>
+            </select>
 
-                        <option value="MAEd">
-                            MAEd
-                        </option>
+        </div>
 
-                        <option value="PhD">
-                            PhD
-                        </option>
+        <!-- TUITION FEE STATUS DROPDOWN -->
 
-                        <option value="MBA">
-                            MBA
-                        </option>
+        <div class="form-group">
 
-                        <option value="MPA">
-                            MPA
-                        </option>
+            <label>Tuition Fee</label>
 
-                        <option value="MSCJ">
-                            MSCJ
-                        </option>
+            <select id="studentFileStatus">
 
-                    </select>
+                <option value="Not Yet Paid">
+                    Not Yet Paid
+                </option>
 
-                </div>
+                <option value="Paid">
+                    Paid
+                </option>
 
-                <div class="form-group">
+            </select>
 
-                    <label>
-                        Tuition Fee
-                    </label>
+        </div>
 
-                    <select id="studentTuition">
+        <!-- GRAD FEE STATUS DROPDOWN -->
 
-                        <option value="Paid">
-                            Paid
-                        </option>
+        <div class="form-group">
 
-                        <option value="Not Yet Paid">
-                            Not Yet Paid
-                        </option>
+            <label>Grad Fee</label>
 
-                    </select>
+            <select id="studentThesisStatus">
 
-                </div>
+                <option value="Not Yet Paid">
+                    Not Yet Paid
+                </option>
 
-                <div class="form-group">
+                <option value="Paid">
+                    Paid
+                </option>
 
-                    <label>
-                        Grad Fee
-                    </label>
+            </select>
 
-                    <select id="studentGrad">
+        </div>
 
-                        <option value="Paid">
-                            Paid
-                        </option>
+        <!-- OVERALL STATUS DROPDOWN -->
 
-                        <option value="Not Yet Paid">
-                            Not Yet Paid
-                        </option>
+        <div class="form-group">
 
-                    </select>
+            <label>Overall Status</label>
 
-                </div>
+            <select id="studentOverallStatus">
 
-                <div class="form-group">
+                <option value="Not Yet Done">
+                    Not Yet Done
+                </option>
 
-                    <label>
-                        Files
-                    </label>
+                <option value="Complete">
+                    Complete
+                </option>
 
-                    <select id="studentFilesStatus">
+            </select>
 
-                        <option value="Complete">
-                            Complete
-                        </option>
+        </div>
 
-                        <option value="Not Yet Done">
-                            Not Yet Done
-                        </option>
+        <div class="form-group">
 
-                    </select>
+            <label>Thesis Title</label>
 
-                </div>
+            <input
+                type="text"
+                id="studentThesisTitle"
+                placeholder="Enter thesis title"
+            >
 
-                <div class="form-group full">
+        </div>
 
-                    <label>
-                        Thesis Title
-                    </label>
+        <div class="modal-buttons">
 
-                    <textarea
-                        id="studentThesis"
-                        rows="4"
-                    ></textarea>
+            <button
+                class="secondary"
+                onclick="closeModal()"
+            >
+                Cancel
+            </button>
 
-                </div>
+            <button
+                class="primary"
+                onclick="saveStudent()"
+            >
+                Save Student
+            </button>
 
-            </div>
-
-            <div class="modal-actions">
-
-                <button
-                    type="button"
-                    class="btn btn-secondary"
-                    onclick="closeStudentModal()">
-                    Cancel
-                </button>
-
-                <button
-                    type="submit"
-                    class="btn btn-primary">
-                    Save Student
-                </button>
-
-            </div>
-
-        </form>
+        </div>
 
     </div>
 
 </div>
 
 <!-- =====================================================
-     DELETE MODAL
+     DELETE CONFIRMATION MODAL
 ===================================================== -->
 
-<div id="deleteModal"
-     class="modal">
+<div
+    class="modal"
+    id="deleteModal"
+>
 
-    <div class="modal-box">
+    <div class="modal-content">
 
-        <h2 class="modal-title">
-            Permanently Delete Student
+        <div class="confirm-icon">
+            !
+        </div>
+
+        <h2>
+            Delete Archived Student
         </h2>
 
-        <p>
-            This will permanently delete the archived student
-            from the shared Supabase database.
+        <p
+            class="confirm-text"
+            id="deleteMessage"
+        >
+            Are you sure you want to permanently delete this student?
         </p>
 
-        <div class="modal-actions">
+        <div class="modal-buttons">
 
             <button
-                class="btn btn-secondary"
-                onclick="closeDeleteModal()">
+                class="secondary"
+                onclick="closeDeleteModal()"
+            >
                 Cancel
             </button>
 
             <button
-                class="btn btn-danger"
-                onclick="confirmDelete()">
+                class="danger"
+                onclick="confirmDeleteArchived()"
+            >
                 Delete Permanently
             </button>
 
@@ -1179,10 +1692,51 @@ tbody tr:hover{
 
 </div>
 
+<!-- =====================================================
+     FILE PREVIEW MODAL
+===================================================== -->
+
+<div
+    class="modal"
+    id="filePreviewModal"
+>
+
+    <div class="file-preview-modal-content">
+
+        <div class="file-preview-header">
+
+            <h2 id="filePreviewTitle">
+                Uploaded File
+            </h2>
+
+            <button
+                type="button"
+                class="file-preview-close"
+                onclick="closeFilePreview()"
+            >
+                ×
+            </button>
+
+        </div>
+
+        <div
+            class="file-preview-area"
+            id="filePreviewContent"
+        ></div>
+
+        <div
+            class="file-preview-actions"
+            id="filePreviewActions"
+        ></div>
+
+    </div>
+
+</div>
+
 <script>
 
 /* =====================================================
-   SUPABASE CONFIGURATION
+   SUPABASE
 ===================================================== */
 
 const SUPABASE_URL =
@@ -1197,7 +1751,6 @@ const supabaseClient =
         SUPABASE_KEY
     );
 
-
 /* =====================================================
    LOCAL STORAGE
 ===================================================== */
@@ -1208,10 +1761,8 @@ const LOCAL_KEY =
 const PENDING_KEY =
     "graduatePendingChanges";
 
-
-/* =====================================================
-   APPLICATION STATE
-===================================================== */
+const FILE_KEY =
+    "graduateStudentFiles";
 
 let students = [];
 
@@ -1220,155 +1771,81 @@ let pendingChanges =
         localStorage.getItem(PENDING_KEY) || "[]"
     );
 
-let selectedIds =
-    new Set();
+let studentFiles =
+    JSON.parse(
+        localStorage.getItem(FILE_KEY) || "{}"
+    );
 
-let selectedGroup =
-    "ALL";
+let selectedIds = new Set();
 
-let showingArchived =
-    false;
+let selectedGroup = "ALL";
 
-let deleteStudentId =
-    null;
+let showingArchived = false;
 
-let onlineLoading =
-    false;
-
-let realtimeChannel =
-    null;
-
-let realtimeTimer =
-    null;
-
+let deleteStudentId = null;
 
 /* =====================================================
-   HELPERS
+   INITIALIZE
 ===================================================== */
 
-function $(id){
-    return document.getElementById(id);
-}
+document.addEventListener(
+    "DOMContentLoaded",
+    async function(){
 
+        updateConnection();
 
-function escapeHtml(value){
+        /* Load saved data immediately so refresh never shows a blank table. */
+        loadLocalData();
 
-    return String(value ?? "")
-        .replace(/&/g,"&amp;")
-        .replace(/</g,"&lt;")
-        .replace(/>/g,"&gt;")
-        .replace(/"/g,"&quot;")
-        .replace(/'/g,"&#039;");
+        /* Then synchronize with Supabase when online. */
+        if(navigator.onLine){
+            await loadOnlineData();
+        }
 
-}
-
-
-function escapeJs(value){
-
-    return String(value ?? "")
-        .replace(/\\/g,"\\\\")
-        .replace(/'/g,"\\'");
-
-}
-
-
-function friendlySupabaseError(error){
-
-    if(!error){
-        return "Unknown Supabase error.";
+        if("serviceWorker" in navigator){
+            navigator.serviceWorker
+                .register("service-worker.js")
+                .catch(error =>
+                    console.log("Service Worker:", error)
+                );
+        }
     }
+);
 
-    const parts = [];
+window.addEventListener("online", async function(){
+    updateConnection();
+    await syncPendingChanges();
+    await loadOnlineData();
+});
 
-    if(error.message){
-        parts.push(error.message);
-    }
-
-    if(error.details){
-        parts.push(error.details);
-    }
-
-    if(error.hint){
-        parts.push(error.hint);
-    }
-
-    if(error.code){
-        parts.push("Code: " + error.code);
-    }
-
-    return parts.join(" | ");
-
-}
-
+window.addEventListener("offline", function(){
+    updateConnection();
+    saveLocalData();
+});
 
 /* =====================================================
-   MESSAGES
+   CONNECTION
 ===================================================== */
 
-let messageTimer = null;
+function updateConnection(){
 
-
-function showMessage(
-    text,
-    type = "success"
-){
-
-    const element =
-        $("message");
-
-    element.textContent =
-        text;
-
-    element.className =
-        "message show " + type;
-
-    clearTimeout(messageTimer);
-
-    messageTimer =
-        setTimeout(
-            function(){
-
-                element.className =
-                    "message";
-
-                element.textContent =
-                    "";
-
-            },
-            8000
+    const status =
+        document.getElementById(
+            "connectionStatus"
         );
 
-}
-
-
-/* =====================================================
-   CONNECTION STATUS
-===================================================== */
-
-function updateConnection(
-    customText = null
-){
-
-    const online =
-        navigator.onLine;
-
-    const dot =
-        $("connectionDot");
-
-    const text =
-        $("connectionText");
-
     const banner =
-        $("offlineBanner");
+        document.getElementById(
+            "offlineBanner"
+        );
 
-    if(online){
+    if(navigator.onLine){
 
-        dot.className =
-            "connection-dot online";
+        status.textContent =
+            "● ONLINE";
 
-        text.textContent =
-            customText ||
-            "ONLINE • Supabase";
+        status.style.color =
+            "#b7f7c5";
 
         banner.classList.remove(
             "show"
@@ -1376,11 +1853,11 @@ function updateConnection(
 
     }else{
 
-        dot.className =
-            "connection-dot offline";
+        status.textContent =
+            "● OFFLINE";
 
-        text.textContent =
-            "OFFLINE • Local Cache";
+        status.style.color =
+            "#ffd166";
 
         banner.classList.add(
             "show"
@@ -1390,1700 +1867,459 @@ function updateConnection(
 
 }
 
-
 /* =====================================================
-   LOCAL STORAGE
+   LOAD DATA
 ===================================================== */
 
-function saveLocalData(){
+async function loadData(){
+
+    /* Always restore the last saved copy first. */
+    loadLocalData();
+
+    if(!navigator.onLine){
+        return;
+    }
+
+    await loadOnlineData();
+}
+
+/* =====================================================
+   LOAD ONLINE
+===================================================== */
+
+async function loadOnlineData(){
 
     try{
 
-        localStorage.setItem(
-            LOCAL_KEY,
-            JSON.stringify(students)
-        );
+        /* First sync pending offline changes. */
+        await syncPendingChanges();
 
-        localStorage.setItem(
-            PENDING_KEY,
-            JSON.stringify(pendingChanges)
-        );
+        const { data, error } =
+            await supabaseClient
+                .from("students")
+                .select("*")
+                .order("name", { ascending:true });
+
+        if(error){
+            throw error;
+        }
+
+        /* Only replace local data after a successful Supabase response. */
+        if(Array.isArray(data)){
+            students = data;
+            saveLocalData();
+            selectedIds.clear();
+            renderTable();
+            updateSidebarCounts();
+        }
 
     }catch(error){
 
-        console.error(
-            "Local storage error:",
-            error
-        );
+        console.log("Online loading failed:", error);
 
+        /* NEVER clear the table when Supabase fails. */
+        loadLocalData();
+
+        if(navigator.onLine){
+            showMessage(
+                "Unable to update from Supabase. Your saved data was kept.",
+                "error"
+            );
+        }
     }
-
 }
 
+/* =====================================================
+   LOAD LOCAL
+===================================================== */
 
 function loadLocalData(){
 
     try{
 
-        const saved =
-            localStorage.getItem(
-                LOCAL_KEY
-            );
+        const saved = localStorage.getItem(LOCAL_KEY);
 
         if(saved !== null){
-
-            const parsed =
-                JSON.parse(saved);
-
+            const parsed = JSON.parse(saved);
             if(Array.isArray(parsed)){
-
-                students =
-                    parsed;
-
+                students = parsed;
             }
+        }
 
+        if(!Array.isArray(students)){
+            students = [];
         }
 
     }catch(error){
-
-        console.error(
-            "Unable to read local data:",
-            error
-        );
-
+        console.log("Local data load failed:", error);
+        /* Keep the current in-memory data if parsing fails. */
+        if(!Array.isArray(students)){
+            students = [];
+        }
     }
 
     renderTable();
-
-}
-
-
-/* =====================================================
-   APPLY PENDING CHANGES
-===================================================== */
-
-function applyPendingChanges(
-    serverData
-){
-
-    let result =
-        Array.isArray(serverData)
-            ? serverData.map(
-                row => ({...row})
-              )
-            : [];
-
-
-    for(
-        const change
-        of pendingChanges
-    ){
-
-        if(change.type === "insert"){
-
-            const localStudent =
-                students.find(
-                    student =>
-                        String(student.id) ===
-                        String(change.tempId)
-                );
-
-            if(
-                localStudent &&
-                !result.some(
-                    student =>
-                        String(student.id) ===
-                        String(localStudent.id)
-                )
-            ){
-
-                result.push(
-                    {...localStudent}
-                );
-
-            }
-
-        }
-
-
-        else if(
-            change.type === "update"
-        ){
-
-            const index =
-                result.findIndex(
-                    student =>
-                        String(student.id) ===
-                        String(change.id)
-                );
-
-            if(index >= 0){
-
-                result[index] =
-                    {
-                        ...result[index],
-                        ...change.data
-                    };
-
-            }else{
-
-                const localStudent =
-                    students.find(
-                        student =>
-                            String(student.id) ===
-                            String(change.id)
-                    );
-
-                if(localStudent){
-
-                    result.push(
-                        {
-                            ...localStudent,
-                            ...change.data
-                        }
-                    );
-
-                }
-
-            }
-
-        }
-
-
-        else if(
-            change.type === "delete"
-        ){
-
-            result =
-                result.filter(
-                    student =>
-                        String(student.id) !==
-                        String(change.id)
-                );
-
-        }
-
-    }
-
-
-    return result;
-
-}
-
-
-/* =====================================================
-   SYNC PENDING CHANGES
-===================================================== */
-
-async function syncPendingChanges(){
-
-    if(!navigator.onLine){
-
-        return false;
-
-    }
-
-
-    if(
-        !Array.isArray(pendingChanges) ||
-        pendingChanges.length === 0
-    ){
-
-        return true;
-
-    }
-
-
-    const remaining = [];
-
-
-    for(
-        const change
-        of pendingChanges
-    ){
-
-        try{
-
-            if(
-                change.type ===
-                "insert"
-            ){
-
-                const payload =
-                    {
-                        ...change.data
-                    };
-
-                delete payload.id;
-
-
-                const {
-                    data,
-                    error
-                } =
-                    await supabaseClient
-                        .from("students")
-                        .insert(payload)
-                        .select()
-                        .single();
-
-
-                if(error){
-
-                    throw error;
-
-                }
-
-
-                const index =
-                    students.findIndex(
-                        student =>
-                            String(student.id) ===
-                            String(change.tempId)
-                    );
-
-
-                if(index >= 0){
-
-                    students[index] =
-                        data;
-
-                }
-
-            }
-
-
-            else if(
-                change.type ===
-                "update"
-            ){
-
-                const {
-                    error
-                } =
-                    await supabaseClient
-                        .from("students")
-                        .update(
-                            change.data
-                        )
-                        .eq(
-                            "id",
-                            change.id
-                        );
-
-
-                if(error){
-
-                    throw error;
-
-                }
-
-            }
-
-
-            else if(
-                change.type ===
-                "delete"
-            ){
-
-                const {
-                    error
-                } =
-                    await supabaseClient
-                        .from("students")
-                        .delete()
-                        .eq(
-                            "id",
-                            change.id
-                        );
-
-
-                if(error){
-
-                    throw error;
-
-                }
-
-            }
-
-        }catch(error){
-
-            console.error(
-                "Pending change failed:",
-                error,
-                change
-            );
-
-            remaining.push(
-                change
-            );
-
-        }
-
-    }
-
-
-    pendingChanges =
-        remaining;
-
-    saveLocalData();
-
-
-    return (
-        pendingChanges.length === 0
-    );
-
-}
-
-
-/* =====================================================
-   MAIN ONLINE LOAD
-===================================================== */
-
-async function loadOnlineData(
-    options = {}
-){
-
-    const silent =
-        options.silent === true;
-
-
-    if(!navigator.onLine){
-
-        updateConnection(
-            "OFFLINE • Local Cache"
-        );
-
-        loadLocalData();
-
-        return false;
-
-    }
-
-
-    if(onlineLoading){
-
-        return false;
-
-    }
-
-
-    onlineLoading =
-        true;
-
-
-    updateConnection(
-        "ONLINE • Checking Supabase..."
-    );
-
-
-    try{
-
-        /*
-         * FIRST:
-         * Push any changes that were waiting
-         * from offline mode.
-         */
-
-        const syncOK =
-            await syncPendingChanges();
-
-
-        /*
-         * SECOND:
-         * Read the real database.
-         */
-
-        const {
-            data,
-            error
-        } =
-            await supabaseClient
-                .from("students")
-                .select("*")
-                .order(
-                    "name",
-                    {
-                        ascending:true
-                    }
-                );
-
-
-        /*
-         * VERY IMPORTANT:
-         *
-         * A failed SELECT is NOT an empty database.
-         *
-         * We throw the error instead of doing:
-         *
-         * students = []
-         */
-
-        if(error){
-
-            throw error;
-
-        }
-
-
-        if(!Array.isArray(data)){
-
-            throw new Error(
-                "Supabase returned an invalid student list."
-            );
-
-        }
-
-
-        /*
-         * Supabase request succeeded.
-         *
-         * NOW it is safe to replace
-         * the local copy.
-         */
-
-        students =
-            applyPendingChanges(
-                data
-            );
-
-
-        students.sort(
-            function(a,b){
-
-                return String(
-                    a.name || ""
-                ).localeCompare(
-                    String(
-                        b.name || ""
-                    )
-                );
-
-            }
-        );
-
-
-        /*
-         * Save the successful database
-         * result as our last known good cache.
-         */
-
-        saveLocalData();
-
-        renderTable();
-
-        updateConnection(
-            "ONLINE • Supabase Connected"
-        );
-
-
-        if(!silent){
-
-            if(syncOK){
-
-                showMessage(
-                    "Data loaded successfully from Supabase.",
-                    "success"
-                );
-
-            }else{
-
-                showMessage(
-                    "Data loaded from Supabase, but some pending changes are still waiting to sync.",
-                    "warning"
-                );
-
-            }
-
-        }
-
-
-        return true;
-
-    }catch(error){
-
-        console.error(
-            "SUPABASE LOAD ERROR:",
-            error
-        );
-
-
-        /*
-         * CRITICAL:
-         *
-         * NEVER clear students here.
-         *
-         * If Supabase fails, keep the last
-         * known local data.
-         */
-
-        loadLocalData();
-
-
-        updateConnection(
-            "ONLINE • DATABASE ERROR"
-        );
-
-
-        showMessage(
-            "Supabase could not be read.\n\n" +
-            "Your existing cached data was NOT deleted.\n\n" +
-            friendlySupabaseError(error),
-            "error"
-        );
-
-
-        return false;
-
-    }finally{
-
-        onlineLoading =
-            false;
-
-    }
-
-}
-
-
-/* =====================================================
-   MANUAL REFRESH
-===================================================== */
-
-async function manualRefresh(){
-
-    if(!navigator.onLine){
-
-        loadLocalData();
-
-        showMessage(
-            "You are offline. Showing the saved local data.",
-            "warning"
-        );
-
-        return;
-
-    }
-
-
-    await loadOnlineData();
-
-}
-
-
-/* =====================================================
-   RENDER
-===================================================== */
-
-function renderTable(){
-
-    const search =
-        $("searchInput")
-            .value
-            .trim()
-            .toLowerCase();
-
-    const program =
-        $("programFilter")
-            .value;
-
-    const tuition =
-        $("tuitionFilter")
-            .value;
-
-    const grad =
-        $("gradFilter")
-            .value;
-
-
-    let rows =
-        students.filter(
-            function(student){
-
-                if(
-                    showingArchived
-                ){
-
-                    return !!student.archived;
-
-                }
-
-                return !student.archived;
-
-            }
-        );
-
-
-    if(
-        !showingArchived &&
-        selectedGroup !== "ALL"
-    ){
-
-        rows =
-            rows.filter(
-                student =>
-                    student.group ===
-                    selectedGroup
-            );
-
-    }
-
-
-    if(search){
-
-        rows =
-            rows.filter(
-                student => {
-
-                    const name =
-                        String(
-                            student.name || ""
-                        ).toLowerCase();
-
-                    const thesis =
-                        String(
-                            student.thesis_title || ""
-                        ).toLowerCase();
-
-                    return (
-                        name.includes(search) ||
-                        thesis.includes(search)
-                    );
-
-                }
-            );
-
-    }
-
-
-    if(program){
-
-        rows =
-            rows.filter(
-                student =>
-                    student.program ===
-                    program
-            );
-
-    }
-
-
-    if(tuition){
-
-        rows =
-            rows.filter(
-                student =>
-                    student.file_status ===
-                    tuition
-            );
-
-    }
-
-
-    if(grad){
-
-        rows =
-            rows.filter(
-                student =>
-                    student.thesis_status ===
-                    grad
-            );
-
-    }
-
-
-    rows.sort(
-        function(a,b){
-
-            return String(
-                a.name || ""
-            ).localeCompare(
-                String(
-                    b.name || ""
-                )
-            );
-
-        }
-    );
-
-
-    if(showingArchived){
-
-        $("pageTitle").textContent =
-            "Archived Students";
-
-        $("pageDescription").textContent =
-            "Archived graduate student records";
-
-    }else{
-
-        $("pageTitle").textContent =
-            selectedGroup === "ALL"
-                ? "All Groups"
-                : selectedGroup;
-
-        $("pageDescription").textContent =
-            "Graduate student records";
-
-    }
-
-
-    /*
-     * DASHBOARD
-     */
-
-    $("totalStudents").textContent =
-        rows.length;
-
-
-    $("tuitionPaid").textContent =
-        rows.filter(
-            student =>
-                student.file_status ===
-                "Paid"
-        ).length;
-
-
-    $("gradPaid").textContent =
-        rows.filter(
-            student =>
-                student.thesis_status ===
-                "Paid"
-        ).length;
-
-
-    $("filesComplete").textContent =
-        rows.filter(
-            student =>
-                student.Files_status ===
-                "Complete"
-        ).length;
-
-
-    /*
-     * TABLE
-     */
-
-    const table =
-        $("studentTable");
-
-
-    if(rows.length === 0){
-
-        table.innerHTML =
-            `
-            <tr>
-                <td
-                    colspan="9"
-                    class="empty-row"
-                >
-                    No students found.
-                </td>
-            </tr>
-            `;
-
-        updateSidebarCounts();
-
-        return;
-
-    }
-
-
-    table.innerHTML =
-        rows.map(
-            function(student){
-
-                const id =
-                    escapeJs(
-                        student.id
-                    );
-
-
-                const tuitionClass =
-                    student.file_status ===
-                    "Paid"
-                        ? "status-paid"
-                        : "status-not-paid";
-
-
-                const gradClass =
-                    student.thesis_status ===
-                    "Paid"
-                        ? "status-paid"
-                        : "status-not-paid";
-
-
-                const fileClass =
-                    student.Files_status ===
-                    "Complete"
-                        ? "status-complete"
-                        : "status-not-done";
-
-
-                return `
-                <tr>
-
-                    <td>
-
-                        <input
-                            type="checkbox"
-                            ${
-                                selectedIds.has(
-                                    String(student.id)
-                                )
-                                ? "checked"
-                                : ""
-                            }
-                            onchange="toggleOne('${id}',this.checked)"
-                        >
-
-                    </td>
-
-                    <td>
-
-                        <div class="student-name">
-                            ${escapeHtml(student.name)}
-                        </div>
-
-                    </td>
-
-                    <td>
-                        ${escapeHtml(student.group)}
-                    </td>
-
-                    <td>
-
-                        <span class="program-badge">
-                            ${escapeHtml(student.program)}
-                        </span>
-
-                    </td>
-
-                    <td>
-
-                        <span
-                            class="status-badge ${tuitionClass}"
-                        >
-                            ${escapeHtml(
-                                student.file_status ||
-                                "Not Yet Paid"
-                            )}
-                        </span>
-
-                    </td>
-
-                    <td>
-
-                        <span
-                            class="status-badge ${gradClass}"
-                        >
-                            ${escapeHtml(
-                                student.thesis_status ||
-                                "Not Yet Paid"
-                            )}
-                        </span>
-
-                    </td>
-
-                    <td>
-
-                        <span
-                            class="status-badge ${fileClass}"
-                        >
-                            ${escapeHtml(
-                                student.Files_status ||
-                                "Not Yet Done"
-                            )}
-                        </span>
-
-                    </td>
-
-                    <td class="thesis-title">
-
-                        ${escapeHtml(
-                            student.thesis_title || ""
-                        )}
-
-                    </td>
-
-                    <td>
-
-                        <button
-                            class="btn btn-secondary btn-small"
-                            onclick="editStudent('${id}')"
-                        >
-                            Edit
-                        </button>
-
-                        ${
-                            showingArchived
-
-                            ?
-
-                            `
-                            <button
-                                class="btn btn-success btn-small"
-                                onclick="restoreStudent('${id}')"
-                            >
-                                Restore
-                            </button>
-
-                            <button
-                                class="btn btn-danger btn-small"
-                                onclick="openDeleteModal('${id}')"
-                            >
-                                Delete
-                            </button>
-                            `
-
-                            :
-
-                            `
-                            <button
-                                class="btn btn-danger btn-small"
-                                onclick="archiveStudent('${id}')"
-                            >
-                                Archive
-                            </button>
-                            `
-                        }
-
-                    </td>
-
-                </tr>
-                `;
-
-            }
-        ).join("");
-
-
     updateSidebarCounts();
-
 }
 
-
 /* =====================================================
-   SIDEBAR COUNTS
+   SAVE LOCAL
 ===================================================== */
 
-function updateSidebarCounts(){
+function saveLocalData(){
 
-    const active =
-        students.filter(
-            student =>
-                !student.archived
-        );
-
-
-    $("countAll").textContent =
-        active.length;
-
-
-    $("countTagaytay").textContent =
-        active.filter(
-            student =>
-                student.group ===
-                "TAGAYTAY GROUP"
-        ).length;
-
-
-    $("countGeline").textContent =
-        active.filter(
-            student =>
-                student.group ===
-                "GELINE GROUP"
-        ).length;
-
-
-    $("countBoracay").textContent =
-        active.filter(
-            student =>
-                student.group ===
-                "BORACAY GROUP"
-        ).length;
-
-
-    $("countArchived").textContent =
-        students.filter(
-            student =>
-                !!student.archived
-        ).length;
-
-}
-
-
-/* =====================================================
-   GROUP SELECTION
-===================================================== */
-
-function selectGroup(
-    group,
-    button
-){
-
-    document
-        .querySelectorAll(
-            ".sidebar-item"
-        )
-        .forEach(
-            item =>
-                item.classList.remove(
-                    "active"
-                )
-        );
-
-
-    button.classList.add(
-        "active"
+    localStorage.setItem(
+        LOCAL_KEY,
+        JSON.stringify(students)
     );
 
+}
 
-    showingArchived =
-        group === "ARCHIVED";
+/* =====================================================
+   SAVE FILES
+===================================================== */
 
+function saveStudentFiles(){
 
-    selectedGroup =
-        showingArchived
-            ? "ALL"
-            : group;
-
-
-    selectedIds.clear();
-
-
-    $("selectAll").checked =
-        false;
-
-
-    renderTable();
+    localStorage.setItem(
+        FILE_KEY,
+        JSON.stringify(studentFiles)
+    );
 
 }
 
-
 /* =====================================================
-   SELECT CHECKBOX
+   GET STATUS
 ===================================================== */
 
-function toggleOne(
+function getFileStatus(student){
+
+    return student.file_status === "Paid"
+        ? "Paid"
+        : "Not Yet Paid";
+
+}
+
+function getThesisStatus(student){
+
+    return student.thesis_status === "Paid"
+        ? "Paid"
+        : "Not Yet Paid";
+
+}
+
+function getOverallStatus(student){
+
+    return student.overall_status === "Complete"
+        ? "Complete"
+        : "Not Yet Done";
+
+}
+
+/* =====================================================
+   STATUS SELECT
+===================================================== */
+
+function statusSelect(
     id,
-    checked
+    type,
+    status
 ){
 
-    id =
-        String(id);
+    const safeId =
+        escapeAttribute(id);
 
+    const selectClass =
+        status === "Paid" ||
+        status === "Complete"
+        ? "complete-select"
+        : "pending-select";
 
-    if(checked){
+    let functionName = "";
 
-        selectedIds.add(
-            id
-        );
+    if(type === "file"){
 
-    }else{
+        functionName =
+            "updateFileStatus";
 
-        selectedIds.delete(
-            id
-        );
+    }else if(type === "thesis"){
+
+        functionName =
+            "updateThesisStatus";
+
+    }else if(type === "overall"){
+
+        functionName =
+            "updateOverallStatus";
 
     }
 
-}
+    const firstOption =
+        type === "overall"
+        ? "Complete"
+        : "Paid";
 
+    const secondOption =
+        type === "overall"
+        ? "Not Yet Done"
+        : "Not Yet Paid";
 
-function toggleAll(
-    checkbox
-){
+    return `
 
-    const visible =
-        students.filter(
-            function(student){
+        <select
+            class="table-status-select ${selectClass}"
+            onchange="${functionName}('${safeId}', this.value)"
+            onclick="event.stopPropagation()"
+        >
 
-                if(showingArchived){
+            <option
+                value="${firstOption}"
+                ${status === firstOption ? "selected" : ""}
+            >
+                ${firstOption}
+            </option>
 
-                    return !!student.archived;
+            <option
+                value="${secondOption}"
+                ${status === secondOption ? "selected" : ""}
+            >
+                ${secondOption}
+            </option>
 
-                }
+        </select>
 
-                return (
-                    !student.archived &&
-                    (
-                        selectedGroup ===
-                        "ALL" ||
-                        student.group ===
-                        selectedGroup
-                    )
-                );
-
-            }
-        );
-
-
-    visible.forEach(
-        function(student){
-
-            if(checkbox.checked){
-
-                selectedIds.add(
-                    String(student.id)
-                );
-
-            }else{
-
-                selectedIds.delete(
-                    String(student.id)
-                );
-
-            }
-
-        }
-    );
-
-
-    renderTable();
+    `;
 
 }
-
 
 /* =====================================================
-   STUDENT MODAL
+   FILE DISPLAY
 ===================================================== */
 
-function openStudentModal(
-    id = null
-){
+function fileUploadButton(student){
 
-    $("studentForm").reset();
+    const storedStatus =
+        getFileStatus(student);
 
-    $("studentId").value =
-        "";
+    const file =
+        studentFiles[
+            String(student.id)
+        ];
 
+    const hasFile =
+        file &&
+        file.path;
 
-    if(id){
+    return `
 
-        const student =
-            students.find(
-                item =>
-                    String(item.id) ===
-                    String(id)
-            );
+        <div class="file-box">
 
+            <div class="file-info">
 
-        if(!student){
+                ${statusSelect(
+                    student.id,
+                    "file",
+                    storedStatus
+                )}
 
-            return;
+                ${
+                    hasFile
+                    ? `
+                        <span
+                            class="file-name"
+                            title="${escapeHtml(file.name)}"
+                        >
+                            ${escapeHtml(file.name)}
+                        </span>
+                    `
+                    : ""
+                }
 
-        }
+            </div>
 
+        </div>
 
-        $("studentModalTitle").textContent =
-            "Edit Student";
+    `;
 
+}
 
-        $("studentId").value =
-            student.id;
+/* =====================================================
+   UPDATE TUITION FEE STATUS
+===================================================== */
 
+async function updateFileStatus(id,status){
 
-        $("studentName").value =
-            student.name || "";
+    if(
+        status !== "Paid" &&
+        status !== "Not Yet Paid"
+    ){
 
-
-        $("studentGroup").value =
-            student.group ||
-            "TAGAYTAY GROUP";
-
-
-        $("studentProgram").value =
-            student.program ||
-            "MAEd";
-
-
-        $("studentTuition").value =
-            student.file_status ||
-            "Not Yet Paid";
-
-
-        $("studentGrad").value =
-            student.thesis_status ||
-            "Not Yet Paid";
-
-
-        $("studentFilesStatus").value =
-            student.Files_status ||
-            "Not Yet Done";
-
-
-        $("studentThesis").value =
-            student.thesis_title ||
-            "";
-
-    }else{
-
-        $("studentModalTitle").textContent =
-            "Add Student";
+        return;
 
     }
 
-
-    $("studentModal").classList.add(
-        "show"
+    await updateStudentStatus(
+        id,
+        "file_status",
+        status,
+        "Tuition Fee Status"
     );
 
 }
-
-
-function closeStudentModal(){
-
-    $("studentModal").classList.remove(
-        "show"
-    );
-
-}
-
-
-function editStudent(id){
-
-    openStudentModal(
-        id
-    );
-
-}
-
 
 /* =====================================================
-   SAVE STUDENT
+   UPDATE GRAD FEE STATUS
 ===================================================== */
 
-$("studentForm")
-    .addEventListener(
-        "submit",
-        async function(event){
+async function updateThesisStatus(id,status){
 
-            event.preventDefault();
+    if(
+        status !== "Paid" &&
+        status !== "Not Yet Paid"
+    ){
 
+        return;
 
-            const id =
-                $("studentId").value;
+    }
 
-
-            const data =
-                {
-                    name:
-                        $("studentName")
-                            .value
-                            .trim(),
-
-                    group:
-                        $("studentGroup")
-                            .value,
-
-                    program:
-                        $("studentProgram")
-                            .value,
-
-                    file_status:
-                        $("studentTuition")
-                            .value,
-
-                    thesis_status:
-                        $("studentGrad")
-                            .value,
-
-                    Files_status:
-                        $("studentFilesStatus")
-                            .value,
-
-                    thesis_title:
-                        $("studentThesis")
-                            .value
-                            .trim(),
-
-                    archived:false
-                };
-
-
-            if(!data.name){
-
-                showMessage(
-                    "Student name is required.",
-                    "error"
-                );
-
-                return;
-
-            }
-
-
-            /*
-             * Duplicate name check
-             */
-
-            const duplicate =
-                students.find(
-                    student =>
-
-                        String(
-                            student.name || ""
-                        ).toLowerCase() ===
-                        data.name.toLowerCase()
-
-                        &&
-
-                        String(
-                            student.id
-                        ) !==
-                        String(id)
-                );
-
-
-            if(duplicate){
-
-                showMessage(
-                    "A student with this name already exists.",
-                    "error"
-                );
-
-                return;
-
-            }
-
-
-            /* =================================================
-               EDIT
-            ================================================= */
-
-            if(id){
-
-                const index =
-                    students.findIndex(
-                        student =>
-                            String(student.id) ===
-                            String(id)
-                    );
-
-
-                if(index < 0){
-
-                    return;
-
-                }
-
-
-                const previous =
-                    {
-                        ...students[index]
-                    };
-
-
-                students[index] =
-                    {
-                        ...students[index],
-                        ...data
-                    };
-
-
-                saveLocalData();
-
-                renderTable();
-
-                closeStudentModal();
-
-
-                if(navigator.onLine){
-
-                    const {
-                        error
-                    } =
-                        await supabaseClient
-                            .from("students")
-                            .update(data)
-                            .eq("id",id);
-
-
-                    if(error){
-
-                        /*
-                         * Keep local change and queue it.
-                         */
-
-                        pendingChanges.push(
-                            {
-                                type:"update",
-                                id:id,
-                                data:data
-                            }
-                        );
-
-
-                        saveLocalData();
-
-
-                        showMessage(
-                            "The update could not be saved to Supabase yet. It was kept locally and queued for synchronization.\n\n" +
-                            friendlySupabaseError(error),
-                            "error"
-                        );
-
-                    }else{
-
-                        saveLocalData();
-
-
-                        showMessage(
-                            "Student updated successfully in Supabase.",
-                            "success"
-                        );
-
-                    }
-
-                }else{
-
-                    pendingChanges.push(
-                        {
-                            type:"update",
-                            id:id,
-                            data:data
-                        }
-                    );
-
-
-                    saveLocalData();
-
-
-                    showMessage(
-                        "Updated offline. The change will synchronize when internet returns.",
-                        "success"
-                    );
-
-                }
-
-
-                return;
-
-            }
-
-
-            /* =================================================
-               NEW STUDENT
-            ================================================= */
-
-            const temporaryId =
-                "offline-" +
-                Date.now() +
-                "-" +
-                Math.random()
-                    .toString(36)
-                    .substring(2);
-
-
-            const localStudent =
-                {
-                    id:temporaryId,
-                    ...data
-                };
-
-
-            students.push(
-                localStudent
-            );
-
-
-            saveLocalData();
-
-            renderTable();
-
-            closeStudentModal();
-
-
-            if(navigator.onLine){
-
-                const payload =
-                    {
-                        ...data
-                    };
-
-
-                const {
-                    data:serverStudent,
-                    error
-                } =
-                    await supabaseClient
-                        .from("students")
-                        .insert(payload)
-                        .select()
-                        .single();
-
-
-                if(error){
-
-                    pendingChanges.push(
-                        {
-                            type:"insert",
-                            tempId:temporaryId,
-                            data:data
-                        }
-                    );
-
-
-                    saveLocalData();
-
-
-                    showMessage(
-                        "The student was kept locally, but Supabase rejected the insert. The change is queued.\n\n" +
-                        friendlySupabaseError(error),
-                        "error"
-                    );
-
-                }else{
-
-                    students =
-                        students.map(
-                            student =>
-                                String(student.id) ===
-                                temporaryId
-                                    ? serverStudent
-                                    : student
-                        );
-
-
-                    saveLocalData();
-
-                    renderTable();
-
-
-                    showMessage(
-                        "Student saved successfully to Supabase.",
-                        "success"
-                    );
-
-                }
-
-            }else{
-
-                pendingChanges.push(
-                    {
-                        type:"insert",
-                        tempId:temporaryId,
-                        data:data
-                    }
-                );
-
-
-                saveLocalData();
-
-
-                showMessage(
-                    "Student saved offline. It will synchronize when internet returns.",
-                    "success"
-                );
-
-            }
-
-        }
+    await updateStudentStatus(
+        id,
+        "thesis_status",
+        status,
+        "Grad Fee Status"
     );
 
+}
 
 /* =====================================================
-   ARCHIVE / RESTORE
+   UPDATE OVERALL STATUS
 ===================================================== */
 
-async function archiveStudent(
-    id
-){
+async function updateOverallStatus(id,status){
 
-    await setArchived(
+    if(
+        status !== "Complete" &&
+        status !== "Not Yet Done"
+    ){
+
+        return;
+
+    }
+
+    await updateStudentStatus(
         id,
-        true
+        "overall_status",
+        status,
+        "Overall Status"
     );
 
 }
 
+/* =====================================================
+   UPDATE STUDENT STATUS
+===================================================== */
 
-async function restoreStudent(
-    id
-){
-
-    await setArchived(
-        id,
-        false
-    );
-
-}
-
-
-async function setArchived(
+async function updateStudentStatus(
     id,
-    archived
+    field,
+    status,
+    label
 ){
 
-    const index =
-        students.findIndex(
-            student =>
-                String(student.id) ===
+    const student =
+        students.find(
+            s =>
+                String(s.id) ===
                 String(id)
         );
 
+    if(!student){
 
-    if(index < 0){
+        showMessage(
+            "Student record not found.",
+            "error"
+        );
 
         return;
 
     }
 
-
-    const data =
-        {
-            archived:archived
-        };
-
-
-    students[index] =
-        {
-            ...students[index],
-            ...data
-        };
-
+    student[field] =
+        status;
 
     saveLocalData();
 
     renderTable();
 
+    updateDashboard();
+
+    if(
+        String(id).startsWith(
+            "offline-"
+        )
+    ){
+
+        showMessage(
+            label +
+            " updated successfully.",
+            "success"
+        );
+
+        return;
+
+    }
 
     if(navigator.onLine){
 
-        const {
-            error
-        } =
-            await supabaseClient
-                .from("students")
-                .update(data)
-                .eq("id",id);
+        try{
 
+            const {
+                error
+            } =
+                await supabaseClient
+                    .from("students")
+                    .update({
+                        [field]:status
+                    })
+                    .eq(
+                        "id",
+                        id
+                    );
 
-        if(error){
+            if(error){
 
-            pendingChanges.push(
-                {
-                    type:"update",
-                    id:id,
-                    data:data
+                throw error;
+
+            }
+
+            showMessage(
+                label +
+                " updated successfully.",
+                "success"
+            );
+
+        }catch(error){
+
+            console.log(
+                label +
+                " update failed:",
+                error
+            );
+
+            addPendingChange({
+
+                type:"update",
+
+                id:id,
+
+                data:{
+                    [field]:status
                 }
-            );
 
-
-            saveLocalData();
-
+            });
 
             showMessage(
-                "The archive/restore action was not accepted by Supabase yet. It was queued.\n\n" +
-                friendlySupabaseError(error),
-                "error"
-            );
-
-        }else{
-
-            showMessage(
-                archived
-                    ? "Student archived successfully."
-                    : "Student restored successfully.",
+                "Saved locally. It will sync when internet returns.",
                 "success"
             );
 
@@ -3091,20 +2327,20 @@ async function setArchived(
 
     }else{
 
-        pendingChanges.push(
-            {
-                type:"update",
-                id:id,
-                data:data
+        addPendingChange({
+
+            type:"update",
+
+            id:id,
+
+            data:{
+                [field]:status
             }
-        );
 
-
-        saveLocalData();
-
+        });
 
         showMessage(
-            "Saved offline. It will synchronize when internet returns.",
+            "Saved offline. It will sync when internet returns.",
             "success"
         );
 
@@ -3112,6 +2348,1181 @@ async function setArchived(
 
 }
 
+/* =====================================================
+   FILE UPLOAD
+===================================================== */
+
+async function uploadStudentFile(id){
+
+    if(!navigator.onLine){
+
+        showMessage(
+            "File upload requires an internet connection.",
+            "error"
+        );
+
+        return;
+
+    }
+
+    const student =
+        students.find(
+            s =>
+                String(s.id) ===
+                String(id)
+        );
+
+    if(!student){
+
+        showMessage(
+            "Student record not found.",
+            "error"
+        );
+
+        return;
+
+    }
+
+    const input =
+        document.createElement("input");
+
+    input.type = "file";
+
+    input.accept =
+        ".pdf,.doc,.docx,.xls,.xlsx,.ppt,.pptx,.txt,.jpg,.jpeg,.png";
+
+    input.onchange =
+        async function(){
+
+            const file =
+                input.files[0];
+
+            if(!file){
+
+                return;
+
+            }
+
+            try{
+
+                showMessage(
+                    "Uploading " +
+                    file.name +
+                    "...",
+                    "success"
+                );
+
+                const safeName =
+                    file.name.replace(
+                        /[^a-zA-Z0-9._-]/g,
+                        "_"
+                    );
+
+                const filePath =
+                    String(id) +
+                    "/" +
+                    Date.now() +
+                    "_" +
+                    safeName;
+
+                const {
+                    error:uploadError
+                } =
+                    await supabaseClient
+                        .storage
+                        .from("student-files")
+                        .upload(
+                            filePath,
+                            file,
+                            {
+                                upsert:false
+                            }
+                        );
+
+                if(uploadError){
+
+                    throw uploadError;
+
+                }
+
+                studentFiles[
+                    String(id)
+                ] = {
+
+                    name:file.name,
+
+                    type:file.type,
+
+                    size:file.size,
+
+                    path:filePath
+
+                };
+
+                student.file_status =
+                    "Paid";
+
+                saveStudentFiles();
+
+                saveLocalData();
+
+                if(
+                    !String(id).startsWith(
+                        "offline-"
+                    )
+                ){
+
+                    const {
+                        error
+                    } =
+                        await supabaseClient
+                            .from("students")
+                            .update({
+                                file_status:"Paid"
+                            })
+                            .eq(
+                                "id",
+                                id
+                            );
+
+                    if(error){
+
+                        console.log(
+                            "Tuition fee status update failed:",
+                            error
+                        );
+
+                    }
+
+                }
+
+                renderTable();
+
+                updateDashboard();
+
+                showMessage(
+                    file.name +
+                    " uploaded successfully.",
+                    "success"
+                );
+
+            }catch(error){
+
+                console.log(
+                    "File upload failed:",
+                    error
+                );
+
+                showMessage(
+                    "File upload failed: " +
+                    (
+                        error.message ||
+                        "Unknown error"
+                    ),
+                    "error"
+                );
+
+            }
+
+        };
+
+    input.click();
+
+}
+
+/* =====================================================
+   VIEW FILE
+===================================================== */
+
+async function viewStudentFile(id){
+
+    const file =
+        studentFiles[
+            String(id)
+        ];
+
+    if(
+        !file ||
+        !file.path
+    ){
+
+        showMessage(
+            "No uploaded file found.",
+            "error"
+        );
+
+        return;
+
+    }
+
+    try{
+
+        const {
+            data,
+            error
+        } =
+            await supabaseClient
+                .storage
+                .from("student-files")
+                .createSignedUrl(
+                    file.path,
+                    3600
+                );
+
+        if(error){
+
+            throw error;
+
+        }
+
+        if(
+            !data ||
+            !data.signedUrl
+        ){
+
+            throw new Error(
+                "Unable to create viewing link."
+            );
+
+        }
+
+        const modal =
+            document.getElementById(
+                "filePreviewModal"
+            );
+
+        const title =
+            document.getElementById(
+                "filePreviewTitle"
+            );
+
+        const content =
+            document.getElementById(
+                "filePreviewContent"
+            );
+
+        const actions =
+            document.getElementById(
+                "filePreviewActions"
+            );
+
+        title.textContent =
+            file.name;
+
+        content.innerHTML =
+            "";
+
+        actions.innerHTML =
+            "";
+
+        if(
+            (
+                file.type ||
+                ""
+            ).startsWith("image/")
+        ){
+
+            content.innerHTML = `
+
+                <img
+                    class="file-preview-image"
+                    src="${escapeAttribute(data.signedUrl)}"
+                    alt="${escapeHtml(file.name)}"
+                >
+
+            `;
+
+        }else if(
+            file.type ===
+            "application/pdf"
+        ){
+
+            content.innerHTML = `
+
+                <iframe
+                    class="file-preview-frame"
+                    src="${escapeAttribute(data.signedUrl)}"
+                ></iframe>
+
+            `;
+
+        }else{
+
+            content.innerHTML = `
+
+                <div class="file-preview-message">
+
+                    <h3
+                        style="margin-bottom:10px;color:#073b72;"
+                    >
+                        File uploaded successfully
+                    </h3>
+
+                    <p>
+                        Preview is not available for this file type.
+                    </p>
+
+                </div>
+
+            `;
+
+        }
+
+        const openButton =
+            document.createElement("button");
+
+        openButton.className =
+            "primary";
+
+        openButton.textContent =
+            "Open";
+
+        openButton.onclick =
+            function(){
+
+                window.open(
+                    data.signedUrl,
+                    "_blank"
+                );
+
+            };
+
+        const downloadButton =
+            document.createElement("a");
+
+        downloadButton.className =
+            "secondary";
+
+        downloadButton.textContent =
+            "Download";
+
+        downloadButton.href =
+            data.signedUrl;
+
+        downloadButton.target =
+            "_blank";
+
+        downloadButton.rel =
+            "noopener noreferrer";
+
+        downloadButton.style.textDecoration =
+            "none";
+
+        downloadButton.style.display =
+            "inline-block";
+
+        downloadButton.style.padding =
+            "10px 14px";
+
+        downloadButton.style.borderRadius =
+            "7px";
+
+        actions.appendChild(
+            openButton
+        );
+
+        actions.appendChild(
+            downloadButton
+        );
+
+        modal.classList.add(
+            "show"
+        );
+
+    }catch(error){
+
+        showMessage(
+            "Unable to view file: " +
+            (
+                error.message ||
+                "Unknown error"
+            ),
+            "error"
+        );
+
+    }
+
+}
+
+/* =====================================================
+   CLOSE FILE PREVIEW
+===================================================== */
+
+function closeFilePreview(){
+
+    document.getElementById(
+        "filePreviewModal"
+    ).classList.remove(
+        "show"
+    );
+
+    document.getElementById(
+        "filePreviewContent"
+    ).innerHTML =
+        "";
+
+    document.getElementById(
+        "filePreviewActions"
+    ).innerHTML =
+        "";
+
+}
+
+/* =====================================================
+   PENDING CHANGES
+===================================================== */
+
+function savePending(){
+    localStorage.setItem(PENDING_KEY, JSON.stringify(pendingChanges));
+}
+
+function addPendingChange(change){
+
+    /* Prevent duplicate pending updates for the same record/field. */
+    if(change.type === "update"){
+        const existing = pendingChanges.findIndex(c =>
+            c.type === "update" &&
+            String(c.id) === String(change.id) &&
+            JSON.stringify(Object.keys(c.data || {}).sort()) ===
+            JSON.stringify(Object.keys(change.data || {}).sort())
+        );
+
+        if(existing !== -1){
+            pendingChanges[existing] = change;
+            savePending();
+            return;
+        }
+    }
+
+    pendingChanges.push(change);
+    savePending();
+}
+
+async function syncPendingChanges(){
+
+    if(!navigator.onLine || pendingChanges.length === 0){
+        return;
+    }
+
+    const remaining = [];
+
+    for(const change of pendingChanges){
+
+        try{
+
+            if(change.type === "insert"){
+
+                const { data: inserted, error } =
+                    await supabaseClient
+                        .from("students")
+                        .insert([change.data])
+                        .select()
+                        .single();
+
+                if(error){
+                    throw error;
+                }
+
+                /* Replace the temporary offline record with the real DB row. */
+                if(inserted){
+                    const tempId = change.tempId || change.data.id;
+                    const index = students.findIndex(s =>
+                        String(s.id) === String(tempId)
+                    );
+
+                    if(index !== -1){
+                        students[index] = inserted;
+                    }else{
+                        students.push(inserted);
+                    }
+                }
+
+            }else if(change.type === "update"){
+
+                const { error } =
+                    await supabaseClient
+                        .from("students")
+                        .update(change.data)
+                        .eq("id", change.id);
+
+                if(error){
+                    throw error;
+                }
+
+            }else if(change.type === "delete"){
+
+                const { error } =
+                    await supabaseClient
+                        .from("students")
+                        .delete()
+                        .eq("id", change.id);
+
+                if(error){
+                    throw error;
+                }
+            }
+
+        }catch(error){
+            console.log("Sync failed:", error);
+            remaining.push(change);
+        }
+    }
+
+    pendingChanges = remaining;
+    savePending();
+    saveLocalData();
+    renderTable();
+    updateSidebarCounts();
+}
+
+/* =====================================================
+   GROUP
+===================================================== */
+
+function selectGroup(group){
+
+    selectedGroup =
+        group;
+
+    showingArchived =
+        false;
+
+    selectedIds.clear();
+
+    updateSidebarButtons();
+
+    renderTable();
+
+}
+
+function showArchived(){
+
+    showingArchived =
+        true;
+
+    selectedIds.clear();
+
+    updateSidebarButtons();
+
+    renderTable();
+
+}
+
+/* =====================================================
+   SIDEBAR
+===================================================== */
+
+function updateSidebarButtons(){
+
+    const buttons = [
+
+        "groupBtnAll",
+        "groupBtnTagaytay",
+        "groupBtnGeline",
+        "groupBtnBoracay"
+
+    ];
+
+    buttons.forEach(
+        id => {
+
+            document
+                .getElementById(id)
+                .classList.remove(
+                    "active"
+                );
+
+        }
+    );
+
+    document
+        .getElementById(
+            "archiveViewButton"
+        )
+        .classList.remove(
+            "active"
+        );
+
+    if(showingArchived){
+
+        document
+            .getElementById(
+                "archiveViewButton"
+            )
+            .classList.add(
+                "active"
+            );
+
+        return;
+
+    }
+
+    const map = {
+
+        "ALL":"groupBtnAll",
+
+        "TAGAYTAY GROUP":
+            "groupBtnTagaytay",
+
+        "GELINE GROUP":
+            "groupBtnGeline",
+
+        "BORACAY GROUP":
+            "groupBtnBoracay"
+
+    };
+
+    if(map[selectedGroup]){
+
+        document
+            .getElementById(
+                map[selectedGroup]
+            )
+            .classList.add(
+                "active"
+            );
+
+    }
+
+}
+
+/* =====================================================
+   RENDER TABLE
+===================================================== */
+
+function getFilteredStudents(){
+
+    const search =
+        document.getElementById(
+            "searchInput"
+        ).value.toLowerCase().trim();
+
+    const program =
+        document.getElementById(
+            "programFilter"
+        ).value;
+
+    const file =
+        document.getElementById(
+            "fileFilter"
+        ).value;
+
+    const thesis =
+        document.getElementById(
+            "thesisFilter"
+        ).value;
+
+    return students.filter(
+        student => {
+
+            if(showingArchived){
+
+                if(!student.archived){
+
+                    return false;
+
+                }
+
+            }else{
+
+                if(student.archived){
+
+                    return false;
+
+                }
+
+            }
+
+            if(
+                !showingArchived &&
+                selectedGroup !== "ALL" &&
+                student.group !== selectedGroup
+            ){
+
+                return false;
+
+            }
+
+            const name =
+                (
+                    student.name ||
+                    ""
+                ).toLowerCase();
+
+            const title =
+                (
+                    student.thesis_title ||
+                    ""
+                ).toLowerCase();
+
+            if(
+                search &&
+                !name.includes(search) &&
+                !title.includes(search)
+            ){
+
+                return false;
+
+            }
+
+            if(
+                program !== "ALL" &&
+                student.program !== program
+            ){
+
+                return false;
+
+            }
+
+            const actualFileStatus =
+                getFileStatus(student);
+
+            if(
+                file !== "ALL" &&
+                actualFileStatus !== file
+            ){
+
+                return false;
+
+            }
+
+            const actualThesisStatus =
+                getThesisStatus(student);
+
+            if(
+                thesis !== "ALL" &&
+                actualThesisStatus !== thesis
+            ){
+
+                return false;
+
+            }
+
+            return true;
+
+        }
+    ).sort(
+        (a,b) =>
+            (
+                a.name || ""
+            ).localeCompare(
+                b.name || "",
+                undefined,
+                {
+                    sensitivity:"base"
+                }
+            )
+    );
+
+}
+
+function renderTable(){
+
+    const tbody =
+        document.getElementById(
+            "studentTableBody"
+        );
+
+    const filtered =
+        getFilteredStudents();
+
+    tbody.innerHTML =
+        "";
+
+    document.getElementById(
+        "pageTitle"
+    ).textContent =
+        showingArchived
+        ? "Archived Students"
+        : "Student Records";
+
+    document.getElementById(
+        "tableTitle"
+    ).textContent =
+        showingArchived
+        ? "Archived Student Records"
+        : "Student Records";
+
+    if(
+        filtered.length === 0
+    ){
+
+        tbody.innerHTML = `
+
+            <tr>
+
+                <td
+                    colspan="10"
+                    class="empty-state"
+                >
+
+                    <div class="empty-icon">
+                        ${showingArchived ? "▣" : "＋"}
+                    </div>
+
+                    <strong>
+                        ${
+                            showingArchived
+                            ? "No archived students found"
+                            : "No student records found"
+                        }
+                    </strong>
+
+                    <span>
+                        ${
+                            showingArchived
+                            ? "Archived records will appear here."
+                            : "Add a student to begin tracking graduate records."
+                        }
+                    </span>
+
+                </td>
+
+            </tr>
+
+        `;
+
+    }else{
+
+        filtered.forEach(
+            (student,index) => {
+
+                const row =
+                    document.createElement(
+                        "tr"
+                    );
+
+                if(student.archived){
+
+                    row.classList.add(
+                        "archived-row"
+                    );
+
+                }
+
+                const checked =
+                    selectedIds.has(
+                        String(student.id)
+                    )
+                    ? "checked"
+                    : "";
+
+                let actionButton = "";
+
+                if(showingArchived){
+
+                    actionButton = `
+
+                        <button
+                            class="restore-button"
+                            onclick="restoreStudent('${escapeAttribute(student.id)}')"
+                        >
+                            Restore
+                        </button>
+
+                        <button
+                            class="danger"
+                            onclick="deleteArchivedStudent('${escapeAttribute(student.id)}')"
+                        >
+                            Delete
+                        </button>
+
+                    `;
+
+                }else{
+
+                    actionButton = `
+
+                        <button
+                            class="warning"
+                            onclick="editStudent('${escapeAttribute(student.id)}')"
+                        >
+                            Edit
+                        </button>
+
+                        <button
+                            class="danger"
+                            onclick="archiveStudent('${escapeAttribute(student.id)}')"
+                        >
+                            Archive
+                        </button>
+
+                    `;
+
+                }
+
+                const fileStatus =
+                    getFileStatus(student);
+
+                const thesisStatus =
+                    getThesisStatus(student);
+
+                const overallStatus =
+                    getOverallStatus(student);
+
+                row.innerHTML = `
+
+                    <td class="checkbox-cell">
+
+                        <input
+                            type="checkbox"
+                            class="student-checkbox"
+                            value="${escapeAttribute(student.id)}"
+                            ${checked}
+                            onchange="toggleStudentSelection('${escapeAttribute(student.id)}')"
+                        >
+
+                    </td>
+
+                    <td>
+                        ${index + 1}
+                    </td>
+
+                    <td class="student-name">
+
+                        ${escapeHtml(
+                            student.name || ""
+                        )}
+
+                    </td>
+
+                    <td>
+
+                        <span class="group">
+
+                            ${escapeHtml(
+                                student.group || ""
+                            )}
+
+                        </span>
+
+                    </td>
+
+                    <td>
+
+                        ${programBadge(
+                            student.program
+                        )}
+
+                    </td>
+
+                    <td>
+
+                        ${fileUploadButton(
+                            student
+                        )}
+
+                    </td>
+
+                    <td>
+
+                        ${statusSelect(
+                            student.id,
+                            "thesis",
+                            thesisStatus
+                        )}
+
+                    </td>
+
+                    <td>
+
+                        ${statusSelect(
+                            student.id,
+                            "overall",
+                            overallStatus
+                        )}
+
+                    </td>
+
+                    <td class="thesis-cell">
+
+                        ${escapeHtml(
+                            student.thesis_title || "-"
+                        )}
+
+                    </td>
+
+                    <td>
+
+                        <div class="actions">
+
+                            ${actionButton}
+
+                        </div>
+
+                    </td>
+
+                `;
+
+                tbody.appendChild(
+                    row
+                );
+
+            }
+        );
+
+    }
+
+    document.getElementById(
+        "recordCount"
+    ).textContent =
+        filtered.length +
+        (
+            filtered.length === 1
+            ? " record"
+            : " records"
+        );
+
+    updateSelectAllState();
+
+    updateDashboard();
+
+    updateSelectedCount();
+
+}
+
+/* =====================================================
+   SELECT ALL
+===================================================== */
+
+function toggleSelectAll(){
+
+    const checkbox =
+        document.getElementById(
+            "selectAll"
+        );
+
+    const visible =
+        getFilteredStudents();
+
+    if(checkbox.checked){
+
+        visible.forEach(
+            student =>
+                selectedIds.add(
+                    String(student.id)
+                )
+        );
+
+    }else{
+
+        visible.forEach(
+            student =>
+                selectedIds.delete(
+                    String(student.id)
+                )
+        );
+
+    }
+
+    renderTable();
+
+}
+
+function toggleStudentSelection(id){
+
+    id =
+        String(id);
+
+    if(
+        selectedIds.has(id)
+    ){
+
+        selectedIds.delete(id);
+
+    }else{
+
+        selectedIds.add(id);
+
+    }
+
+    updateSelectAllState();
+
+    updateSelectedCount();
+
+}
+
+function updateSelectAllState(){
+
+    const checkbox =
+        document.getElementById(
+            "selectAll"
+        );
+
+    if(!checkbox){
+
+        return;
+
+    }
+
+    const visible =
+        getFilteredStudents();
+
+    if(
+        visible.length === 0
+    ){
+
+        checkbox.checked =
+            false;
+
+        checkbox.indeterminate =
+            false;
+
+        return;
+
+    }
+
+    const checked =
+        visible.filter(
+            student =>
+                selectedIds.has(
+                    String(student.id)
+                )
+        ).length;
+
+    checkbox.checked =
+        checked === visible.length;
+
+    checkbox.indeterminate =
+        checked > 0 &&
+        checked < visible.length;
+
+}
+
+function updateSelectedCount(){
+
+    const count =
+        selectedIds.size;
+
+    document.getElementById(
+        "selectedCount"
+    ).textContent =
+        count +
+        " selected";
+
+    const button =
+        document.getElementById(
+            "archiveSelectedButton"
+        );
+
+    if(
+        count > 0 &&
+        !showingArchived
+    ){
+
+        button.classList.add(
+            "show"
+        );
+
+    }else{
+
+        button.classList.remove(
+            "show"
+        );
+
+    }
+
+}
 
 /* =====================================================
    ARCHIVE SELECTED
@@ -3124,110 +3535,896 @@ async function archiveSelected(){
             selectedIds
         );
 
-
-    if(ids.length === 0){
-
-        showMessage(
-            "Select at least one student.",
-            "warning"
-        );
+    if(
+        ids.length === 0
+    ){
 
         return;
 
     }
 
-
-    for(
-        const id
-        of ids
+    if(
+        !confirm(
+            "Archive " +
+            ids.length +
+            " selected student" +
+            (
+                ids.length === 1
+                ? ""
+                : "s"
+            ) +
+            "?"
+        )
     ){
 
-        await setArchived(
+        return;
+
+    }
+
+    for(
+        const id of ids
+    ){
+
+        await archiveStudent(
             id,
             true
         );
 
     }
 
-
     selectedIds.clear();
-
-    $("selectAll").checked =
-        false;
 
     renderTable();
 
-}
+    updateSidebarCounts();
 
+    showMessage(
+        ids.length +
+        " student" +
+        (
+            ids.length === 1
+            ? ""
+            : "s"
+        ) +
+        " archived successfully.",
+        "success"
+    );
+
+}
 
 /* =====================================================
-   DELETE MODAL
+   ARCHIVE
 ===================================================== */
 
-function openDeleteModal(
-    id
+async function archiveStudent(
+    id,
+    bulk = false
 ){
 
-    deleteStudentId =
-        id;
+    const student =
+        students.find(
+            s =>
+                String(s.id) ===
+                String(id)
+        );
 
-    $("deleteModal")
-        .classList
-        .add("show");
+    if(!student){
+
+        return;
+
+    }
+
+    if(!bulk){
+
+        if(
+            !confirm(
+                "Archive " +
+                student.name +
+                "?"
+            )
+        ){
+
+            return;
+
+        }
+
+    }
+
+    const index =
+        students.findIndex(
+            s =>
+                String(s.id) ===
+                String(id)
+        );
+
+    if(index === -1){
+
+        return;
+
+    }
+
+    students[index] = {
+
+        ...students[index],
+
+        archived:true
+
+    };
+
+    saveLocalData();
+
+    selectedIds.delete(
+        String(id)
+    );
+
+    if(
+        String(id).startsWith(
+            "offline-"
+        )
+    ){
+
+        renderTable();
+
+        updateSidebarCounts();
+
+        return;
+
+    }
+
+    if(navigator.onLine){
+
+        try{
+
+            const {
+                error
+            } =
+                await supabaseClient
+                    .from("students")
+                    .update({
+                        archived:true
+                    })
+                    .eq(
+                        "id",
+                        id
+                    );
+
+            if(error){
+
+                throw error;
+
+            }
+
+        }catch(error){
+
+            addPendingChange({
+
+                type:"update",
+
+                id:id,
+
+                data:{
+                    archived:true
+                }
+
+            });
+
+        }
+
+    }else{
+
+        addPendingChange({
+
+            type:"update",
+
+            id:id,
+
+            data:{
+                archived:true
+            }
+
+        });
+
+    }
+
+    renderTable();
+
+    updateSidebarCounts();
 
 }
 
+/* =====================================================
+   RESTORE
+===================================================== */
+
+async function restoreStudent(id){
+
+    const student =
+        students.find(
+            s =>
+                String(s.id) ===
+                String(id)
+        );
+
+    if(!student){
+
+        return;
+
+    }
+
+    if(
+        !confirm(
+            "Restore " +
+            student.name +
+            "?"
+        )
+    ){
+
+        return;
+
+    }
+
+    const index =
+        students.findIndex(
+            s =>
+                String(s.id) ===
+                String(id)
+        );
+
+    if(index !== -1){
+
+        students[index] = {
+
+            ...students[index],
+
+            archived:false
+
+        };
+
+    }
+
+    saveLocalData();
+
+    if(
+        String(id).startsWith(
+            "offline-"
+        )
+    ){
+
+        renderTable();
+
+        updateSidebarCounts();
+
+        showMessage(
+            "Student restored.",
+            "success"
+        );
+
+        return;
+
+    }
+
+    if(navigator.onLine){
+
+        try{
+
+            const {
+                error
+            } =
+                await supabaseClient
+                    .from("students")
+                    .update({
+                        archived:false
+                    })
+                    .eq(
+                        "id",
+                        id
+                    );
+
+            if(error){
+
+                throw error;
+
+            }
+
+            showMessage(
+                "Student restored successfully.",
+                "success"
+            );
+
+        }catch(error){
+
+            addPendingChange({
+
+                type:"update",
+
+                id:id,
+
+                data:{
+                    archived:false
+                }
+
+            });
+
+            showMessage(
+                "Restored locally. It will sync when internet returns.",
+                "success"
+            );
+
+        }
+
+    }else{
+
+        addPendingChange({
+
+            type:"update",
+
+            id:id,
+
+            data:{
+                archived:false
+            }
+
+        });
+
+        showMessage(
+            "Restored offline. It will sync when internet returns.",
+            "success"
+        );
+
+    }
+
+    renderTable();
+
+    updateSidebarCounts();
+
+}
+
+/* =====================================================
+   DELETE ARCHIVED STUDENT
+===================================================== */
+
+function deleteArchivedStudent(id){
+
+    const student =
+        students.find(
+            s =>
+                String(s.id) ===
+                String(id)
+        );
+
+    if(!student){
+
+        showMessage(
+            "Student record not found.",
+            "error"
+        );
+
+        return;
+
+    }
+
+    if(!student.archived){
+
+        showMessage(
+            "Only archived students can be deleted.",
+            "error"
+        );
+
+        return;
+
+    }
+
+    deleteStudentId =
+        String(id);
+
+    document.getElementById(
+        "deleteMessage"
+    ).textContent =
+        "Permanently delete " +
+        student.name +
+        "? This action cannot be undone.";
+
+    document.getElementById(
+        "deleteModal"
+    ).classList.add(
+        "show"
+    );
+
+}
+
+/* =====================================================
+   CONFIRM DELETE
+===================================================== */
+
+async function confirmDeleteArchived(){
+
+    if(!deleteStudentId){
+
+        return;
+
+    }
+
+    const id =
+        deleteStudentId;
+
+    const student =
+        students.find(
+            s =>
+                String(s.id) ===
+                String(id)
+        );
+
+    if(!student){
+
+        closeDeleteModal();
+
+        return;
+
+    }
+
+    if(!student.archived){
+
+        closeDeleteModal();
+
+        showMessage(
+            "Only archived students can be deleted.",
+            "error"
+        );
+
+        return;
+
+    }
+
+    students =
+        students.filter(
+            s =>
+                String(s.id) !==
+                String(id)
+        );
+
+    delete studentFiles[id];
+
+    saveLocalData();
+
+    saveStudentFiles();
+
+    closeDeleteModal();
+
+    if(
+        String(id).startsWith(
+            "offline-"
+        )
+    ){
+
+        renderTable();
+
+        updateSidebarCounts();
+
+        updateDashboard();
+
+        showMessage(
+            "Archived student deleted.",
+            "success"
+        );
+
+        return;
+
+    }
+
+    if(!navigator.onLine){
+
+        showMessage(
+            "You must be online to permanently delete an archived student.",
+            "error"
+        );
+
+        await loadData();
+
+        return;
+
+    }
+
+    try{
+
+        const {
+            error
+        } =
+            await supabaseClient
+                .from("students")
+                .delete()
+                .eq(
+                    "id",
+                    id
+                );
+
+        if(error){
+
+            throw error;
+
+        }
+
+        renderTable();
+
+        updateSidebarCounts();
+
+        updateDashboard();
+
+        showMessage(
+            "Archived student deleted permanently.",
+            "success"
+        );
+
+    }catch(error){
+
+        console.log(
+            "Delete failed:",
+            error
+        );
+
+        showMessage(
+            "Could not delete the student from the database: " +
+            (
+                error.message ||
+                "Unknown error"
+            ),
+            "error"
+        );
+
+        await loadOnlineData();
+
+    }
+
+}
 
 function closeDeleteModal(){
 
     deleteStudentId =
         null;
 
-    $("deleteModal")
-        .classList
-        .remove("show");
+    document.getElementById(
+        "deleteModal"
+    ).classList.remove(
+        "show"
+    );
 
 }
 
-
 /* =====================================================
-   PERMANENT DELETE
+   PROGRAM BADGE
 ===================================================== */
 
-async function confirmDelete(){
+function programBadge(program){
 
-    const id =
-        deleteStudentId;
+    let cls = "";
 
+    if(program === "PhD"){
+        cls = "phd";
+    }else if(program === "MAEd"){
+        cls = "maed";
+    }else if(program === "MBA"){
+        cls = "mba";
+    }else if(program === "MPA"){
+        cls = "mpa";
+    }else if(program === "MSCJ"){
+        cls = "mscj";
+    }
 
-    if(!id){
+    return `
 
-        return;
+        <span class="badge ${cls}">
+
+            ${escapeHtml(
+                program || ""
+            )}
+
+        </span>
+
+    `;
+
+}
+
+/* =====================================================
+   STATUS BADGE
+===================================================== */
+
+function statusBadge(status){
+
+    let cls =
+        "pending";
+
+    if(status === "Complete" || status === "Paid"){
+
+        cls =
+            "complete";
 
     }
 
+    return `
 
-    const original =
-        students.find(
+        <span class="badge ${cls}">
+
+            ${escapeHtml(
+                status ||
+                "Not Yet Done"
+            )}
+
+        </span>
+
+    `;
+
+}
+
+/* =====================================================
+   DASHBOARD
+===================================================== */
+
+function updateDashboard(){
+
+    let data =
+        students.filter(
             student =>
-                String(student.id) ===
+                !student.archived
+        );
+
+    if(
+        selectedGroup !==
+        "ALL"
+    ){
+
+        data =
+            data.filter(
+                student =>
+                    student.group ===
+                    selectedGroup
+            );
+
+    }
+
+    document.getElementById(
+        "totalCount"
+    ).textContent =
+        data.length;
+
+    document.getElementById(
+        "filesComplete"
+    ).textContent =
+        data.filter(
+            s =>
+                getFileStatus(s) ===
+                "Paid"
+        ).length;
+
+    document.getElementById(
+        "thesisComplete"
+    ).textContent =
+        data.filter(
+            s =>
+                getThesisStatus(s) ===
+                "Paid"
+        ).length;
+
+    document.getElementById(
+        "overallComplete"
+    ).textContent =
+        data.filter(
+            s =>
+                getOverallStatus(s) ===
+                "Complete"
+        ).length;
+
+}
+
+/* =====================================================
+   SIDEBAR COUNTS
+===================================================== */
+
+function updateSidebarCounts(){
+
+    const active =
+        students.filter(
+            s =>
+                !s.archived
+        );
+
+    document.getElementById(
+        "countAll"
+    ).textContent =
+        active.length;
+
+    document.getElementById(
+        "countTagaytay"
+    ).textContent =
+        active.filter(
+            s =>
+                s.group ===
+                "TAGAYTAY GROUP"
+        ).length;
+
+    document.getElementById(
+        "countGeline"
+    ).textContent =
+        active.filter(
+            s =>
+                s.group ===
+                "GELINE GROUP"
+        ).length;
+
+    document.getElementById(
+        "countBoracay"
+    ).textContent =
+        active.filter(
+            s =>
+                s.group ===
+                "BORACAY GROUP"
+        ).length;
+
+    document.getElementById(
+        "archiveCount"
+    ).textContent =
+        students.filter(
+            s =>
+                s.archived
+        ).length;
+
+}
+
+/* =====================================================
+   ADD MODAL
+===================================================== */
+
+function openAddModal(){
+
+    document.getElementById(
+        "modalTitle"
+    ).textContent =
+        "Add Student";
+
+    document.getElementById(
+        "studentId"
+    ).value =
+        "";
+
+    document.getElementById(
+        "studentName"
+    ).value =
+        "";
+
+    document.getElementById(
+        "studentGroup"
+    ).value =
+        selectedGroup !== "ALL"
+        ? selectedGroup
+        : "TAGAYTAY GROUP";
+
+    document.getElementById(
+        "studentProgram"
+    ).value =
+        "MAEd";
+
+    document.getElementById(
+        "studentFileStatus"
+    ).value =
+        "Not Yet Paid";
+
+    document.getElementById(
+        "studentThesisStatus"
+    ).value =
+        "Not Yet Paid";
+
+    document.getElementById(
+        "studentOverallStatus"
+    ).value =
+        "Not Yet Done";
+
+    document.getElementById(
+        "studentThesisTitle"
+    ).value =
+        "";
+
+    document.getElementById(
+        "studentModal"
+    ).classList.add(
+        "show"
+    );
+
+}
+
+/* =====================================================
+   EDIT
+===================================================== */
+
+function editStudent(id){
+
+    const student =
+        students.find(
+            s =>
+                String(s.id) ===
                 String(id)
         );
 
-
-    if(!original){
-
-        closeDeleteModal();
+    if(!student){
 
         return;
 
     }
 
+    document.getElementById(
+        "modalTitle"
+    ).textContent =
+        "Edit Student";
 
-    if(!navigator.onLine){
+    document.getElementById(
+        "studentId"
+    ).value =
+        student.id;
+
+    document.getElementById(
+        "studentName"
+    ).value =
+        student.name || "";
+
+    document.getElementById(
+        "studentGroup"
+    ).value =
+        student.group ||
+        "TAGAYTAY GROUP";
+
+    document.getElementById(
+        "studentProgram"
+    ).value =
+        student.program ||
+        "MAEd";
+
+    document.getElementById(
+        "studentFileStatus"
+    ).value =
+        getFileStatus(student);
+
+    document.getElementById(
+        "studentThesisStatus"
+    ).value =
+        getThesisStatus(student);
+
+    document.getElementById(
+        "studentOverallStatus"
+    ).value =
+        getOverallStatus(student);
+
+    document.getElementById(
+        "studentThesisTitle"
+    ).value =
+        student.thesis_title ||
+        "";
+
+    document.getElementById(
+        "studentModal"
+    ).classList.add(
+        "show"
+    );
+
+}
+
+/* =====================================================
+   SAVE STUDENT
+===================================================== */
+
+async function saveStudent(){
+
+    const id =
+        document.getElementById(
+            "studentId"
+        ).value;
+
+    const name =
+        document.getElementById(
+            "studentName"
+        ).value
+        .trim();
+
+    if(!name){
 
         showMessage(
-            "Permanent deletion requires an internet connection.",
+            "Please enter the student name.",
             "error"
         );
 
@@ -3235,357 +4432,413 @@ async function confirmDelete(){
 
     }
 
+    /* =================================================
+       DUPLICATE NAME CHECK
+    ================================================= */
 
-    const {
-        error
-    } =
-        await supabaseClient
-            .from("students")
-            .delete()
-            .eq("id",id);
-
-
-    if(error){
-
-        showMessage(
-            "The student was NOT deleted from Supabase.\n\n" +
-            friendlySupabaseError(error),
-            "error"
-        );
-
-        closeDeleteModal();
-
-        return;
-
-    }
-
-
-    /*
-     * Only remove locally AFTER the database
-     * confirms the delete.
-     */
-
-    students =
-        students.filter(
+    const duplicate =
+        students.some(
             student =>
+                String(student.name || "")
+                    .trim()
+                    .toLowerCase() ===
+                name.toLowerCase() &&
                 String(student.id) !==
                 String(id)
         );
 
+    if(duplicate){
+
+        showMessage(
+            "Student name already exists.",
+            "error"
+        );
+
+        return;
+
+    }
+
+    const data = {
+
+        name:name,
+
+        group:
+            document.getElementById(
+                "studentGroup"
+            ).value,
+
+        program:
+            document.getElementById(
+                "studentProgram"
+            ).value,
+
+        file_status:
+            document.getElementById(
+                "studentFileStatus"
+            ).value,
+
+        thesis_status:
+            document.getElementById(
+                "studentThesisStatus"
+            ).value,
+
+        overall_status:
+            document.getElementById(
+                "studentOverallStatus"
+            ).value,
+
+        thesis_title:
+            document.getElementById(
+                "studentThesisTitle"
+            ).value
+            .trim()
+
+    };
+
+    /* =================================================
+       UPDATE
+    ================================================= */
+
+    if(id){
+
+        const index =
+            students.findIndex(
+                s =>
+                    String(s.id) ===
+                    String(id)
+            );
+
+        if(index !== -1){
+
+            students[index] = {
+
+                ...students[index],
+
+                ...data
+
+            };
+
+        }
+
+        saveLocalData();
+
+        renderTable();
+
+        updateSidebarCounts();
+
+        closeModal();
+
+        if(
+            String(id).startsWith(
+                "offline-"
+            )
+        ){
+
+            showMessage(
+                "Student updated successfully.",
+                "success"
+            );
+
+            return;
+
+        }
+
+        if(navigator.onLine){
+
+            try{
+
+                const {
+                    error
+                } =
+                    await supabaseClient
+                        .from("students")
+                        .update(data)
+                        .eq(
+                            "id",
+                            id
+                        );
+
+                if(error){
+
+                    throw error;
+
+                }
+
+                showMessage(
+                    "Student updated successfully.",
+                    "success"
+                );
+
+            }catch(error){
+
+                addPendingChange({
+
+                    type:"update",
+
+                    id:id,
+
+                    data:data
+
+                });
+
+                showMessage(
+                    "Saved locally. It will sync when internet returns.",
+                    "success"
+                );
+
+            }
+
+        }else{
+
+            addPendingChange({
+
+                type:"update",
+
+                id:id,
+
+                data:data
+
+            });
+
+            showMessage(
+                "Saved offline. It will sync when internet returns.",
+                "success"
+            );
+
+        }
+
+        return;
+
+    }
+
+    /* =================================================
+       INSERT
+    ================================================= */
+
+    const temporaryId =
+        "offline-" +
+        Date.now() +
+        "-" +
+        Math.random()
+            .toString(36)
+            .substring(2,8);
+
+    const newStudent = {
+
+        id:temporaryId,
+
+        archived:false,
+
+        ...data
+
+    };
+
+    students.push(
+        newStudent
+    );
 
     saveLocalData();
 
     renderTable();
 
-    closeDeleteModal();
+    updateSidebarCounts();
 
+    closeModal();
 
-    showMessage(
-        "Student permanently deleted from Supabase.",
-        "success"
-    );
+    if(navigator.onLine){
 
-}
+        try{
 
+            const {
+                data:inserted,
+                error
+            } =
+                await supabaseClient
+                    .from("students")
+                    .insert([
+                        data
+                    ])
+                    .select()
+                    .single();
 
-/* =====================================================
-   FILTERS
-===================================================== */
+            if(error){
 
-$("searchInput")
-    .addEventListener(
-        "input",
-        renderTable
-    );
+                throw error;
 
-
-$("programFilter")
-    .addEventListener(
-        "change",
-        renderTable
-    );
-
-
-$("tuitionFilter")
-    .addEventListener(
-        "change",
-        renderTable
-    );
-
-
-$("gradFilter")
-    .addEventListener(
-        "change",
-        renderTable
-    );
-
-
-/* =====================================================
-   SUPABASE REALTIME
-===================================================== */
-
-async function setupRealtime(){
-
-    if(
-        realtimeChannel ||
-        !navigator.onLine
-    ){
-
-        return;
-
-    }
-
-
-    realtimeChannel =
-        supabaseClient
-            .channel(
-                "graduate-students-realtime"
-            )
-            .on(
-                "postgres_changes",
-                {
-                    event:"*",
-                    schema:"public",
-                    table:"students"
-                },
-                function(){
-
-                    /*
-                     * Do not reload repeatedly if
-                     * several database changes arrive
-                     * together.
-                     */
-
-                    clearTimeout(
-                        realtimeTimer
-                    );
-
-
-                    realtimeTimer =
-                        setTimeout(
-                            function(){
-
-                                if(
-                                    navigator.onLine
-                                ){
-
-                                    loadOnlineData(
-                                        {
-                                            silent:true
-                                        }
-                                    );
-
-                                }
-
-                            },
-                            500
-                        );
-
-                }
-            )
-            .subscribe(
-                function(status){
-
-                    console.log(
-                        "Supabase Realtime:",
-                        status
-                    );
-
-                }
-            );
-
-}
-
-
-async function stopRealtime(){
-
-    if(
-        realtimeChannel
-    ){
-
-        await supabaseClient
-            .removeChannel(
-                realtimeChannel
-            );
-
-        realtimeChannel =
-            null;
-
-    }
-
-}
-
-
-/* =====================================================
-   INTERNET EVENTS
-===================================================== */
-
-window.addEventListener(
-    "online",
-    async function(){
-
-        updateConnection(
-            "ONLINE • Reconnecting..."
-        );
-
-
-        /*
-         * First synchronize.
-         * Then get the complete database.
-         */
-
-        await loadOnlineData(
-            {
-                silent:true
             }
-        );
 
-
-        await setupRealtime();
-
-    }
-);
-
-
-window.addEventListener(
-    "offline",
-    async function(){
-
-        await stopRealtime();
-
-        updateConnection(
-            "OFFLINE • Local Cache"
-        );
-
-        loadLocalData();
-
-    }
-);
-
-
-/* =====================================================
-   VISIBILITY
-===================================================== */
-
-document.addEventListener(
-    "visibilitychange",
-    async function(){
-
-        if(
-            document.visibilityState ===
-            "visible" &&
-            navigator.onLine
-        ){
-
-            await loadOnlineData(
-                {
-                    silent:true
-                }
-            );
-
-        }
-
-    }
-);
-
-
-/* =====================================================
-   START APPLICATION
-===================================================== */
-
-document.addEventListener(
-    "DOMContentLoaded",
-    async function(){
-
-        updateConnection();
-
-        /*
-         * Load cache first so the page does not
-         * appear empty while Supabase is loading.
-         */
-
-        loadLocalData();
-
-
-        /*
-         * Then get the authoritative database.
-         */
-
-        if(navigator.onLine){
-
-            await loadOnlineData();
-
-            await setupRealtime();
-
-        }
-
-
-        /*
-         * Register service worker.
-         *
-         * The version query helps ensure that the
-         * browser does not keep using an old
-         * registration URL.
-         */
-
-        if(
-            "serviceWorker" in navigator
-        ){
-
-            navigator.serviceWorker
-                .register(
-                    "service-worker.js?v=20261008"
-                )
-                .then(
-                    registration =>
-                        console.log(
-                            "Service Worker registered:",
-                            registration.scope
-                        )
-                )
-                .catch(
-                    error =>
-                        console.warn(
-                            "Service Worker:",
-                            error
-                        )
+            const index =
+                students.findIndex(
+                    s =>
+                        s.id ===
+                        temporaryId
                 );
 
+            if(index !== -1){
+
+                students[index] =
+                    inserted;
+
+            }
+
+            saveLocalData();
+
+            renderTable();
+
+            updateSidebarCounts();
+
+            showMessage(
+                "Student added successfully.",
+                "success"
+            );
+
+        }catch(error){
+
+            addPendingChange({
+
+                type:"insert",
+
+                tempId:temporaryId,
+
+                data:data
+
+            });
+
+            showMessage(
+                "Saved offline. It will sync when internet returns.",
+                "success"
+            );
+
         }
 
-    });
+    }else{
 
+        addPendingChange({
+
+            type:"insert",
+
+            data:data
+
+        });
+
+        showMessage(
+            "Saved offline. It will sync when internet returns.",
+            "success"
+        );
+
+    }
+
+}
 
 /* =====================================================
-   MODAL CLICK OUTSIDE
+   CLOSE STUDENT MODAL
 ===================================================== */
 
-$("studentModal")
+function closeModal(){
+
+    document.getElementById(
+        "studentModal"
+    ).classList.remove(
+        "show"
+    );
+
+}
+
+/* =====================================================
+   MESSAGE
+===================================================== */
+
+function showMessage(
+    message,
+    type
+){
+
+    const box =
+        document.getElementById(
+            "message"
+        );
+
+    box.textContent =
+        message;
+
+    box.className =
+        "message show " +
+        (
+            type === "error"
+            ? "error"
+            : "success-message"
+        );
+
+    setTimeout(
+        function(){
+
+            box.classList.remove(
+                "show"
+            );
+
+        },
+        4000
+    );
+
+}
+
+/* =====================================================
+   ESCAPE HTML
+===================================================== */
+
+function escapeHtml(value){
+
+    return String(value)
+        .replace(/&/g,"&amp;")
+        .replace(/</g,"&lt;")
+        .replace(/>/g,"&gt;")
+        .replace(/"/g,"&quot;")
+        .replace(/'/g,"&#039;");
+
+}
+
+/* =====================================================
+   ESCAPE ATTRIBUTE
+===================================================== */
+
+function escapeAttribute(value){
+
+    return String(value)
+        .replace(/\\/g,"\\\\")
+        .replace(/'/g,"\\'")
+        .replace(/"/g,"&quot;");
+
+}
+
+/* =====================================================
+   MODAL OUTSIDE CLICK
+===================================================== */
+
+document
+    .getElementById("studentModal")
     .addEventListener(
         "click",
         function(event){
 
             if(
-                event.target ===
-                $("studentModal")
+                event.target === this
             ){
 
-                closeStudentModal();
+                closeModal();
 
             }
 
         }
     );
 
-
-$("deleteModal")
+document
+    .getElementById("deleteModal")
     .addEventListener(
         "click",
         function(event){
 
             if(
-                event.target ===
-                $("deleteModal")
+                event.target === this
             ){
 
                 closeDeleteModal();
@@ -3594,6 +4847,53 @@ $("deleteModal")
 
         }
     );
+
+document
+    .getElementById("filePreviewModal")
+    .addEventListener(
+        "click",
+        function(event){
+
+            if(
+                event.target === this
+            ){
+
+                closeFilePreview();
+
+            }
+
+        }
+    );
+
+/* =====================================================
+   SERVICE WORKER
+===================================================== */
+
+if(
+    "serviceWorker"
+    in navigator
+){
+
+    window.addEventListener(
+        "load",
+        function(){
+
+            navigator.serviceWorker
+                .register(
+                    "service-worker.js"
+                )
+                .catch(
+                    error =>
+                        console.log(
+                            "Service Worker:",
+                            error
+                        )
+                );
+
+        }
+    );
+
+}
 
 </script>
 
