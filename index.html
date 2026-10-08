@@ -1802,9 +1802,6 @@ document.addEventListener(
             await loadOnlineData();
         }
 
-        /* Keep this device synchronized with changes made on other devices. */
-        startCrossDeviceSync();
-
         if("serviceWorker" in navigator){
             navigator.serviceWorker
                 .register("service-worker.js")
@@ -1825,99 +1822,6 @@ window.addEventListener("offline", function(){
     updateConnection();
     saveLocalData();
 });
-
-/* =====================================================
-   CROSS-DEVICE SYNC
-===================================================== */
-
-let crossDeviceSyncStarted = false;
-let crossDeviceChannel = null;
-let crossDeviceRefreshTimer = null;
-
-function startCrossDeviceSync(){
-
-    if(crossDeviceSyncStarted){
-        return;
-    }
-
-    crossDeviceSyncStarted = true;
-
-    /*
-       Realtime is used when available so another device can update
-       this screen without needing to refresh the page.
-    */
-    try{
-
-        crossDeviceChannel =
-            supabaseClient
-                .channel("graduate-students-live")
-                .on(
-                    "postgres_changes",
-                    {
-                        event:"*",
-                        schema:"public",
-                        table:"students"
-                    },
-                    async function(){
-
-                        if(navigator.onLine){
-                            await loadOnlineData();
-                        }
-
-                    }
-                )
-                .subscribe(function(status){
-
-                    console.log(
-                        "Student realtime status:",
-                        status
-                    );
-
-                });
-
-    }catch(error){
-
-        console.log(
-            "Realtime synchronization unavailable:",
-            error
-        );
-
-    }
-
-    /*
-       Poll Supabase as a reliable fallback. This also works if
-       Realtime has not been enabled for the students table.
-    */
-    crossDeviceRefreshTimer =
-        setInterval(
-            async function(){
-
-                if(
-                    navigator.onLine &&
-                    document.visibilityState !== "hidden"
-                ){
-                    await loadOnlineData();
-                }
-
-            },
-            10000
-        );
-
-}
-
-document.addEventListener(
-    "visibilitychange",
-    async function(){
-
-        if(
-            document.visibilityState === "visible" &&
-            navigator.onLine
-        ){
-            await loadOnlineData();
-        }
-
-    }
-);
 
 /* =====================================================
    CONNECTION
