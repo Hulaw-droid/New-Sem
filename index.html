@@ -1891,7 +1891,7 @@ async function loadOnlineData(){
 
     try{
 
-        /* First sync pending offline changes. */
+        /* First try to send every saved local change to Supabase. */
         await syncPendingChanges();
 
         const { data, error } =
@@ -1904,13 +1904,80 @@ async function loadOnlineData(){
             throw error;
         }
 
-        /* Only replace local data after a successful Supabase response. */
         if(Array.isArray(data)){
-            students = data;
+
+            /*
+               IMPORTANT:
+               Never blindly do: students = data
+               because an unsynced local student/update can still exist.
+               Keep those local records until their pending operation succeeds.
+            */
+            const pendingInserts =
+                pendingChanges.filter(c => c.type === "insert");
+
+            const pendingUpdates =
+                pendingChanges.filter(c => c.type === "update");
+
+            const serverStudents = [...data];
+
+            /* Keep local unsynced inserts. */
+            pendingInserts.forEach(change => {
+
+                const tempId =
+                    change.tempId ||
+                    (change.data && change.data.id);
+
+                if(!tempId){
+                    return;
+                }
+
+                const localStudent =
+                    students.find(s =>
+                        String(s.id) === String(tempId)
+                    );
+
+                if(localStudent){
+                    const alreadyThere =
+                        serverStudents.some(s =>
+                            String(s.id) === String(localStudent.id)
+                        );
+
+                    if(!alreadyThere){
+                        serverStudents.push(localStudent);
+                    }
+                }
+            });
+
+            /* Keep local versions of records whose updates are still pending. */
+            pendingUpdates.forEach(change => {
+
+                const localStudent =
+                    students.find(s =>
+                        String(s.id) === String(change.id)
+                    );
+
+                if(!localStudent){
+                    return;
+                }
+
+                const index =
+                    serverStudents.findIndex(s =>
+                        String(s.id) === String(change.id)
+                    );
+
+                if(index !== -1){
+                    serverStudents[index] = localStudent;
+                }else{
+                    serverStudents.push(localStudent);
+                }
+            });
+
+            students = serverStudents;
             saveLocalData();
             selectedIds.clear();
             renderTable();
             updateSidebarCounts();
+            updateDashboard();
         }
 
     }catch(error){
@@ -2812,10 +2879,17 @@ async function syncPendingChanges(){
 
             if(change.type === "insert"){
 
+                /* Do not send the temporary local ID to Supabase. */
+                const insertData = {
+                    ...(change.data || {})
+                };
+
+                delete insertData.id;
+
                 const { data: inserted, error } =
                     await supabaseClient
                         .from("students")
-                        .insert([change.data])
+                        .insert([insertData])
                         .select()
                         .single();
 
@@ -2823,9 +2897,13 @@ async function syncPendingChanges(){
                     throw error;
                 }
 
-                /* Replace the temporary offline record with the real DB row. */
+                /* Replace the temporary local record with the real DB row. */
                 if(inserted){
-                    const tempId = change.tempId || change.data.id;
+
+                    const tempId =
+                        change.tempId ||
+                        (change.data && change.data.id);
+
                     const index = students.findIndex(s =>
                         String(s.id) === String(tempId)
                     );
@@ -2873,6 +2951,7 @@ async function syncPendingChanges(){
     saveLocalData();
     renderTable();
     updateSidebarCounts();
+    updateDashboard();
 }
 
 /* =====================================================
@@ -4642,6 +4721,7 @@ async function saveStudent(){
     renderTable();
 
     updateSidebarCounts();
+    updateDashboard();
 
     closeModal();
 
@@ -4655,9 +4735,9 @@ async function saveStudent(){
             } =
                 await supabaseClient
                     .from("students")
-                    .insert([
-                        data
-                    ])
+                    .insert([{
+                        ...data
+                    }])
                     .select()
                     .single();
 
@@ -4686,6 +4766,7 @@ async function saveStudent(){
             renderTable();
 
             updateSidebarCounts();
+            updateDashboard();
 
             showMessage(
                 "Student added successfully.",
@@ -4716,6 +4797,8 @@ async function saveStudent(){
         addPendingChange({
 
             type:"insert",
+
+            tempId:temporaryId,
 
             data:data
 
