@@ -1361,40 +1361,69 @@ tr:hover{
                 id="programFilter"
                 onchange="renderTable()"
             >
-                <option value="ALL">All Programs</option>
-                <option value="MAEd">MAEd</option>
-                <option value="PhD">PhD</option>
-                <option value="MBA">MBA</option>
-                <option value="MPA">MPA</option>
-                <option value="MSCJ">MSCJ</option>
-            </select>
 
-            <select
-                id="trimesterFilter"
-                onchange="renderTable()"
-            >
-                <option value="ALL">All Trimesters</option>
-                <option value="1st Trimester">1st Trimester</option>
-                <option value="2nd Trimester">2nd Trimester</option>
-                <option value="3rd Trimester">3rd Trimester</option>
+                <option value="ALL">
+                    All Programs
+                </option>
+
+                <option value="MAEd">
+                    MAEd
+                </option>
+
+                <option value="PhD">
+                    PhD
+                </option>
+
+                <option value="MBA">
+                    MBA
+                </option>
+
+                <option value="MPA">
+                    MPA
+                </option>
+
+                <option value="MSCJ">
+                    MSCJ
+                </option>
+
             </select>
 
             <select
                 id="fileFilter"
                 onchange="renderTable()"
             >
-                <option value="ALL">All Tuition Fee Status</option>
-                <option value="Paid">Paid</option>
-                <option value="Not Yet Paid">Not Yet Paid</option>
+
+                <option value="ALL">
+                    All Tuition Fee Status
+                </option>
+
+                <option value="Paid">
+                    Paid
+                </option>
+
+                <option value="Not Yet Paid">
+                    Not Yet Paid
+                </option>
+
             </select>
 
             <select
                 id="thesisFilter"
                 onchange="renderTable()"
             >
-                <option value="ALL">All Grad Fee Status</option>
-                <option value="Paid">Paid</option>
-                <option value="Not Yet Paid">Not Yet Paid</option>
+
+                <option value="ALL">
+                    All Grad Fee Status
+                </option>
+
+                <option value="Paid">
+                    Paid
+                </option>
+
+                <option value="Not Yet Paid">
+                    Not Yet Paid
+                </option>
+
             </select>
 
             <button
@@ -1480,7 +1509,7 @@ tr:hover{
 
                         <th>Advance / Regular</th>
 
-                        <th>Trimester</th>
+                        <th>Created Date</th>
 
                         <th>Tuition Fee</th>
 
@@ -1532,7 +1561,9 @@ tr:hover{
 
         <div class="form-group">
 
-            <label>Student Name</label>
+            <label>
+                Student Name
+            </label>
 
             <input
                 type="text"
@@ -1544,7 +1575,9 @@ tr:hover{
 
         <div class="form-group">
 
-            <label>Group</label>
+            <label>
+                Group
+            </label>
 
             <select id="studentGroup">
 
@@ -1566,15 +1599,31 @@ tr:hover{
 
         <div class="form-group">
 
-            <label>Program</label>
+            <label>
+                Program
+            </label>
 
             <select id="studentProgram">
 
-                <option value="MAEd">MAEd</option>
-                <option value="PhD">PhD</option>
-                <option value="MBA">MBA</option>
-                <option value="MPA">MPA</option>
-                <option value="MSCJ">MSCJ</option>
+                <option value="MAEd">
+                    MAEd
+                </option>
+
+                <option value="PhD">
+                    PhD
+                </option>
+
+                <option value="MBA">
+                    MBA
+                </option>
+
+                <option value="MPA">
+                    MPA
+                </option>
+
+                <option value="MSCJ">
+                    MSCJ
+                </option>
 
             </select>
 
@@ -1582,7 +1631,9 @@ tr:hover{
 
         <div class="form-group">
 
-            <label>Advance / Regular</label>
+            <label>
+                Advance / Regular
+            </label>
 
             <select id="studentType">
 
@@ -1600,29 +1651,23 @@ tr:hover{
 
         <div class="form-group">
 
-            <label>Trimester</label>
+            <label>
+                Created Date
+            </label>
 
-            <select id="studentTrimester">
-
-                <option value="1st Trimester">
-                    1st Trimester
-                </option>
-
-                <option value="2nd Trimester">
-                    2nd Trimester
-                </option>
-
-                <option value="3rd Trimester">
-                    3rd Trimester
-                </option>
-
-            </select>
+            <input
+                type="date"
+                id="studentCreatedDate"
+                readonly
+            >
 
         </div>
 
         <div class="form-group">
 
-            <label>Tuition Fee</label>
+            <label>
+                Tuition Fee
+            </label>
 
             <select id="studentFileStatus">
 
@@ -1640,7 +1685,9 @@ tr:hover{
 
         <div class="form-group">
 
-            <label>Grad Fee</label>
+            <label>
+                Grad Fee
+            </label>
 
             <select id="studentThesisStatus">
 
@@ -1658,7 +1705,9 @@ tr:hover{
 
         <div class="form-group">
 
-            <label>Overall Status</label>
+            <label>
+                Overall Status
+            </label>
 
             <select id="studentOverallStatus">
 
@@ -1676,7 +1725,9 @@ tr:hover{
 
         <div class="form-group">
 
-            <label>Thesis Title</label>
+            <label>
+                Thesis Title
+            </label>
 
             <input
                 type="text"
@@ -1830,48 +1881,15 @@ const FILE_KEY =
 
 let students = [];
 
-let pendingChanges = [];
+let pendingChanges =
+    JSON.parse(
+        localStorage.getItem(PENDING_KEY) || "[]"
+    );
 
-try{
-
-    pendingChanges =
-        JSON.parse(
-            localStorage.getItem(PENDING_KEY) || "[]"
-        );
-
-    if(!Array.isArray(pendingChanges)){
-        pendingChanges = [];
-    }
-
-}catch(error){
-
-    pendingChanges = [];
-
-}
-
-let studentFiles = {};
-
-try{
-
-    studentFiles =
-        JSON.parse(
-            localStorage.getItem(FILE_KEY) || "{}"
-        );
-
-    if(
-        !studentFiles ||
-        typeof studentFiles !== "object"
-    ){
-
-        studentFiles = {};
-
-    }
-
-}catch(error){
-
-    studentFiles = {};
-
-}
+let studentFiles =
+    JSON.parse(
+        localStorage.getItem(FILE_KEY) || "{}"
+    );
 
 let selectedIds = new Set();
 
@@ -1880,7 +1898,6 @@ let selectedGroup = "ALL";
 let showingArchived = false;
 
 let deleteStudentId = null;
-
 
 /* =====================================================
    INITIALIZE
@@ -1985,15 +2002,6 @@ async function loadData(){
 
     if(navigator.onLine){
 
-        /*
-         * Synchronize pending changes FIRST.
-         * This is important because otherwise an older
-         * Supabase record could overwrite a newer local
-         * record during page loading.
-         */
-
-        await syncPendingChanges();
-
         await loadOnlineData();
 
     }else{
@@ -2032,41 +2040,18 @@ async function loadOnlineData(){
 
         }
 
-        /*
-         * If Supabase successfully returns records,
-         * those records are the shared source of truth.
-         */
+        students =
+            data || [];
 
-        if(
-            Array.isArray(data) &&
-            data.length > 0
-        ){
-
-            students =
-                data;
-
-            saveLocalData();
-
-        }else{
-
-            /*
-             * If Supabase is empty, do NOT immediately
-             * destroy the local cache.
-             *
-             * This is useful when the database has no
-             * records yet or when the current device
-             * has locally stored records waiting to sync.
-             */
-
-            loadLocalData();
-
-        }
+        saveLocalData();
 
         selectedIds.clear();
 
         renderTable();
 
         updateSidebarCounts();
+
+        await syncPendingChanges();
 
     }catch(error){
 
@@ -2078,7 +2063,7 @@ async function loadOnlineData(){
         loadLocalData();
 
         showMessage(
-            "Unable to load database data. Using saved local data.",
+            "Internet connection failed. Using offline data.",
             "error"
         );
 
@@ -2094,39 +2079,14 @@ function loadLocalData(){
 
     try{
 
-        const saved =
-            localStorage.getItem(
-                LOCAL_KEY
+        students =
+            JSON.parse(
+                localStorage.getItem(
+                    LOCAL_KEY
+                ) || "[]"
             );
 
-        if(saved){
-
-            const parsed =
-                JSON.parse(saved);
-
-            if(Array.isArray(parsed)){
-
-                students =
-                    parsed;
-
-            }else{
-
-                students = [];
-
-            }
-
-        }else{
-
-            students = [];
-
-        }
-
     }catch(error){
-
-        console.log(
-            "Local data loading failed:",
-            error
-        );
 
         students = [];
 
@@ -2144,21 +2104,10 @@ function loadLocalData(){
 
 function saveLocalData(){
 
-    try{
-
-        localStorage.setItem(
-            LOCAL_KEY,
-            JSON.stringify(students)
-        );
-
-    }catch(error){
-
-        console.log(
-            "Unable to save local data:",
-            error
-        );
-
-    }
+    localStorage.setItem(
+        LOCAL_KEY,
+        JSON.stringify(students)
+    );
 
 }
 
@@ -2168,21 +2117,10 @@ function saveLocalData(){
 
 function saveStudentFiles(){
 
-    try{
-
-        localStorage.setItem(
-            FILE_KEY,
-            JSON.stringify(studentFiles)
-        );
-
-    }catch(error){
-
-        console.log(
-            "Unable to save file information:",
-            error
-        );
-
-    }
+    localStorage.setItem(
+        FILE_KEY,
+        JSON.stringify(studentFiles)
+    );
 
 }
 
@@ -2442,10 +2380,6 @@ async function updateStudentStatus(
 
     }
 
-    /*
-     * Update screen immediately.
-     */
-
     student[field] =
         status;
 
@@ -2455,42 +2389,21 @@ async function updateStudentStatus(
 
     updateDashboard();
 
-    /*
-     * Offline temporary records cannot be updated
-     * directly in Supabase until their insert exists.
-     */
-
     if(
         String(id).startsWith(
             "offline-"
         )
     ){
 
-        addPendingChange({
-
-            type:"offline-update",
-
-            temporaryId:String(id),
-
-            data:{
-                [field]:status
-            }
-
-        });
-
         showMessage(
             label +
-            " saved locally and will sync.",
+            " updated successfully.",
             "success"
         );
 
         return;
 
     }
-
-    /*
-     * ONLINE UPDATE
-     */
 
     if(navigator.onLine){
 
@@ -2514,12 +2427,6 @@ async function updateStudentStatus(
                 throw error;
 
             }
-
-            /*
-             * Keep local cache synchronized.
-             */
-
-            saveLocalData();
 
             showMessage(
                 label +
@@ -2548,7 +2455,7 @@ async function updateStudentStatus(
             });
 
             showMessage(
-                "Saved locally. Database synchronization will be retried.",
+                "Saved locally. It will sync when internet returns.",
                 "success"
             );
 
@@ -3003,76 +2910,16 @@ function closeFilePreview(){
 
 function savePending(){
 
-    try{
-
-        localStorage.setItem(
-            PENDING_KEY,
-            JSON.stringify(
-                pendingChanges
-            )
-        );
-
-    }catch(error){
-
-        console.log(
-            "Unable to save pending changes:",
-            error
-        );
-
-    }
+    localStorage.setItem(
+        PENDING_KEY,
+        JSON.stringify(
+            pendingChanges
+        )
+    );
 
 }
 
 function addPendingChange(change){
-
-    /*
-     * Avoid creating duplicate update operations
-     * for the same student and field.
-     */
-
-    if(
-        change.type === "update" &&
-        change.id !== undefined
-    ){
-
-        const field =
-            Object.keys(
-                change.data || {}
-            )[0];
-
-        pendingChanges =
-            pendingChanges.filter(
-                existing => {
-
-                    if(
-                        existing.type !==
-                        "update"
-                    ){
-
-                        return true;
-
-                    }
-
-                    if(
-                        String(existing.id) !==
-                        String(change.id)
-                    ){
-
-                        return true;
-
-                    }
-
-                    const existingField =
-                        Object.keys(
-                            existing.data || {}
-                        )[0];
-
-                    return existingField !== field;
-
-                }
-            );
-
-    }
 
     pendingChanges.push(
         change
@@ -3081,10 +2928,6 @@ function addPendingChange(change){
     savePending();
 
 }
-
-/* =====================================================
-   SYNC PENDING CHANGES
-===================================================== */
 
 async function syncPendingChanges(){
 
@@ -3097,26 +2940,14 @@ async function syncPendingChanges(){
 
     }
 
-    /*
-     * Work on a copy so changes to the pending
-     * array do not interrupt synchronization.
-     */
-
-    const queue =
-        [...pendingChanges];
-
     const remaining = [];
 
     for(
         const change
-        of queue
+        of pendingChanges
     ){
 
         try{
-
-            /* =========================================
-               NORMAL INSERT
-            ========================================= */
 
             if(
                 change.type ===
@@ -3124,16 +2955,13 @@ async function syncPendingChanges(){
             ){
 
                 const {
-                    data:inserted,
                     error
                 } =
                     await supabaseClient
                         .from("students")
                         .insert([
                             change.data
-                        ])
-                        .select()
-                        .single();
+                        ]);
 
                 if(error){
 
@@ -3141,116 +2969,7 @@ async function syncPendingChanges(){
 
                 }
 
-                /*
-                 * If the local record has a matching
-                 * temporary ID, replace it with the
-                 * real Supabase record.
-                 */
-
-                if(inserted){
-
-                    const localIndex =
-                        students.findIndex(
-                            s =>
-                                String(s.id) ===
-                                String(
-                                    change.temporaryId ||
-                                    ""
-                                )
-                        );
-
-                    if(localIndex !== -1){
-
-                        students[localIndex] =
-                            inserted;
-
-                    }else{
-
-                        const duplicate =
-                            students.some(
-                                s =>
-                                    String(
-                                        s.name || ""
-                                    ).toLowerCase() ===
-                                    String(
-                                        inserted.name || ""
-                                    ).toLowerCase()
-                            );
-
-                        if(!duplicate){
-
-                            students.push(
-                                inserted
-                            );
-
-                        }
-
-                    }
-
-                }
-
-            }
-
-            /* =========================================
-               OFFLINE INSERT
-            ========================================= */
-
-            else if(
-                change.type ===
-                "offline-insert"
-            ){
-
-                const {
-                    data:inserted,
-                    error
-                } =
-                    await supabaseClient
-                        .from("students")
-                        .insert([
-                            change.data
-                        ])
-                        .select()
-                        .single();
-
-                if(error){
-
-                    throw error;
-
-                }
-
-                if(inserted){
-
-                    const localIndex =
-                        students.findIndex(
-                            s =>
-                                String(s.id) ===
-                                String(
-                                    change.temporaryId
-                                )
-                        );
-
-                    if(localIndex !== -1){
-
-                        students[localIndex] =
-                            inserted;
-
-                    }else{
-
-                        students.push(
-                            inserted
-                        );
-
-                    }
-
-                }
-
-            }
-
-            /* =========================================
-               UPDATE
-            ========================================= */
-
-            else if(
+            }else if(
                 change.type ===
                 "update"
             ){
@@ -3276,117 +2995,7 @@ async function syncPendingChanges(){
 
             }
 
-            /* =========================================
-               OFFLINE UPDATE
-            ========================================= */
-
-            else if(
-                change.type ===
-                "offline-update"
-            ){
-
-                /*
-                 * The student may have already been
-                 * inserted by an earlier pending action.
-                 */
-
-                const localStudent =
-                    students.find(
-                        s =>
-                            String(s.id) ===
-                            String(
-                                change.temporaryId
-                            )
-                    );
-
-                if(!localStudent){
-
-                    continue;
-
-                }
-
-                /*
-                 * If it still has a temporary ID,
-                 * its insert must be synchronized first.
-                 */
-
-                if(
-                    String(
-                        localStudent.id
-                    ).startsWith(
-                        "offline-"
-                    )
-                ){
-
-                    /*
-                     * Find its pending insert.
-                     */
-
-                    const pendingInsert =
-                        pendingChanges.find(
-                            item =>
-                                (
-                                    item.type ===
-                                    "offline-insert"
-                                ) &&
-                                String(
-                                    item.temporaryId
-                                ) ===
-                                String(
-                                    change.temporaryId
-                                )
-                        );
-
-                    if(pendingInsert){
-
-                        /*
-                         * Keep this update in the
-                         * queue for a later pass.
-                         */
-
-                        remaining.push(
-                            change
-                        );
-
-                        continue;
-
-                    }
-
-                    remaining.push(
-                        change
-                    );
-
-                    continue;
-
-                }
-
-                const {
-                    error
-                } =
-                    await supabaseClient
-                        .from("students")
-                        .update(
-                            change.data
-                        )
-                        .eq(
-                            "id",
-                            localStudent.id
-                        );
-
-                if(error){
-
-                    throw error;
-
-                }
-
-            }
-
         }catch(error){
-
-            console.log(
-                "Pending synchronization failed:",
-                error
-            );
 
             remaining.push(
                 change
@@ -3400,8 +3009,6 @@ async function syncPendingChanges(){
         remaining;
 
     savePending();
-
-    saveLocalData();
 
 }
 
@@ -3532,11 +3139,6 @@ function getFilteredStudents(){
             "programFilter"
         ).value;
 
-    const trimester =
-        document.getElementById(
-            "trimesterFilter"
-        ).value;
-
     const file =
         document.getElementById(
             "fileFilter"
@@ -3603,15 +3205,6 @@ function getFilteredStudents(){
             if(
                 program !== "ALL" &&
                 student.program !== program
-            ){
-
-                return false;
-
-            }
-
-            if(
-                trimester !== "ALL" &&
-                student.trimester !== trimester
             ){
 
                 return false;
@@ -3864,8 +3457,7 @@ function renderTable(){
                     <td class="created-date">
 
                         ${escapeHtml(
-                            student.trimester ||
-                            "-"
+                            formatCreatedDate(student)
                         )}
 
                     </td>
@@ -4539,12 +4131,50 @@ async function confirmDeleteArchived(){
 
     }
 
+    students =
+        students.filter(
+            s =>
+                String(s.id) !==
+                String(id)
+        );
+
+    delete studentFiles[id];
+
+    saveLocalData();
+
+    saveStudentFiles();
+
+    closeDeleteModal();
+
+    if(
+        String(id).startsWith(
+            "offline-"
+        )
+    ){
+
+        renderTable();
+
+        updateSidebarCounts();
+
+        updateDashboard();
+
+        showMessage(
+            "Archived student deleted.",
+            "success"
+        );
+
+        return;
+
+    }
+
     if(!navigator.onLine){
 
         showMessage(
             "You must be online to permanently delete an archived student.",
             "error"
         );
+
+        await loadData();
 
         return;
 
@@ -4568,21 +4198,6 @@ async function confirmDeleteArchived(){
             throw error;
 
         }
-
-        students =
-            students.filter(
-                s =>
-                    String(s.id) !==
-                    String(id)
-            );
-
-        delete studentFiles[id];
-
-        saveLocalData();
-
-        saveStudentFiles();
-
-        closeDeleteModal();
 
         renderTable();
 
@@ -4611,6 +4226,8 @@ async function confirmDeleteArchived(){
             "error"
         );
 
+        await loadOnlineData();
+
     }
 
 }
@@ -4637,15 +4254,25 @@ function programBadge(program){
     let cls = "";
 
     if(program === "PhD"){
+
         cls = "phd";
+
     }else if(program === "MAEd"){
+
         cls = "maed";
+
     }else if(program === "MBA"){
+
         cls = "mba";
+
     }else if(program === "MPA"){
+
         cls = "mpa";
+
     }else if(program === "MSCJ"){
+
         cls = "mscj";
+
     }
 
     return `
@@ -4671,7 +4298,10 @@ function statusBadge(status){
     let cls =
         "pending";
 
-    if(status === "Complete" || status === "Paid"){
+    if(
+        status === "Complete" ||
+        status === "Paid"
+    ){
 
         cls =
             "complete";
@@ -4808,29 +4438,69 @@ function updateSidebarCounts(){
 }
 
 /* =====================================================
-   TRIMESTER / STUDENT TYPE
+   CREATED DATE / STUDENT TYPE
 ===================================================== */
 
-function getTrimesterValue(student){
+function getTodayDate(){
 
-    if(
-        student.trimester ===
-        "1st Trimester" ||
-        student.trimester ===
-        "2nd Trimester" ||
-        student.trimester ===
-        "3rd Trimester"
-    ){
+    const now = new Date();
 
-        return student.trimester;
+    const year =
+        now.getFullYear();
 
-    }
+    const month =
+        String(
+            now.getMonth() + 1
+        ).padStart(
+            2,
+            "0"
+        );
 
-    return "1st Trimester";
+    const day =
+        String(
+            now.getDate()
+        ).padStart(
+            2,
+            "0"
+        );
+
+    return year +
+        "-" +
+        month +
+        "-" +
+        day;
 
 }
 
-function getTrimesterForSave(id){
+function getCreatedDateValue(student){
+
+    if(student.created_date){
+
+        return String(
+            student.created_date
+        ).substring(
+            0,
+            10
+        );
+
+    }
+
+    if(student.created_at){
+
+        return String(
+            student.created_at
+        ).substring(
+            0,
+            10
+        );
+
+    }
+
+    return getTodayDate();
+
+}
+
+function getCreatedDateForSave(id){
 
     const student =
         students.find(
@@ -4840,8 +4510,36 @@ function getTrimesterForSave(id){
         );
 
     return student
-        ? getTrimesterValue(student)
-        : "1st Trimester";
+        ? getCreatedDateValue(student)
+        : getTodayDate();
+
+}
+
+function formatCreatedDate(student){
+
+    const value =
+        getCreatedDateValue(student);
+
+    if(!value){
+
+        return "-";
+
+    }
+
+    const parts =
+        value.split("-");
+
+    if(parts.length === 3){
+
+        return parts[1] +
+            "/" +
+            parts[2] +
+            "/" +
+            parts[0];
+
+    }
+
+    return value;
 
 }
 
@@ -4884,9 +4582,9 @@ function openAddModal(){
         "Regular";
 
     document.getElementById(
-        "studentTrimester"
+        "studentCreatedDate"
     ).value =
-        "1st Trimester";
+        getTodayDate();
 
     document.getElementById(
         "studentFileStatus"
@@ -4969,9 +4667,9 @@ function editStudent(id){
         "Regular";
 
     document.getElementById(
-        "studentTrimester"
+        "studentCreatedDate"
     ).value =
-        getTrimesterValue(student);
+        getCreatedDateValue(student);
 
     document.getElementById(
         "studentFileStatus"
@@ -5075,10 +4773,10 @@ async function saveStudent(){
                 "studentType"
             ).value,
 
-        trimester:
-            document.getElementById(
-                "studentTrimester"
-            ).value,
+        created_date:
+            id
+            ? getCreatedDateForSave(id)
+            : getTodayDate(),
 
         file_status:
             document.getElementById(
@@ -5104,7 +4802,7 @@ async function saveStudent(){
     };
 
     /* =================================================
-       UPDATE EXISTING STUDENT
+       UPDATE
     ================================================= */
 
     if(id){
@@ -5116,24 +4814,17 @@ async function saveStudent(){
                     String(id)
             );
 
-        if(index === -1){
+        if(index !== -1){
 
-            showMessage(
-                "Student record not found.",
-                "error"
-            );
+            students[index] = {
 
-            return;
+                ...students[index],
+
+                ...data
+
+            };
 
         }
-
-        students[index] = {
-
-            ...students[index],
-
-            ...data
-
-        };
 
         saveLocalData();
 
@@ -5143,28 +4834,14 @@ async function saveStudent(){
 
         closeModal();
 
-        /*
-         * Temporary offline student.
-         */
-
         if(
             String(id).startsWith(
                 "offline-"
             )
         ){
 
-            addPendingChange({
-
-                type:"offline-update",
-
-                temporaryId:String(id),
-
-                data:data
-
-            });
-
             showMessage(
-                "Student updated locally and will sync.",
+                "Student updated successfully.",
                 "success"
             );
 
@@ -5172,16 +4849,11 @@ async function saveStudent(){
 
         }
 
-        /*
-         * ONLINE UPDATE
-         */
-
         if(navigator.onLine){
 
             try{
 
                 const {
-                    data:updatedRows,
                     error
                 } =
                     await supabaseClient
@@ -5190,33 +4862,11 @@ async function saveStudent(){
                         .eq(
                             "id",
                             id
-                        )
-                        .select();
+                        );
 
                 if(error){
 
                     throw error;
-
-                }
-
-                /*
-                 * If Supabase returns the updated
-                 * record, use it locally.
-                 */
-
-                if(
-                    Array.isArray(updatedRows) &&
-                    updatedRows.length > 0
-                ){
-
-                    students[index] =
-                        updatedRows[0];
-
-                    saveLocalData();
-
-                    renderTable();
-
-                    updateSidebarCounts();
 
                 }
 
@@ -5226,11 +4876,6 @@ async function saveStudent(){
                 );
 
             }catch(error){
-
-                console.log(
-                    "Student update failed:",
-                    error
-                );
 
                 addPendingChange({
 
@@ -5243,7 +4888,7 @@ async function saveStudent(){
                 });
 
                 showMessage(
-                    "Saved locally. Database synchronization will be retried.",
+                    "Saved locally. It will sync when internet returns.",
                     "success"
                 );
 
@@ -5273,7 +4918,7 @@ async function saveStudent(){
     }
 
     /* =================================================
-       INSERT NEW STUDENT
+       INSERT
     ================================================= */
 
     const temporaryId =
@@ -5294,10 +4939,6 @@ async function saveStudent(){
 
     };
 
-    /*
-     * Show the student immediately.
-     */
-
     students.push(
         newStudent
     );
@@ -5309,10 +4950,6 @@ async function saveStudent(){
     updateSidebarCounts();
 
     closeModal();
-
-    /*
-     * ONLINE INSERT
-     */
 
     if(navigator.onLine){
 
@@ -5336,31 +4973,17 @@ async function saveStudent(){
 
             }
 
-            if(!inserted){
-
-                throw new Error(
-                    "Student was not returned by Supabase after insertion."
-                );
-
-            }
-
             const index =
                 students.findIndex(
                     s =>
-                        String(s.id) ===
-                        String(temporaryId)
+                        s.id ===
+                        temporaryId
                 );
 
             if(index !== -1){
 
                 students[index] =
                     inserted;
-
-            }else{
-
-                students.push(
-                    inserted
-                );
 
             }
 
@@ -5371,34 +4994,22 @@ async function saveStudent(){
             updateSidebarCounts();
 
             showMessage(
-                "Student added successfully and saved to the database.",
+                "Student added successfully.",
                 "success"
             );
 
         }catch(error){
 
-            console.log(
-                "Student insert failed:",
-                error
-            );
-
-            /*
-             * Keep the temporary student locally.
-             * It will be inserted into Supabase later.
-             */
-
             addPendingChange({
 
-                type:"offline-insert",
-
-                temporaryId:temporaryId,
+                type:"insert",
 
                 data:data
 
             });
 
             showMessage(
-                "Saved locally. Database synchronization will be retried.",
+                "Saved offline. It will sync when internet returns.",
                 "success"
             );
 
@@ -5408,9 +5019,7 @@ async function saveStudent(){
 
         addPendingChange({
 
-            type:"offline-insert",
-
-            temporaryId:temporaryId,
+            type:"insert",
 
             data:data
 
@@ -5484,11 +5093,26 @@ function showMessage(
 function escapeHtml(value){
 
     return String(value)
-        .replace(/&/g,"&amp;")
-        .replace(/</g,"&lt;")
-        .replace(/>/g,"&gt;")
-        .replace(/"/g,"&quot;")
-        .replace(/'/g,"&#039;");
+        .replace(
+            /&/g,
+            "&amp;"
+        )
+        .replace(
+            /</g,
+            "&lt;"
+        )
+        .replace(
+            />/g,
+            "&gt;"
+        )
+        .replace(
+            /"/g,
+            "&quot;"
+        )
+        .replace(
+            /'/g,
+            "&#039;"
+        );
 
 }
 
@@ -5499,9 +5123,18 @@ function escapeHtml(value){
 function escapeAttribute(value){
 
     return String(value)
-        .replace(/\\/g,"\\\\")
-        .replace(/'/g,"\\'")
-        .replace(/"/g,"&quot;");
+        .replace(
+            /\\/g,
+            "\\\\"
+        )
+        .replace(
+            /'/g,
+            "\\'"
+        )
+        .replace(
+            /"/g,
+            "&quot;"
+        );
 
 }
 
@@ -5510,7 +5143,9 @@ function escapeAttribute(value){
 ===================================================== */
 
 document
-    .getElementById("studentModal")
+    .getElementById(
+        "studentModal"
+    )
     .addEventListener(
         "click",
         function(event){
@@ -5527,7 +5162,9 @@ document
     );
 
 document
-    .getElementById("deleteModal")
+    .getElementById(
+        "deleteModal"
+    )
     .addEventListener(
         "click",
         function(event){
@@ -5544,7 +5181,9 @@ document
     );
 
 document
-    .getElementById("filePreviewModal")
+    .getElementById(
+        "filePreviewModal"
+    )
     .addEventListener(
         "click",
         function(event){
