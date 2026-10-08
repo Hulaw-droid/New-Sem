@@ -1620,8 +1620,6 @@ tr:hover{
 
         </div>
 
-        <!-- TUITION FEE STATUS DROPDOWN -->
-
         <div class="form-group">
 
             <label>Tuition Fee</label>
@@ -1640,8 +1638,6 @@ tr:hover{
 
         </div>
 
-        <!-- GRAD FEE STATUS DROPDOWN -->
-
         <div class="form-group">
 
             <label>Grad Fee</label>
@@ -1659,8 +1655,6 @@ tr:hover{
             </select>
 
         </div>
-
-        <!-- OVERALL STATUS DROPDOWN -->
 
         <div class="form-group">
 
@@ -1996,10 +1990,73 @@ async function loadOnlineData(){
 
         }
 
-        students =
-            data || [];
+        /*
+         * IMPORTANT:
+         * Do not replace existing local records with
+         * an empty Supabase result.
+         *
+         * If Supabase has records, use them.
+         * If Supabase returns zero records, keep the
+         * locally saved records instead.
+         */
 
-        saveLocalData();
+        if(
+            Array.isArray(data) &&
+            data.length > 0
+        ){
+
+            students =
+                data;
+
+            saveLocalData();
+
+        }else{
+
+            const savedLocal =
+                localStorage.getItem(
+                    LOCAL_KEY
+                );
+
+            if(savedLocal){
+
+                try{
+
+                    const localStudents =
+                        JSON.parse(
+                            savedLocal
+                        );
+
+                    if(
+                        Array.isArray(localStudents)
+                    ){
+
+                        students =
+                            localStudents;
+
+                    }else{
+
+                        students = [];
+
+                    }
+
+                }catch(parseError){
+
+                    console.log(
+                        "Local data loading failed:",
+                        parseError
+                    );
+
+                    students = [];
+
+                }
+
+            }else{
+
+                students = [];
+
+            }
+
+        }
 
         selectedIds.clear();
 
