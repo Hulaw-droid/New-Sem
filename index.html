@@ -131,6 +131,14 @@ tr:hover{background:#f8fbff}
 #deleteModal .modal-buttons{margin-top:15px;gap:7px}
 #deleteModal .modal-buttons button{padding:8px 11px;font-size:11px}
 
+/* MATCH ARCHIVE AND RESTORE POPUPS TO DELETE POPUP */
+#archiveModal .modal-content,#restoreModal .modal-content{width:340px;padding:18px;border-radius:10px}
+#archiveModal .confirm-icon,#restoreModal .confirm-icon{width:36px;height:36px;font-size:18px;margin-bottom:10px}
+#archiveModal .modal-content h2,#restoreModal .modal-content h2{font-size:15px;margin-bottom:8px}
+#archiveModal .confirm-text,#restoreModal .confirm-text{font-size:12px;line-height:1.4}
+#archiveModal .modal-buttons,#restoreModal .modal-buttons{margin-top:15px;gap:7px}
+#archiveModal .modal-buttons button,#restoreModal .modal-buttons button{padding:8px 11px;font-size:11px}
+
 ::-webkit-scrollbar{width:8px;height:8px}
 ::-webkit-scrollbar-track{background:#f1f3f5}
 ::-webkit-scrollbar-thumb{background:#c5ccd3;border-radius:10px}
@@ -302,6 +310,32 @@ tr:hover{background:#f8fbff}
  </div>
 </div>
 
+<!-- ARCHIVE CONFIRMATION POPUP -->
+<div class="modal" id="archiveModal">
+ <div class="modal-content">
+  <div class="confirm-icon">!</div>
+  <h2>Archive Student</h2>
+  <p class="confirm-text" id="archiveMessage">Are you sure you want to archive this student?</p>
+  <div class="modal-buttons">
+   <button class="secondary" onclick="closeArchiveModal()">Cancel</button>
+   <button class="warning" onclick="confirmArchive()">Archive</button>
+  </div>
+ </div>
+</div>
+
+<!-- RESTORE CONFIRMATION POPUP -->
+<div class="modal" id="restoreModal">
+ <div class="modal-content">
+  <div class="confirm-icon">✓</div>
+  <h2>Restore Student</h2>
+  <p class="confirm-text" id="restoreMessage">Are you sure you want to restore this student?</p>
+  <div class="modal-buttons">
+   <button class="secondary" onclick="closeRestoreModal()">Cancel</button>
+   <button class="success" onclick="confirmRestore()">Restore</button>
+  </div>
+ </div>
+</div>
+
 <script>
 const SUPABASE_URL="https://yiruvpikzntyiijapknt.supabase.co";
 const SUPABASE_KEY="sb_publishable_Z95aVweBRCPDWo1XH54GFQ_rrV9GIvk";
@@ -316,6 +350,8 @@ let selectedGroup="ALL";
 let showingArchived=false;
 let showingChartsDashboard=false;
 let deleteStudentId=null;
+let pendingArchiveId=null;
+let pendingRestoreId=null;
 let tuitionPaymentChart=null;
 let graduationPaymentChart=null;
 let paymentTimelineChart=null;
@@ -816,10 +852,35 @@ async function archiveSelected(){
  showMessage(ids.length+" student(s) archived successfully.","success");
 }
 
-async function archiveStudent(id,bulk=false){
+/* ARCHIVE CONFIRMATION */
+function archiveStudent(id,bulk=false){
  const s=students.find(x=>String(x.id)===String(id));
  if(!s)return;
- if(!bulk&&!confirm("Archive "+s.name+"?"))return;
+
+ if(bulk){
+  return performArchive(id);
+ }
+
+ pendingArchiveId=String(id);
+ document.getElementById("archiveMessage").textContent="Are you sure you want to archive "+s.name+"?";
+ document.getElementById("archiveModal").classList.add("show");
+}
+
+function closeArchiveModal(){
+ pendingArchiveId=null;
+ document.getElementById("archiveModal").classList.remove("show");
+}
+
+async function confirmArchive(){
+ if(pendingArchiveId===null)return;
+ const id=pendingArchiveId;
+ closeArchiveModal();
+ await performArchive(id);
+}
+
+async function performArchive(id){
+ const s=students.find(x=>String(x.id)===String(id));
+ if(!s)return;
 
  s.archived=true;
  saveLocalData();
@@ -841,16 +902,32 @@ async function archiveStudent(id,bulk=false){
 
  renderTable();
  updateSidebarCounts();
-
- if(!bulk){
-  showMessage("Student archived successfully.","success");
- }
+ showMessage("Student archived successfully.","success");
 }
 
-async function restoreStudent(id){
+/* RESTORE CONFIRMATION */
+function restoreStudent(id){
  const s=students.find(x=>String(x.id)===String(id));
  if(!s)return;
- if(!confirm("Restore "+s.name+"?"))return;
+
+ pendingRestoreId=String(id);
+ document.getElementById("restoreMessage").textContent="Are you sure you want to restore "+s.name+"?";
+ document.getElementById("restoreModal").classList.add("show");
+}
+
+function closeRestoreModal(){
+ pendingRestoreId=null;
+ document.getElementById("restoreModal").classList.remove("show");
+}
+
+async function confirmRestore(){
+ if(pendingRestoreId===null)return;
+
+ const id=pendingRestoreId;
+ closeRestoreModal();
+
+ const s=students.find(x=>String(x.id)===String(id));
+ if(!s)return;
 
  s.archived=false;
  saveLocalData();
@@ -1123,6 +1200,14 @@ document.getElementById("studentModal").addEventListener("click",function(e){
 
 document.getElementById("deleteModal").addEventListener("click",function(e){
  if(e.target===this)closeDeleteModal();
+});
+
+document.getElementById("archiveModal").addEventListener("click",function(e){
+ if(e.target===this)closeArchiveModal();
+});
+
+document.getElementById("restoreModal").addEventListener("click",function(e){
+ if(e.target===this)closeRestoreModal();
 });
 
 if("serviceWorker" in navigator){
