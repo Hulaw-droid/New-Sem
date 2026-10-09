@@ -122,6 +122,15 @@ tr:hover{background:#f8fbff}
 .modal-buttons{display:flex;justify-content:flex-end;gap:10px;margin-top:20px}
 .confirm-icon{width:55px;height:55px;border-radius:50%;background:#f8d7da;color:#842029;display:flex;align-items:center;justify-content:center;font-size:25px;margin-bottom:15px}
 .confirm-text{color:#666;font-size:13px;line-height:1.5}
+
+/* SMALLER DELETE CONFIRMATION POPUP ONLY */
+#deleteModal .modal-content{width:340px;padding:18px;border-radius:10px}
+#deleteModal .confirm-icon{width:36px;height:36px;font-size:18px;margin-bottom:10px}
+#deleteModal .modal-content h2{font-size:15px;margin-bottom:8px}
+#deleteModal .confirm-text{font-size:12px;line-height:1.4}
+#deleteModal .modal-buttons{margin-top:15px;gap:7px}
+#deleteModal .modal-buttons button{padding:8px 11px;font-size:11px}
+
 ::-webkit-scrollbar{width:8px;height:8px}
 ::-webkit-scrollbar-track{background:#f1f3f5}
 ::-webkit-scrollbar-thumb{background:#c5ccd3;border-radius:10px}
@@ -193,7 +202,6 @@ tr:hover{background:#f8fbff}
 
  <div id="message" class="message"></div>
 
- <!-- ORIGINAL SUMMARY DASHBOARD -->
  <div class="dashboard" id="summaryDashboard">
   <div class="card"><h3>Total Students</h3><div class="number" id="totalCount">0</div></div>
   <div class="card"><h3>Tuition Fee Paid</h3><div class="number" id="filesComplete">0</div></div>
@@ -201,7 +209,6 @@ tr:hover{background:#f8fbff}
   <div class="card"><h3>Overall Complete</h3><div class="number" id="overallComplete">0</div></div>
  </div>
 
- <!-- SEPARATE CHARTS DASHBOARD -->
  <div id="chartsDashboardPage" style="display:none">
   <div class="page-intro">
    <h2>Charts Dashboard</h2>
@@ -236,7 +243,7 @@ tr:hover{background:#f8fbff}
   <div class="controls-row">
    <input type="text" id="searchInput" class="search" placeholder="Search student name or thesis title..." oninput="renderTable()">
    <select id="programFilter" onchange="renderTable()"><option value="ALL">All Programs</option><option>MAEd</option><option>PhD</option><option>MBA</option><option>MPA</option><option>MSCJ</option></select>
-    <select id="programTypeFilter" onchange="renderTable()"><option value="ALL">All Types</option><option>Regular</option><option>Advance</option></select>
+   <select id="programTypeFilter" onchange="renderTable()"><option value="ALL">All Types</option><option>Regular</option><option>Advance</option></select>
    <select id="fileFilter" onchange="renderTable()"><option value="ALL">All Tuition Fee Status</option><option>Paid</option><option>Not Yet Paid</option></select>
    <select id="thesisFilter" onchange="renderTable()"><option value="ALL">All Grad Fee Status</option><option>Paid</option><option>Not Yet Paid</option></select>
    <button class="primary" onclick="openAddModal()">+ Add Student</button>
@@ -720,8 +727,8 @@ function getFilteredStudents(){
   if(!showingArchived&&selectedGroup!=="ALL"&&s.group!==selectedGroup)return false;
   if(search&&!(s.name||"").toLowerCase().includes(search)&&!(s.thesis_title||"").toLowerCase().includes(search))return false;
   if(program!=="ALL"&&s.program!==program)return false;
-   const programType=document.getElementById("programTypeFilter").value;
-   if(programType!=="ALL"&&(s.program_type||"Regular")!==programType)return false;
+  const programType=document.getElementById("programTypeFilter").value;
+  if(programType!=="ALL"&&(s.program_type||"Regular")!==programType)return false;
   if(file!=="ALL"&&getFileStatus(s)!==file)return false;
   if(thesis!=="ALL"&&getThesisStatus(s)!==thesis)return false;
   return true;
@@ -834,6 +841,10 @@ async function archiveStudent(id,bulk=false){
 
  renderTable();
  updateSidebarCounts();
+
+ if(!bulk){
+  showMessage("Student archived successfully.","success");
+ }
 }
 
 async function restoreStudent(id){
@@ -860,12 +871,13 @@ async function restoreStudent(id){
 
  renderTable();
  updateSidebarCounts();
- showMessage("Student restored.","success");
+ showMessage("Student restored successfully.","success");
 }
 
 function deleteArchivedStudent(id){
  const s=students.find(x=>String(x.id)===String(id));
  if(!s)return;
+
  if(!s.archived){
   showMessage("Only archived students can be deleted.","error");
   return;
@@ -955,7 +967,7 @@ function openAddModal(){
  document.getElementById("studentName").value="";
  document.getElementById("studentGroup").value=selectedGroup!=="ALL"&&!showingArchived?selectedGroup:"TAGAYTAY GROUP";
  document.getElementById("studentProgram").value="MAEd";
-  document.getElementById("studentProgramType").value="Regular";
+ document.getElementById("studentProgramType").value="Regular";
  document.getElementById("studentFileStatus").value="Not Yet Paid";
  document.getElementById("studentThesisStatus").value="Not Yet Paid";
  document.getElementById("studentOverallStatus").value="Not Yet Done";
@@ -973,7 +985,7 @@ function editStudent(id){
  document.getElementById("studentName").value=s.name||"";
  document.getElementById("studentGroup").value=s.group||"TAGAYTAY GROUP";
  document.getElementById("studentProgram").value=s.program||"MAEd";
-  document.getElementById("studentProgramType").value=s.program_type||"Regular";
+ document.getElementById("studentProgramType").value=s.program_type||"Regular";
  document.getElementById("studentFileStatus").value=getFileStatus(s);
  document.getElementById("studentThesisStatus").value=getThesisStatus(s);
  document.getElementById("studentOverallStatus").value=getOverallStatus(s);
@@ -1005,7 +1017,7 @@ async function saveStudent(){
   name,
   group:document.getElementById("studentGroup").value,
   program:document.getElementById("studentProgram").value,
-   program_type:document.getElementById("studentProgramType").value,
+  program_type:document.getElementById("studentProgramType").value,
   file_status:tuitionStatus,
   thesis_status:gradStatus,
   overall_status:document.getElementById("studentOverallStatus").value,
