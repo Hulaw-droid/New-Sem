@@ -123,21 +123,30 @@ tr:hover{background:#f8fbff}
 .confirm-icon{width:55px;height:55px;border-radius:50%;background:#f8d7da;color:#842029;display:flex;align-items:center;justify-content:center;font-size:25px;margin-bottom:15px}
 .confirm-text{color:#666;font-size:13px;line-height:1.5}
 
-/* SMALLER DELETE CONFIRMATION POPUP ONLY */
-#deleteModal .modal-content{width:340px;padding:18px;border-radius:10px}
-#deleteModal .confirm-icon{width:36px;height:36px;font-size:18px;margin-bottom:10px}
-#deleteModal .modal-content h2{font-size:15px;margin-bottom:8px}
-#deleteModal .confirm-text{font-size:12px;line-height:1.4}
-#deleteModal .modal-buttons{margin-top:15px;gap:7px}
-#deleteModal .modal-buttons button{padding:8px 11px;font-size:11px}
+/* SMALL CONFIRMATION POPUPS */
+#deleteModal .modal-content,
+#archiveModal .modal-content,
+#restoreModal .modal-content{width:340px;padding:18px;border-radius:10px}
 
-/* MATCH ARCHIVE AND RESTORE POPUPS TO DELETE POPUP */
-#archiveModal .modal-content,#restoreModal .modal-content{width:340px;padding:18px;border-radius:10px}
-#archiveModal .confirm-icon,#restoreModal .confirm-icon{width:36px;height:36px;font-size:18px;margin-bottom:10px}
-#archiveModal .modal-content h2,#restoreModal .modal-content h2{font-size:15px;margin-bottom:8px}
-#archiveModal .confirm-text,#restoreModal .confirm-text{font-size:12px;line-height:1.4}
-#archiveModal .modal-buttons,#restoreModal .modal-buttons{margin-top:15px;gap:7px}
-#archiveModal .modal-buttons button,#restoreModal .modal-buttons button{padding:8px 11px;font-size:11px}
+#deleteModal .confirm-icon,
+#archiveModal .confirm-icon,
+#restoreModal .confirm-icon{width:36px;height:36px;font-size:18px;margin-bottom:10px}
+
+#deleteModal .modal-content h2,
+#archiveModal .modal-content h2,
+#restoreModal .modal-content h2{font-size:15px;margin-bottom:8px}
+
+#deleteModal .confirm-text,
+#archiveModal .confirm-text,
+#restoreModal .confirm-text{font-size:12px;line-height:1.4}
+
+#deleteModal .modal-buttons,
+#archiveModal .modal-buttons,
+#restoreModal .modal-buttons{margin-top:15px;gap:7px}
+
+#deleteModal .modal-buttons button,
+#archiveModal .modal-buttons button,
+#restoreModal .modal-buttons button{padding:8px 11px;font-size:11px}
 
 ::-webkit-scrollbar{width:8px;height:8px}
 ::-webkit-scrollbar-track{background:#f1f3f5}
@@ -222,27 +231,23 @@ tr:hover{background:#f8fbff}
    <h2>Charts Dashboard</h2>
    <p>View tuition fee payments, graduation fee payments, and monthly payment trends.</p>
   </div>
-
   <section class="payment-charts">
    <div class="chart-card">
     <h3>Tuition Fee Payment Status</h3>
     <p>Paid and unpaid tuition fees for the selected group.</p>
     <div class="chart-container"><canvas id="tuitionPaymentChart"></canvas></div>
    </div>
-
    <div class="chart-card">
     <h3>Graduation Fee Payment Status</h3>
     <p>Paid and unpaid graduation fees for the selected group.</p>
     <div class="chart-container"><canvas id="graduationPaymentChart"></canvas></div>
    </div>
-
    <div class="chart-card timeline">
     <h3>Payment Timeline</h3>
     <p>Monthly fee payments recorded over the last 12 months.</p>
     <div class="chart-container"><canvas id="paymentTimelineChart"></canvas></div>
    </div>
   </section>
-
   <button class="secondary" onclick="showOriginalDashboard()">← Back to Student Records</button>
  </div>
 
@@ -270,17 +275,14 @@ tr:hover{background:#f8fbff}
   </div>
   <div class="table-wrap">
    <table>
-    <thead>
-     <tr>
-      <th class="checkbox-cell"><input type="checkbox" id="selectAll" onchange="toggleSelectAll()" title="Select all"></th>
-      <th>#</th><th>Student Name</th><th>Group</th><th>Program</th><th>Program Type</th><th>Tuition Fee</th><th>Grad Fee</th><th>Overall</th><th>Thesis Title</th><th>Actions</th>
-     </tr>
-    </thead>
+    <thead><tr>
+     <th class="checkbox-cell"><input type="checkbox" id="selectAll" onchange="toggleSelectAll()" title="Select all"></th>
+     <th>#</th><th>Student Name</th><th>Group</th><th>Program</th><th>Program Type</th><th>Tuition Fee</th><th>Grad Fee</th><th>Overall</th><th>Thesis Title</th><th>Actions</th>
+    </tr></thead>
     <tbody id="studentTableBody"></tbody>
    </table>
   </div>
  </div>
-
 </div>
 </main>
 </div>
@@ -310,11 +312,10 @@ tr:hover{background:#f8fbff}
  </div>
 </div>
 
-<!-- ARCHIVE CONFIRMATION POPUP -->
 <div class="modal" id="archiveModal">
  <div class="modal-content">
   <div class="confirm-icon">!</div>
-  <h2>Archive Student</h2>
+  <h2 id="archiveModalTitle">Archive Student</h2>
   <p class="confirm-text" id="archiveMessage">Are you sure you want to archive this student?</p>
   <div class="modal-buttons">
    <button class="secondary" onclick="closeArchiveModal()">Cancel</button>
@@ -323,10 +324,9 @@ tr:hover{background:#f8fbff}
  </div>
 </div>
 
-<!-- RESTORE CONFIRMATION POPUP -->
 <div class="modal" id="restoreModal">
  <div class="modal-content">
-  <div class="confirm-icon">✓</div>
+  <div class="confirm-icon" style="background:#d1e7dd;color:#0f5132">✓</div>
   <h2>Restore Student</h2>
   <p class="confirm-text" id="restoreMessage">Are you sure you want to restore this student?</p>
   <div class="modal-buttons">
@@ -352,6 +352,7 @@ let showingChartsDashboard=false;
 let deleteStudentId=null;
 let pendingArchiveId=null;
 let pendingRestoreId=null;
+let pendingArchiveIds=[];
 let tuitionPaymentChart=null;
 let graduationPaymentChart=null;
 let paymentTimelineChart=null;
@@ -470,19 +471,13 @@ function initializePaymentCharts(){
 
  tuitionPaymentChart=new Chart(document.getElementById("tuitionPaymentChart"),{
   type:"doughnut",
-  data:{
-   labels:["Paid","Not Yet Paid"],
-   datasets:[{data:[0,0],backgroundColor:["#198754","#dc3545"],borderWidth:0}]
-  },
+  data:{labels:["Paid","Not Yet Paid"],datasets:[{data:[0,0],backgroundColor:["#198754","#dc3545"],borderWidth:0}]},
   options:doughnutOptions
  });
 
  graduationPaymentChart=new Chart(document.getElementById("graduationPaymentChart"),{
   type:"doughnut",
-  data:{
-   labels:["Paid","Not Yet Paid"],
-   datasets:[{data:[0,0],backgroundColor:["#073b72","#f0ad4e"],borderWidth:0}]
-  },
+  data:{labels:["Paid","Not Yet Paid"],datasets:[{data:[0,0],backgroundColor:["#073b72","#f0ad4e"],borderWidth:0}]},
   options:doughnutOptions
  });
 
@@ -529,7 +524,6 @@ function updatePaymentCharts(){
  graduationPaymentChart.update();
 
  const months=[],keys=[],now=new Date();
-
  for(let i=11;i>=0;i--){
   const d=new Date(now.getFullYear(),now.getMonth()-i,1);
   keys.push(`${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,"0")}`);
@@ -545,33 +539,27 @@ function updatePaymentCharts(){
  paymentTimelineChart.update();
 }
 
-/* SEPARATE CHARTS DASHBOARD */
 function showChartsDashboard(){
  showingChartsDashboard=true;
-
  document.getElementById("chartsDashboardPage").style.display="block";
  document.getElementById("summaryDashboard").style.display="none";
  document.getElementById("recordsControls").style.display="none";
  document.getElementById("recordsTable").style.display="none";
  document.getElementById("recordsIntro").style.display="none";
-
  document.querySelectorAll(".group-button").forEach(button=>button.classList.remove("active"));
  document.getElementById("archiveViewButton").classList.remove("active");
  document.getElementById("chartsDashboardButton").classList.add("active");
-
  updatePaymentCharts();
 }
 
 function showOriginalDashboard(){
  showingChartsDashboard=false;
-
  document.getElementById("chartsDashboardPage").style.display="none";
  document.getElementById("summaryDashboard").style.display="grid";
  document.getElementById("recordsControls").style.display="block";
  document.getElementById("recordsTable").style.display="block";
  document.getElementById("recordsIntro").style.display="block";
  document.getElementById("chartsDashboardButton").classList.remove("active");
-
  updateSidebarButtons();
  renderTable();
 }
@@ -582,7 +570,6 @@ function statusSelect(id,type,status){
  const cls=status==="Paid"||status==="Complete"?"complete-select":"pending-select";
  const fn=type==="file"?"updateFileStatus":type==="thesis"?"updateThesisStatus":"updateOverallStatus";
  const opts=type==="overall"?["Complete","Not Yet Done"]:["Paid","Not Yet Paid"];
-
  return `<select class="table-status-select ${cls}" onchange="${fn}('${safe}',this.value)" onclick="event.stopPropagation()">${opts.map(v=>`<option value="${v}" ${status===v?"selected":""}>${v}</option>`).join("")}</select>`;
 }
 
@@ -665,7 +652,6 @@ function addPendingChange(change){
 
 async function syncPendingChanges(){
  if(!navigator.onLine||!pendingChanges.length)return;
-
  const remaining=[];
 
  for(const c of pendingChanges){
@@ -700,14 +686,12 @@ async function syncPendingChanges(){
 /* GROUP NAVIGATION */
 function selectGroup(g){
  showingChartsDashboard=false;
-
  document.getElementById("chartsDashboardPage").style.display="none";
  document.getElementById("summaryDashboard").style.display="grid";
  document.getElementById("recordsControls").style.display="block";
  document.getElementById("recordsTable").style.display="block";
  document.getElementById("recordsIntro").style.display="block";
  document.getElementById("chartsDashboardButton").classList.remove("active");
-
  selectedGroup=g;
  showingArchived=false;
  selectedIds.clear();
@@ -717,14 +701,12 @@ function selectGroup(g){
 
 function showArchived(){
  showingChartsDashboard=false;
-
  document.getElementById("chartsDashboardPage").style.display="none";
  document.getElementById("summaryDashboard").style.display="grid";
  document.getElementById("recordsControls").style.display="block";
  document.getElementById("recordsTable").style.display="block";
  document.getElementById("recordsIntro").style.display="block";
  document.getElementById("chartsDashboardButton").classList.remove("active");
-
  showingArchived=true;
  selectedIds.clear();
  updateSidebarButtons();
@@ -741,13 +723,7 @@ function updateSidebarButtons(){
   return;
  }
 
- const map={
-  "ALL":"groupBtnAll",
-  "TAGAYTAY GROUP":"groupBtnTagaytay",
-  "GELINE GROUP":"groupBtnGeline",
-  "BORACAY GROUP":"groupBtnBoracay"
- };
-
+ const map={"ALL":"groupBtnAll","TAGAYTAY GROUP":"groupBtnTagaytay","GELINE GROUP":"groupBtnGeline","BORACAY GROUP":"groupBtnBoracay"};
  if(map[selectedGroup])document.getElementById(map[selectedGroup]).classList.add("active");
 }
 
@@ -757,13 +733,13 @@ function getFilteredStudents(){
  const program=document.getElementById("programFilter").value;
  const file=document.getElementById("fileFilter").value;
  const thesis=document.getElementById("thesisFilter").value;
+ const programType=document.getElementById("programTypeFilter").value;
 
  return students.filter(s=>{
   if(showingArchived?!s.archived:!!s.archived)return false;
   if(!showingArchived&&selectedGroup!=="ALL"&&s.group!==selectedGroup)return false;
   if(search&&!(s.name||"").toLowerCase().includes(search)&&!(s.thesis_title||"").toLowerCase().includes(search))return false;
   if(program!=="ALL"&&s.program!==program)return false;
-  const programType=document.getElementById("programTypeFilter").value;
   if(programType!=="ALL"&&(s.program_type||"Regular")!==programType)return false;
   if(file!=="ALL"&&getFileStatus(s)!==file)return false;
   if(thesis!=="ALL"&&getThesisStatus(s)!==thesis)return false;
@@ -787,14 +763,12 @@ function renderTable(){
   filtered.forEach((s,i)=>{
    const row=document.createElement("tr");
    if(s.archived)row.classList.add("archived-row");
-
    const checked=selectedIds.has(String(s.id))?"checked":"";
    const actions=showingArchived
     ?`<button class="restore-button" onclick="restoreStudent('${escapeAttribute(s.id)}')">Restore</button><button class="danger" onclick="deleteArchivedStudent('${escapeAttribute(s.id)}')">Delete</button>`
     :`<button class="warning" onclick="editStudent('${escapeAttribute(s.id)}')">Edit</button><button class="danger" onclick="archiveStudent('${escapeAttribute(s.id)}')">Archive</button>`;
 
    row.innerHTML=`<td class="checkbox-cell"><input type="checkbox" class="student-checkbox" value="${escapeAttribute(s.id)}" ${checked} onchange="toggleStudentSelection('${escapeAttribute(s.id)}')"></td><td>${i+1}</td><td class="student-name">${escapeHtml(s.name||"")}</td><td><span class="group">${escapeHtml(s.group||"")}</span></td><td>${programBadge(s.program)}</td><td><span class="badge ${((s.program_type||"Regular")==="Advance")?"mba":"maed"}">${escapeHtml(s.program_type||"Regular")}</span></td><td>${fileUploadButton(s)}</td><td>${statusSelect(s.id,"thesis",getThesisStatus(s))}</td><td>${statusSelect(s.id,"overall",getOverallStatus(s))}</td><td class="thesis-cell">${escapeHtml(s.thesis_title||"-")}</td><td><div class="actions">${actions}</div></td>`;
-
    tbody.appendChild(row);
   });
  }
@@ -822,13 +796,11 @@ function toggleStudentSelection(id){
 function updateSelectAllState(){
  const box=document.getElementById("selectAll");
  const visible=getFilteredStudents();
-
  if(!visible.length){
   box.checked=false;
   box.indeterminate=false;
   return;
  }
-
  const n=visible.filter(s=>selectedIds.has(String(s.id))).length;
  box.checked=n===visible.length;
  box.indeterminate=n>0&&n<visible.length;
@@ -839,48 +811,68 @@ function updateSelectedCount(){
  document.getElementById("archiveSelectedButton").classList.toggle("show",selectedIds.size>0&&!showingArchived);
 }
 
-async function archiveSelected(){
- const ids=[...selectedIds];
+/* ARCHIVE SINGLE OR SELECTED STUDENTS USING THE CUSTOM POPUP */
+function archiveSelected(){
+ const ids=[...selectedIds].filter(id=>students.some(s=>String(s.id)===String(id)&&!s.archived));
  if(!ids.length)return;
- if(!confirm(`Archive ${ids.length} selected student(s)?`))return;
 
- for(const id of ids)await archiveStudent(id,true);
+ pendingArchiveIds=ids;
+ pendingArchiveId=null;
 
- selectedIds.clear();
- renderTable();
- updateSidebarCounts();
- showMessage(ids.length+" student(s) archived successfully.","success");
+ document.getElementById("archiveModalTitle").textContent="Archive Selected Students";
+ document.getElementById("archiveMessage").textContent=`Are you sure you want to archive ${ids.length} selected student(s)?`;
+ document.getElementById("archiveModal").classList.add("show");
 }
 
-/* ARCHIVE CONFIRMATION */
-function archiveStudent(id,bulk=false){
+function archiveStudent(id){
  const s=students.find(x=>String(x.id)===String(id));
  if(!s)return;
 
- if(bulk){
-  return performArchive(id);
- }
-
  pendingArchiveId=String(id);
+ pendingArchiveIds=[];
+
+ document.getElementById("archiveModalTitle").textContent="Archive Student";
  document.getElementById("archiveMessage").textContent="Are you sure you want to archive "+s.name+"?";
  document.getElementById("archiveModal").classList.add("show");
 }
 
 function closeArchiveModal(){
  pendingArchiveId=null;
+ pendingArchiveIds=[];
  document.getElementById("archiveModal").classList.remove("show");
 }
 
 async function confirmArchive(){
- if(pendingArchiveId===null)return;
- const id=pendingArchiveId;
+ const singleId=pendingArchiveId;
+ const multipleIds=[...pendingArchiveIds];
+
+ if(singleId===null&&!multipleIds.length)return;
+
  closeArchiveModal();
- await performArchive(id);
+
+ if(singleId!==null){
+  const success=await performArchive(singleId);
+  if(success)showMessage("Student archived successfully.","success");
+  return;
+ }
+
+ let completed=0;
+ for(const id of multipleIds){
+  const success=await performArchive(id);
+  if(success)completed++;
+ }
+
+ selectedIds.clear();
+ renderTable();
+ updateSidebarCounts();
+
+ if(completed)showMessage(completed+" student(s) archived successfully.","success");
 }
 
+/* SHARED ARCHIVE OPERATION */
 async function performArchive(id){
  const s=students.find(x=>String(x.id)===String(id));
- if(!s)return;
+ if(!s||s.archived)return false;
 
  s.archived=true;
  saveLocalData();
@@ -902,13 +894,13 @@ async function performArchive(id){
 
  renderTable();
  updateSidebarCounts();
- showMessage("Student archived successfully.","success");
+ return true;
 }
 
 /* RESTORE CONFIRMATION */
 function restoreStudent(id){
  const s=students.find(x=>String(x.id)===String(id));
- if(!s)return;
+ if(!s||!s.archived)return;
 
  pendingRestoreId=String(id);
  document.getElementById("restoreMessage").textContent="Are you sure you want to restore "+s.name+"?";
@@ -927,7 +919,7 @@ async function confirmRestore(){
  closeRestoreModal();
 
  const s=students.find(x=>String(x.id)===String(id));
- if(!s)return;
+ if(!s||!s.archived)return;
 
  s.archived=false;
  saveLocalData();
@@ -951,6 +943,7 @@ async function confirmRestore(){
  showMessage("Student restored successfully.","success");
 }
 
+/* PERMANENT DELETE */
 function deleteArchivedStudent(id){
  const s=students.find(x=>String(x.id)===String(id));
  if(!s)return;
@@ -1132,7 +1125,6 @@ async function saveStudent(){
    addPendingChange(change);
    showMessage("Saved offline. It will sync when internet returns.","success");
   }
-
   return;
  }
 
@@ -1194,6 +1186,7 @@ function escapeAttribute(v){
   .replace(/"/g,"&quot;");
 }
 
+/* CLOSE MODALS WHEN CLICKING OUTSIDE */
 document.getElementById("studentModal").addEventListener("click",function(e){
  if(e.target===this)closeModal();
 });
