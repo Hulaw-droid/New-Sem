@@ -477,9 +477,11 @@ function updatePaymentCharts(){
  const gradPaid=data.filter(s=>getThesisStatus(s)==="Paid").length;
  const gradUnpaid=data.length-gradPaid;
 
+ tuitionPaymentChart.data.labels=[`Paid (${tuitionPaid})`,`Not Yet Paid (${tuitionUnpaid})`];
  tuitionPaymentChart.data.datasets[0].data=[tuitionPaid,tuitionUnpaid];
  tuitionPaymentChart.update();
 
+ graduationPaymentChart.data.labels=[`Paid (${gradPaid})`,`Not Yet Paid (${gradUnpaid})`];
  graduationPaymentChart.data.datasets[0].data=[gradPaid,gradUnpaid];
  graduationPaymentChart.update();
 
