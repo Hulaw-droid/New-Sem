@@ -101,8 +101,6 @@ tr:hover{background:#f8fbff}
 .mba{background:#8e6bbf;color:white}
 .mpa{background:#176b3a;color:white}
 .mscj{background:#f5a6a6;color:#333}
-.regular{background:#d1e7dd;color:#0f5132}
-.advance{background:#cfe2ff;color:#084298}
 .group{background:#e8f0f8;color:#073b72;padding:5px 8px;border-radius:5px;font-size:10px;font-weight:bold;white-space:nowrap}
 .file-box{display:flex;align-items:center;gap:7px}
 .file-info{display:flex;flex-direction:column;gap:4px;min-width:0}
@@ -154,8 +152,8 @@ tr:hover{background:#f8fbff}
 }
 </style>
 </head>
-
 <body>
+
 <header>
  <div class="header-left">
   <div class="header-logo">G</div>
@@ -195,6 +193,7 @@ tr:hover{background:#f8fbff}
 
  <div id="message" class="message"></div>
 
+ <!-- ORIGINAL SUMMARY DASHBOARD -->
  <div class="dashboard" id="summaryDashboard">
   <div class="card"><h3>Total Students</h3><div class="number" id="totalCount">0</div></div>
   <div class="card"><h3>Tuition Fee Paid</h3><div class="number" id="filesComplete">0</div></div>
@@ -236,30 +235,9 @@ tr:hover{background:#f8fbff}
   <div class="controls-label">SEARCH AND FILTERS</div>
   <div class="controls-row">
    <input type="text" id="searchInput" class="search" placeholder="Search student name or thesis title..." oninput="renderTable()">
-
-   <select id="programFilter" onchange="renderTable()">
-    <option value="ALL">All Programs</option>
-    <option value="Regular">Regular</option>
-    <option value="Advance">Advance</option>
-    <option value="MAEd">MAEd</option>
-    <option value="PhD">PhD</option>
-    <option value="MBA">MBA</option>
-    <option value="MPA">MPA</option>
-    <option value="MSCJ">MSCJ</option>
-   </select>
-
-   <select id="fileFilter" onchange="renderTable()">
-    <option value="ALL">All Tuition Fee Status</option>
-    <option value="Paid">Paid</option>
-    <option value="Not Yet Paid">Not Yet Paid</option>
-   </select>
-
-   <select id="thesisFilter" onchange="renderTable()">
-    <option value="ALL">All Grad Fee Status</option>
-    <option value="Paid">Paid</option>
-    <option value="Not Yet Paid">Not Yet Paid</option>
-   </select>
-
+   <select id="programFilter" onchange="renderTable()"><option value="ALL">All Programs</option><option>MAEd</option><option>PhD</option><option>MBA</option><option>MPA</option><option>MSCJ</option></select>
+   <select id="fileFilter" onchange="renderTable()"><option value="ALL">All Tuition Fee Status</option><option>Paid</option><option>Not Yet Paid</option></select>
+   <select id="thesisFilter" onchange="renderTable()"><option value="ALL">All Grad Fee Status</option><option>Paid</option><option>Not Yet Paid</option></select>
    <button class="primary" onclick="openAddModal()">+ Add Student</button>
    <button class="secondary" onclick="loadData()">↻ Refresh</button>
    <button class="archive-selected" id="archiveSelectedButton" onclick="archiveSelected()">Archive Selected</button>
@@ -291,79 +269,27 @@ tr:hover{background:#f8fbff}
 </main>
 </div>
 
-<!-- ADD / EDIT STUDENT MODAL -->
 <div class="modal" id="studentModal">
  <div class="modal-content">
   <h2 id="modalTitle">Add Student</h2>
   <input type="hidden" id="studentId">
-
   <div class="form-group"><label>Student Name</label><input id="studentName" placeholder="Enter student name"></div>
-
-  <div class="form-group">
-   <label>Group</label>
-   <select id="studentGroup">
-    <option>TAGAYTAY GROUP</option>
-    <option>GELINE GROUP</option>
-    <option>BORACAY GROUP</option>
-   </select>
-  </div>
-
-  <div class="form-group">
-   <label>Program</label>
-   <select id="studentProgram">
-    <option value="Regular">Regular</option>
-    <option value="Advance">Advance</option>
-    <option value="MAEd">MAEd</option>
-    <option value="PhD">PhD</option>
-    <option value="MBA">MBA</option>
-    <option value="MPA">MPA</option>
-    <option value="MSCJ">MSCJ</option>
-   </select>
-  </div>
-
-  <div class="form-group">
-   <label>Tuition Fee</label>
-   <select id="studentFileStatus">
-    <option>Not Yet Paid</option>
-    <option>Paid</option>
-   </select>
-  </div>
-
-  <div class="form-group">
-   <label>Grad Fee</label>
-   <select id="studentThesisStatus">
-    <option>Not Yet Paid</option>
-    <option>Paid</option>
-   </select>
-  </div>
-
-  <div class="form-group">
-   <label>Overall Status</label>
-   <select id="studentOverallStatus">
-    <option>Not Yet Done</option>
-    <option>Complete</option>
-   </select>
-  </div>
-
+  <div class="form-group"><label>Group</label><select id="studentGroup"><option>TAGAYTAY GROUP</option><option>GELINE GROUP</option><option>BORACAY GROUP</option></select></div>
+  <div class="form-group"><label>Program</label><select id="studentProgram"><option>MAEd</option><option>PhD</option><option>MBA</option><option>MPA</option><option>MSCJ</option></select></div>
+  <div class="form-group"><label>Tuition Fee</label><select id="studentFileStatus"><option>Not Yet Paid</option><option>Paid</option></select></div>
+  <div class="form-group"><label>Grad Fee</label><select id="studentThesisStatus"><option>Not Yet Paid</option><option>Paid</option></select></div>
+  <div class="form-group"><label>Overall Status</label><select id="studentOverallStatus"><option>Not Yet Done</option><option>Complete</option></select></div>
   <div class="form-group"><label>Thesis Title</label><input id="studentThesisTitle" placeholder="Enter thesis title"></div>
-
-  <div class="modal-buttons">
-   <button class="secondary" onclick="closeModal()">Cancel</button>
-   <button class="primary" onclick="saveStudent()">Save Student</button>
-  </div>
+  <div class="modal-buttons"><button class="secondary" onclick="closeModal()">Cancel</button><button class="primary" onclick="saveStudent()">Save Student</button></div>
  </div>
 </div>
 
-<!-- PERMANENT DELETE MODAL -->
 <div class="modal" id="deleteModal">
  <div class="modal-content">
   <div class="confirm-icon">!</div>
   <h2>Delete Archived Student</h2>
   <p class="confirm-text" id="deleteMessage">Are you sure you want to permanently delete this student?</p>
-  <div class="modal-buttons">
-   <button class="secondary" onclick="closeDeleteModal()">Cancel</button>
-   <button class="danger" onclick="confirmDeleteArchived()">Delete Permanently</button>
-  </div>
+  <div class="modal-buttons"><button class="secondary" onclick="closeDeleteModal()">Cancel</button><button class="danger" onclick="confirmDeleteArchived()">Delete Permanently</button></div>
  </div>
 </div>
 
@@ -371,10 +297,7 @@ tr:hover{background:#f8fbff}
 const SUPABASE_URL="https://yiruvpikzntyiijapknt.supabase.co";
 const SUPABASE_KEY="sb_publishable_Z95aVweBRCPDWo1XH54GFQ_rrV9GIvk";
 const supabaseClient=window.supabase.createClient(SUPABASE_URL,SUPABASE_KEY);
-
-const LOCAL_KEY="graduateGroupStudents";
-const PENDING_KEY="graduatePendingChanges";
-const FILE_KEY="graduateStudentFiles";
+const LOCAL_KEY="graduateGroupStudents",PENDING_KEY="graduatePendingChanges",FILE_KEY="graduateStudentFiles";
 
 let students=[];
 let pendingChanges=JSON.parse(localStorage.getItem(PENDING_KEY)||"[]");
@@ -384,7 +307,6 @@ let selectedGroup="ALL";
 let showingArchived=false;
 let showingChartsDashboard=false;
 let deleteStudentId=null;
-
 let tuitionPaymentChart=null;
 let graduationPaymentChart=null;
 let paymentTimelineChart=null;
@@ -394,10 +316,7 @@ document.addEventListener("DOMContentLoaded",async()=>{
  initializePaymentCharts();
  loadLocalData();
  if(navigator.onLine)await loadOnlineData();
-
- if("serviceWorker" in navigator){
-  navigator.serviceWorker.register("service-worker.js").catch(console.log);
- }
+ if("serviceWorker" in navigator)navigator.serviceWorker.register("service-worker.js").catch(console.log);
 });
 
 window.addEventListener("online",async()=>{
@@ -419,7 +338,6 @@ function todayLocalDate(){
 function updateConnection(){
  const s=document.getElementById("connectionStatus");
  const b=document.getElementById("offlineBanner");
-
  if(navigator.onLine){
   s.textContent="● ONLINE";
   s.style.color="#b7f7c5";
@@ -439,14 +357,8 @@ async function loadData(){
 async function loadOnlineData(){
  try{
   await syncPendingChanges();
-
-  const {data,error}=await supabaseClient
-   .from("students")
-   .select("*")
-   .order("name",{ascending:true});
-
+  const {data,error}=await supabaseClient.from("students").select("*").order("name",{ascending:true});
   if(error)throw error;
-
   if(Array.isArray(data)){
    students=data;
    saveLocalData();
@@ -457,9 +369,7 @@ async function loadOnlineData(){
  }catch(e){
   console.log("Online loading failed:",e);
   loadLocalData();
-  if(navigator.onLine){
-   showMessage("Unable to update from Supabase. Your saved data was kept.","error");
-  }
+  if(navigator.onLine)showMessage("Unable to update from Supabase. Your saved data was kept.","error");
  }
 }
 
@@ -475,7 +385,6 @@ function loadLocalData(){
   console.log(e);
   if(!Array.isArray(students))students=[];
  }
-
  renderTable();
  updateSidebarCounts();
 }
@@ -500,37 +409,6 @@ function getOverallStatus(s){
  return s.overall_status==="Complete"?"Complete":"Not Yet Done";
 }
 
-/* CHART CENTER TOTAL PLUGIN */
-const centerTotalPlugin={
- id:"centerTotal",
-
- afterDraw(chart){
-  if(chart.config.type!=="doughnut")return;
-
-  const {ctx,chartArea}=chart;
-  if(!chartArea)return;
-
-  const values=chart.data.datasets[0].data||[];
-  const total=values.reduce((sum,value)=>sum+Number(value||0),0);
-
-  const x=(chartArea.left+chartArea.right)/2;
-  const y=(chartArea.top+chartArea.bottom)/2;
-
-  ctx.save();
-  ctx.textAlign="center";
-  ctx.textBaseline="middle";
-
-  ctx.font="bold 28px Arial";
-  ctx.fillStyle="#073b72";
-  ctx.fillText(String(total),x,y-10);
-
-  ctx.font="12px Arial";
-  ctx.fillStyle="#6c757d";
-  ctx.fillText("TOTAL",x,y+17);
-
-  ctx.restore();
-};
-
 /* CHARTS */
 function initializePaymentCharts(){
  if(typeof Chart==="undefined")return;
@@ -540,102 +418,60 @@ function initializePaymentCharts(){
   maintainAspectRatio:false,
   plugins:{
    legend:{position:"bottom"},
-   tooltip:{
-    callbacks:{
-     label:ctx=>`${ctx.label}: ${ctx.parsed}`
-    }
-   }
+   tooltip:{callbacks:{label:ctx=>`${ctx.label}: ${ctx.parsed}`}}
   },
-  cutout:"65%"
+  cutout:"62%"
  };
 
- tuitionPaymentChart=new Chart(
-  document.getElementById("tuitionPaymentChart"),
-  {
-   type:"doughnut",
-   data:{
-    labels:["Paid","Not Yet Paid"],
-    datasets:[{
-     data:[0,0],
-     backgroundColor:["#198754","#dc3545"],
-     borderWidth:0
-    }]
-   },
-   options:doughnutOptions,
-   plugins:[centerTotalPlugin]
-  }
- );
+ tuitionPaymentChart=new Chart(document.getElementById("tuitionPaymentChart"),{
+  type:"doughnut",
+  data:{
+   labels:["Paid","Not Yet Paid"],
+   datasets:[{data:[0,0],backgroundColor:["#198754","#dc3545"],borderWidth:0}]
+  },
+  options:doughnutOptions
+ });
 
- graduationPaymentChart=new Chart(
-  document.getElementById("graduationPaymentChart"),
-  {
-   type:"doughnut",
-   data:{
-    labels:["Paid","Not Yet Paid"],
-    datasets:[{
-     data:[0,0],
-     backgroundColor:["#073b72","#f0ad4e"],
-     borderWidth:0
-    }]
-   },
-   options:doughnutOptions,
-   plugins:[centerTotalPlugin]
-  }
- );
+ graduationPaymentChart=new Chart(document.getElementById("graduationPaymentChart"),{
+  type:"doughnut",
+  data:{
+   labels:["Paid","Not Yet Paid"],
+   datasets:[{data:[0,0],backgroundColor:["#073b72","#f0ad4e"],borderWidth:0}]
+  },
+  options:doughnutOptions
+ });
 
- paymentTimelineChart=new Chart(
-  document.getElementById("paymentTimelineChart"),
-  {
-   type:"line",
-   data:{
-    labels:[],
-    datasets:[
-     {
-      label:"Tuition Fee Paid",
-      data:[],
-      borderColor:"#198754",
-      backgroundColor:"#19875422",
-      tension:.3,
-      fill:true
-     },
-     {
-      label:"Graduation Fee Paid",
-      data:[],
-      borderColor:"#073b72",
-      backgroundColor:"#073b7222",
-      tension:.3,
-      fill:true
-     }
-    ]
-   },
-   options:{
-    responsive:true,
-    maintainAspectRatio:false,
-    interaction:{mode:"index",intersect:false},
-    plugins:{legend:{position:"bottom"}},
-    scales:{y:{beginAtZero:true,ticks:{precision:0}}}
-   }
+ paymentTimelineChart=new Chart(document.getElementById("paymentTimelineChart"),{
+  type:"line",
+  data:{
+   labels:[],
+   datasets:[
+    {label:"Tuition Fee Paid",data:[],borderColor:"#198754",backgroundColor:"#19875422",tension:.3,fill:true},
+    {label:"Graduation Fee Paid",data:[],borderColor:"#073b72",backgroundColor:"#073b7222",tension:.3,fill:true}
+   ]
+  },
+  options:{
+   responsive:true,
+   maintainAspectRatio:false,
+   interaction:{mode:"index",intersect:false},
+   plugins:{legend:{position:"bottom"}},
+   scales:{y:{beginAtZero:true,ticks:{precision:0}}}
   }
- );
+ });
 
  updatePaymentCharts();
 }
 
 function getPaymentChartStudents(){
- return students.filter(s=>
-  !s.archived&&
-  (selectedGroup==="ALL"||s.group===selectedGroup)
- );
+ return students.filter(s=>!s.archived&&(selectedGroup==="ALL"||s.group===selectedGroup));
 }
 
 function updatePaymentCharts(){
  if(!tuitionPaymentChart||!graduationPaymentChart||!paymentTimelineChart)return;
 
  const data=getPaymentChartStudents();
-
  const tuitionPaid=data.filter(s=>getFileStatus(s)==="Paid").length;
  const tuitionUnpaid=data.length-tuitionPaid;
-
  const gradPaid=data.filter(s=>getThesisStatus(s)==="Paid").length;
  const gradUnpaid=data.length-gradPaid;
 
@@ -645,9 +481,7 @@ function updatePaymentCharts(){
  graduationPaymentChart.data.datasets[0].data=[gradPaid,gradUnpaid];
  graduationPaymentChart.update();
 
- const months=[];
- const keys=[];
- const now=new Date();
+ const months=[],keys=[],now=new Date();
 
  for(let i=11;i>=0;i--){
   const d=new Date(now.getFullYear(),now.getMonth()-i,1);
@@ -655,13 +489,8 @@ function updatePaymentCharts(){
   months.push(d.toLocaleDateString(undefined,{month:"short",year:"numeric"}));
  }
 
- const tuitionCounts=keys.map(k=>
-  data.filter(s=>s.tuition_paid_date&&String(s.tuition_paid_date).slice(0,7)===k).length
- );
-
- const gradCounts=keys.map(k=>
-  data.filter(s=>s.grad_paid_date&&String(s.grad_paid_date).slice(0,7)===k).length
- );
+ const tuitionCounts=keys.map(k=>data.filter(s=>s.tuition_paid_date&&String(s.tuition_paid_date).slice(0,7)===k).length);
+ const gradCounts=keys.map(k=>data.filter(s=>s.grad_paid_date&&String(s.grad_paid_date).slice(0,7)===k).length);
 
  paymentTimelineChart.data.labels=months;
  paymentTimelineChart.data.datasets[0].data=tuitionCounts;
@@ -715,26 +544,19 @@ function fileUploadButton(s){
 }
 
 async function updateFileStatus(id,status){
- if(["Paid","Not Yet Paid"].includes(status)){
-  await updateStudentStatus(id,"file_status",status,"Tuition Fee Status");
- }
+ if(["Paid","Not Yet Paid"].includes(status))await updateStudentStatus(id,"file_status",status,"Tuition Fee Status");
 }
 
 async function updateThesisStatus(id,status){
- if(["Paid","Not Yet Paid"].includes(status)){
-  await updateStudentStatus(id,"thesis_status",status,"Grad Fee Status");
- }
+ if(["Paid","Not Yet Paid"].includes(status))await updateStudentStatus(id,"thesis_status",status,"Grad Fee Status");
 }
 
 async function updateOverallStatus(id,status){
- if(["Complete","Not Yet Done"].includes(status)){
-  await updateStudentStatus(id,"overall_status",status,"Overall Status");
- }
+ if(["Complete","Not Yet Done"].includes(status))await updateStudentStatus(id,"overall_status",status,"Overall Status");
 }
 
 async function updateStudentStatus(id,field,status,label){
  const s=students.find(x=>String(x.id)===String(id));
-
  if(!s){
   showMessage("Student record not found.","error");
   return;
@@ -744,15 +566,10 @@ async function updateStudentStatus(id,field,status,label){
  const updates={[field]:status};
 
  if(field==="file_status"){
-  updates.tuition_paid_date=status==="Paid"
-   ?(previous==="Paid"?(s.tuition_paid_date||todayLocalDate()):todayLocalDate())
-   :null;
+  updates.tuition_paid_date=status==="Paid"?(previous==="Paid"?(s.tuition_paid_date||todayLocalDate()):todayLocalDate()):null;
  }
-
  if(field==="thesis_status"){
-  updates.grad_paid_date=status==="Paid"
-   ?(previous==="Paid"?(s.grad_paid_date||todayLocalDate()):todayLocalDate())
-   :null;
+  updates.grad_paid_date=status==="Paid"?(previous==="Paid"?(s.grad_paid_date||todayLocalDate()):todayLocalDate()):null;
  }
 
  Object.assign(s,updates);
@@ -788,19 +605,13 @@ function savePending(){
 function addPendingChange(change){
  if(change.type==="update"){
   const keys=JSON.stringify(Object.keys(change.data||{}).sort());
-  const i=pendingChanges.findIndex(c=>
-   c.type==="update"&&
-   String(c.id)===String(change.id)&&
-   JSON.stringify(Object.keys(c.data||{}).sort())===keys
-  );
-
+  const i=pendingChanges.findIndex(c=>c.type==="update"&&String(c.id)===String(change.id)&&JSON.stringify(Object.keys(c.data||{}).sort())===keys);
   if(i!==-1){
    pendingChanges[i]=change;
    savePending();
    return;
   }
  }
-
  pendingChanges.push(change);
  savePending();
 }
@@ -813,34 +624,17 @@ async function syncPendingChanges(){
  for(const c of pendingChanges){
   try{
    if(c.type==="insert"){
-    const {data,error}=await supabaseClient
-     .from("students")
-     .insert([c.data])
-     .select()
-     .single();
-
+    const {data,error}=await supabaseClient.from("students").insert([c.data]).select().single();
     if(error)throw error;
-
     const temp=c.tempId||c.data.id;
     const i=students.findIndex(s=>String(s.id)===String(temp));
-
     if(i!==-1)students[i]=data;
     else students.push(data);
-
    }else if(c.type==="update"){
-    const {error}=await supabaseClient
-     .from("students")
-     .update(c.data)
-     .eq("id",c.id);
-
+    const {error}=await supabaseClient.from("students").update(c.data).eq("id",c.id);
     if(error)throw error;
-
    }else if(c.type==="delete"){
-    const {error}=await supabaseClient
-     .from("students")
-     .delete()
-     .eq("id",c.id);
-
+    const {error}=await supabaseClient.from("students").delete().eq("id",c.id);
     if(error)throw error;
    }
   }catch(e){
@@ -870,7 +664,6 @@ function selectGroup(g){
  selectedGroup=g;
  showingArchived=false;
  selectedIds.clear();
-
  updateSidebarButtons();
  renderTable();
 }
@@ -887,16 +680,12 @@ function showArchived(){
 
  showingArchived=true;
  selectedIds.clear();
-
  updateSidebarButtons();
  renderTable();
 }
 
 function updateSidebarButtons(){
- ["groupBtnAll","groupBtnTagaytay","groupBtnGeline","groupBtnBoracay"].forEach(id=>{
-  document.getElementById(id).classList.remove("active");
- });
-
+ ["groupBtnAll","groupBtnTagaytay","groupBtnGeline","groupBtnBoracay"].forEach(id=>document.getElementById(id).classList.remove("active"));
  document.getElementById("archiveViewButton").classList.remove("active");
  document.getElementById("chartsDashboardButton").classList.remove("active");
 
@@ -912,9 +701,7 @@ function updateSidebarButtons(){
   "BORACAY GROUP":"groupBtnBoracay"
  };
 
- if(map[selectedGroup]){
-  document.getElementById(map[selectedGroup]).classList.add("active");
- }
+ if(map[selectedGroup])document.getElementById(map[selectedGroup]).classList.add("active");
 }
 
 /* FILTERS AND TABLE */
@@ -927,16 +714,10 @@ function getFilteredStudents(){
  return students.filter(s=>{
   if(showingArchived?!s.archived:!!s.archived)return false;
   if(!showingArchived&&selectedGroup!=="ALL"&&s.group!==selectedGroup)return false;
-
-  if(search&&
-   !(s.name||"").toLowerCase().includes(search)&&
-   !(s.thesis_title||"").toLowerCase().includes(search)
-  )return false;
-
+  if(search&&!(s.name||"").toLowerCase().includes(search)&&!(s.thesis_title||"").toLowerCase().includes(search))return false;
   if(program!=="ALL"&&s.program!==program)return false;
   if(file!=="ALL"&&getFileStatus(s)!==file)return false;
   if(thesis!=="ALL"&&getThesisStatus(s)!==thesis)return false;
-
   return true;
  }).sort((a,b)=>(a.name||"").localeCompare(b.name||"",undefined,{sensitivity:"base"}));
 }
@@ -944,7 +725,6 @@ function getFilteredStudents(){
 function renderTable(){
  const tbody=document.getElementById("studentTableBody");
  const filtered=getFilteredStudents();
-
  tbody.innerHTML="";
 
  if(!showingChartsDashboard){
@@ -953,46 +733,24 @@ function renderTable(){
  }
 
  if(!filtered.length){
-  tbody.innerHTML=`
-   <tr>
-    <td colspan="10" class="empty-state">
-     <div class="empty-icon">${showingArchived?"▣":"＋"}</div>
-     <strong>${showingArchived?"No archived students found":"No student records found"}</strong>
-     <span>${showingArchived?"Archived records will appear here.":"Add a student to begin tracking graduate records."}</span>
-    </td>
-   </tr>`;
+  tbody.innerHTML=`<tr><td colspan="10" class="empty-state"><div class="empty-icon">${showingArchived?"▣":"＋"}</div><strong>${showingArchived?"No archived students found":"No student records found"}</strong><span>${showingArchived?"Archived records will appear here.":"Add a student to begin tracking graduate records."}</span></td></tr>`;
  }else{
   filtered.forEach((s,i)=>{
    const row=document.createElement("tr");
    if(s.archived)row.classList.add("archived-row");
 
    const checked=selectedIds.has(String(s.id))?"checked":"";
-
    const actions=showingArchived
     ?`<button class="restore-button" onclick="restoreStudent('${escapeAttribute(s.id)}')">Restore</button><button class="danger" onclick="deleteArchivedStudent('${escapeAttribute(s.id)}')">Delete</button>`
     :`<button class="warning" onclick="editStudent('${escapeAttribute(s.id)}')">Edit</button><button class="danger" onclick="archiveStudent('${escapeAttribute(s.id)}')">Archive</button>`;
 
-   row.innerHTML=`
-    <td class="checkbox-cell">
-     <input type="checkbox" class="student-checkbox" value="${escapeAttribute(s.id)}" ${checked} onchange="toggleStudentSelection('${escapeAttribute(s.id)}')">
-    </td>
-    <td>${i+1}</td>
-    <td class="student-name">${escapeHtml(s.name||"")}</td>
-    <td><span class="group">${escapeHtml(s.group||"")}</span></td>
-    <td>${programBadge(s.program)}</td>
-    <td>${fileUploadButton(s)}</td>
-    <td>${statusSelect(s.id,"thesis",getThesisStatus(s))}</td>
-    <td>${statusSelect(s.id,"overall",getOverallStatus(s))}</td>
-    <td class="thesis-cell">${escapeHtml(s.thesis_title||"-")}</td>
-    <td><div class="actions">${actions}</div></td>`;
+   row.innerHTML=`<td class="checkbox-cell"><input type="checkbox" class="student-checkbox" value="${escapeAttribute(s.id)}" ${checked} onchange="toggleStudentSelection('${escapeAttribute(s.id)}')"></td><td>${i+1}</td><td class="student-name">${escapeHtml(s.name||"")}</td><td><span class="group">${escapeHtml(s.group||"")}</span></td><td>${programBadge(s.program)}</td><td>${fileUploadButton(s)}</td><td>${statusSelect(s.id,"thesis",getThesisStatus(s))}</td><td>${statusSelect(s.id,"overall",getOverallStatus(s))}</td><td class="thesis-cell">${escapeHtml(s.thesis_title||"-")}</td><td><div class="actions">${actions}</div></td>`;
 
    tbody.appendChild(row);
   });
  }
 
- document.getElementById("recordCount").textContent=
-  filtered.length+(filtered.length===1?" record":" records");
-
+ document.getElementById("recordCount").textContent=filtered.length+(filtered.length===1?" record":" records");
  updateSelectAllState();
  updateDashboard();
  updateSelectedCount();
@@ -1001,21 +759,13 @@ function renderTable(){
 function toggleSelectAll(){
  const visible=getFilteredStudents();
  const checked=document.getElementById("selectAll").checked;
-
- visible.forEach(s=>{
-  if(checked)selectedIds.add(String(s.id));
-  else selectedIds.delete(String(s.id));
- });
-
+ visible.forEach(s=>checked?selectedIds.add(String(s.id)):selectedIds.delete(String(s.id)));
  renderTable();
 }
 
 function toggleStudentSelection(id){
  id=String(id);
-
- if(selectedIds.has(id))selectedIds.delete(id);
- else selectedIds.add(id);
-
+ selectedIds.has(id)?selectedIds.delete(id):selectedIds.add(id);
  updateSelectAllState();
  updateSelectedCount();
 }
@@ -1037,17 +787,12 @@ function updateSelectAllState(){
 
 function updateSelectedCount(){
  document.getElementById("selectedCount").textContent=selectedIds.size+" selected";
-
- document.getElementById("archiveSelectedButton").classList.toggle(
-  "show",
-  selectedIds.size>0&&!showingArchived
- );
+ document.getElementById("archiveSelectedButton").classList.toggle("show",selectedIds.size>0&&!showingArchived);
 }
 
 async function archiveSelected(){
  const ids=[...selectedIds];
  if(!ids.length)return;
-
  if(!confirm(`Archive ${ids.length} selected student(s)?`))return;
 
  for(const id of ids)await archiveStudent(id,true);
@@ -1061,7 +806,6 @@ async function archiveSelected(){
 async function archiveStudent(id,bulk=false){
  const s=students.find(x=>String(x.id)===String(id));
  if(!s)return;
-
  if(!bulk&&!confirm("Archive "+s.name+"?"))return;
 
  s.archived=true;
@@ -1070,7 +814,6 @@ async function archiveStudent(id,bulk=false){
 
  if(!String(id).startsWith("offline-")){
   const change={type:"update",id,data:{archived:true}};
-
   if(navigator.onLine){
    try{
     const {error}=await supabaseClient.from("students").update(change.data).eq("id",id);
@@ -1090,7 +833,6 @@ async function archiveStudent(id,bulk=false){
 async function restoreStudent(id){
  const s=students.find(x=>String(x.id)===String(id));
  if(!s)return;
-
  if(!confirm("Restore "+s.name+"?"))return;
 
  s.archived=false;
@@ -1098,7 +840,6 @@ async function restoreStudent(id){
 
  if(!String(id).startsWith("offline-")){
   const change={type:"update",id,data:{archived:false}};
-
   if(navigator.onLine){
    try{
     const {error}=await supabaseClient.from("students").update(change.data).eq("id",id);
@@ -1119,16 +860,13 @@ async function restoreStudent(id){
 function deleteArchivedStudent(id){
  const s=students.find(x=>String(x.id)===String(id));
  if(!s)return;
-
  if(!s.archived){
   showMessage("Only archived students can be deleted.","error");
   return;
  }
 
  deleteStudentId=String(id);
- document.getElementById("deleteMessage").textContent=
-  "Permanently delete "+s.name+"? This action cannot be undone.";
-
+ document.getElementById("deleteMessage").textContent="Permanently delete "+s.name+"? This action cannot be undone.";
  document.getElementById("deleteModal").classList.add("show");
 }
 
@@ -1151,7 +889,6 @@ async function confirmDeleteArchived(){
 
  students=students.filter(x=>String(x.id)!==String(id));
  delete studentFiles[id];
-
  saveLocalData();
  saveStudentFiles();
  closeDeleteModal();
@@ -1179,28 +916,14 @@ function closeDeleteModal(){
  document.getElementById("deleteModal").classList.remove("show");
 }
 
-/* PROGRAM BADGES */
 function programBadge(p){
- const classes={
-  Regular:"regular",
-  Advance:"advance",
-  PhD:"phd",
-  MAEd:"maed",
-  MBA:"mba",
-  MPA:"mpa",
-  MSCJ:"mscj"
- };
-
+ const classes={PhD:"phd",MAEd:"maed",MBA:"mba",MPA:"mpa",MSCJ:"mscj"};
  return `<span class="badge ${classes[p]||""}">${escapeHtml(p||"")}</span>`;
 }
 
-/* SUMMARY CARDS */
 function updateDashboard(){
  let data=students.filter(s=>!s.archived);
-
- if(selectedGroup!=="ALL"){
-  data=data.filter(s=>s.group===selectedGroup);
- }
+ if(selectedGroup!=="ALL")data=data.filter(s=>s.group===selectedGroup);
 
  document.getElementById("totalCount").textContent=data.length;
  document.getElementById("filesComplete").textContent=data.filter(s=>getFileStatus(s)==="Paid").length;
@@ -1212,7 +935,6 @@ function updateDashboard(){
 
 function updateSidebarCounts(){
  const active=students.filter(s=>!s.archived);
-
  document.getElementById("countAll").textContent=active.length;
  document.getElementById("countTagaytay").textContent=active.filter(s=>s.group==="TAGAYTAY GROUP").length;
  document.getElementById("countGeline").textContent=active.filter(s=>s.group==="GELINE GROUP").length;
@@ -1225,15 +947,12 @@ function openAddModal(){
  document.getElementById("modalTitle").textContent="Add Student";
  document.getElementById("studentId").value="";
  document.getElementById("studentName").value="";
- document.getElementById("studentGroup").value=
-  selectedGroup!=="ALL"&&!showingArchived?selectedGroup:"TAGAYTAY GROUP";
-
- document.getElementById("studentProgram").value="Regular";
+ document.getElementById("studentGroup").value=selectedGroup!=="ALL"&&!showingArchived?selectedGroup:"TAGAYTAY GROUP";
+ document.getElementById("studentProgram").value="MAEd";
  document.getElementById("studentFileStatus").value="Not Yet Paid";
  document.getElementById("studentThesisStatus").value="Not Yet Paid";
  document.getElementById("studentOverallStatus").value="Not Yet Done";
  document.getElementById("studentThesisTitle").value="";
-
  document.getElementById("studentModal").classList.add("show");
 }
 
@@ -1246,24 +965,11 @@ function editStudent(id){
  document.getElementById("studentId").value=s.id;
  document.getElementById("studentName").value=s.name||"";
  document.getElementById("studentGroup").value=s.group||"TAGAYTAY GROUP";
-
- const programSelect=document.getElementById("studentProgram");
- const existingProgram=s.program||"Regular";
-
- /* Preserve any older program value that is not in the current list. */
- if(!Array.from(programSelect.options).some(o=>o.value===existingProgram)){
-  const option=document.createElement("option");
-  option.value=existingProgram;
-  option.textContent=existingProgram;
-  programSelect.appendChild(option);
- }
-
- programSelect.value=existingProgram;
+ document.getElementById("studentProgram").value=s.program||"MAEd";
  document.getElementById("studentFileStatus").value=getFileStatus(s);
  document.getElementById("studentThesisStatus").value=getThesisStatus(s);
  document.getElementById("studentOverallStatus").value=getOverallStatus(s);
  document.getElementById("studentThesisTitle").value=s.thesis_title||"";
-
  document.getElementById("studentModal").classList.add("show");
 }
 
@@ -1277,10 +983,7 @@ async function saveStudent(){
   return;
  }
 
- if(students.some(s=>
-  String(s.name||"").trim().toLowerCase()===name.toLowerCase()&&
-  String(s.id)!==String(id)
- )){
+ if(students.some(s=>String(s.name||"").trim().toLowerCase()===name.toLowerCase()&&String(s.id)!==String(id))){
   showMessage("Student name already exists.","error");
   return;
  }
@@ -1298,22 +1001,13 @@ async function saveStudent(){
   thesis_status:gradStatus,
   overall_status:document.getElementById("studentOverallStatus").value,
   thesis_title:document.getElementById("studentThesisTitle").value.trim(),
-
-  tuition_paid_date:tuitionStatus==="Paid"
-   ?(existing?.file_status==="Paid"?(existing.tuition_paid_date||today):today)
-   :null,
-
-  grad_paid_date:gradStatus==="Paid"
-   ?(existing?.thesis_status==="Paid"?(existing.grad_paid_date||today):today)
-   :null
+  tuition_paid_date:tuitionStatus==="Paid"?(existing?.file_status==="Paid"?(existing.tuition_paid_date||today):today):null,
+  grad_paid_date:gradStatus==="Paid"?(existing?.thesis_status==="Paid"?(existing.grad_paid_date||today):today):null
  };
 
  if(id){
   const i=students.findIndex(s=>String(s.id)===String(id));
-
-  if(i!==-1){
-   students[i]={...students[i],...data};
-  }
+  if(i!==-1)students[i]={...students[i],...data};
 
   saveLocalData();
   renderTable();
@@ -1355,12 +1049,7 @@ async function saveStudent(){
 
  if(navigator.onLine){
   try{
-   const {data:inserted,error}=await supabaseClient
-    .from("students")
-    .insert([data])
-    .select()
-    .single();
-
+   const {data:inserted,error}=await supabaseClient.from("students").insert([data]).select().single();
    if(error)throw error;
 
    const i=students.findIndex(s=>s.id===temp);
@@ -1369,7 +1058,6 @@ async function saveStudent(){
    saveLocalData();
    renderTable();
    updateSidebarCounts();
-
    showMessage("Student added successfully.","success");
   }catch(e){
    addPendingChange({type:"insert",tempId:temp,data});
@@ -1389,7 +1077,6 @@ function showMessage(message,type){
  const box=document.getElementById("message");
  box.textContent=message;
  box.className="message show "+(type==="error"?"error":"success-message");
-
  setTimeout(()=>box.classList.remove("show"),4000);
 }
 
@@ -1416,6 +1103,10 @@ document.getElementById("studentModal").addEventListener("click",function(e){
 document.getElementById("deleteModal").addEventListener("click",function(e){
  if(e.target===this)closeDeleteModal();
 });
+
+if("serviceWorker" in navigator){
+ window.addEventListener("load",()=>navigator.serviceWorker.register("service-worker.js").catch(console.log));
+}
 </script>
 </body>
 </html>
