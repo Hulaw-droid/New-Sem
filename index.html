@@ -9,187 +9,708 @@
 <meta name="theme-color" content="#073b72">
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
 <style>
 *{box-sizing:border-box;margin:0;padding:0;font-family:Arial,Helvetica,sans-serif}
 :root{--primary:#073b72;--dark:#052d57;--light:#e8f0f8;--bg:#f4f6f9;--text:#222;--muted:#6c757d;--border:#e3e7eb;--danger:#dc3545;--success:#198754;--warning:#f0ad4e;--shadow:0 3px 12px rgba(0,0,0,.06)}
 body{background:var(--bg);color:var(--text);min-height:100vh}
 header{background:linear-gradient(135deg,#073b72,#0b4e91);color:white;padding:18px 28px;display:flex;justify-content:space-between;align-items:center;box-shadow:0 3px 12px #0002;position:sticky;top:0;z-index:100}
-.header-left{display:flex;align-items:center;gap:13px}.header-logo{width:42px;height:42px;border-radius:10px;background:#ffffff24;display:flex;justify-content:center;align-items:center;font-size:21px;font-weight:bold}.header-left h1{font-size:21px;margin-bottom:4px}.header-left small{opacity:.8;font-size:12px}.connection{font-size:12px;font-weight:bold;background:#ffffff1a;padding:8px 12px;border-radius:20px}
-.offline-banner{display:none;background:#fff3cd;color:#664d03;padding:10px;text-align:center;font-weight:bold;font-size:12px;border-bottom:1px solid #ffe69c}.offline-banner.show{display:block}
+.header-left{display:flex;align-items:center;gap:13px}
+.header-logo{width:42px;height:42px;border-radius:10px;background:#ffffff24;display:flex;justify-content:center;align-items:center;font-size:21px;font-weight:bold}
+.header-left h1{font-size:21px;margin-bottom:4px}
+.header-left small{opacity:.8;font-size:12px}
+.connection{font-size:12px;font-weight:bold;background:#ffffff1a;padding:8px 12px;border-radius:20px}
+.offline-banner{display:none;background:#fff3cd;color:#664d03;padding:10px;text-align:center;font-weight:bold;font-size:12px;border-bottom:1px solid #ffe69c}
+.offline-banner.show{display:block}
 .main-layout{display:flex;min-height:calc(100vh - 78px)}
 .sidebar{width:250px;background:white;border-right:1px solid var(--border);padding:22px 14px;flex-shrink:0;position:sticky;top:78px;height:calc(100vh - 78px);overflow-y:auto}
-.sidebar-brand{padding:0 12px 18px;border-bottom:1px solid var(--border);margin-bottom:17px}.sidebar-brand strong{display:block;color:var(--primary);font-size:14px;margin-bottom:4px}.sidebar-brand span{color:#8a9299;font-size:11px}.sidebar-title{font-size:10px;font-weight:bold;color:#8a9299;text-transform:uppercase;letter-spacing:1px;padding:5px 12px 10px}
+.sidebar-brand{padding:0 12px 18px;border-bottom:1px solid var(--border);margin-bottom:17px}
+.sidebar-brand strong{display:block;color:var(--primary);font-size:14px;margin-bottom:4px}
+.sidebar-brand span{color:#8a9299;font-size:11px}
+.sidebar-title{font-size:10px;font-weight:bold;color:#8a9299;text-transform:uppercase;letter-spacing:1px;padding:5px 12px 10px}
 .group-button,.archive-button{width:100%;border:0;background:transparent;color:#39424e;padding:11px 12px;margin-bottom:5px;border-radius:9px;display:flex;align-items:center;gap:10px;text-align:left;cursor:pointer;font-size:12px;font-weight:bold}
-.group-button:hover,.archive-button:hover{background:#f0f4f8}.group-button.active{background:var(--primary);color:white;box-shadow:0 3px 8px #073b7233}.group-icon{width:29px;height:29px;border-radius:8px;display:flex;align-items:center;justify-content:center;background:#e8f0f8;color:var(--primary);font-size:12px;font-weight:bold;flex-shrink:0}.group-button.active .group-icon{background:#ffffff2e;color:white}.group-name{flex:1}.group-count{min-width:25px;text-align:center;padding:3px 6px;border-radius:20px;background:#eef1f4;color:#555;font-size:10px}.group-button.active .group-count{background:#ffffff33;color:white}.sidebar-divider{border:0;border-top:1px solid var(--border);margin:17px 5px}.archive-button{background:#f8f9fa;color:#555}.archive-button.active{background:#fff3cd;color:#664d03}
-.content{flex:1;min-width:0;padding:25px}.container{max-width:1600px;margin:auto}.page-intro{margin-bottom:20px}.page-intro h2{color:var(--primary);font-size:23px;margin-bottom:5px}.page-intro p{color:var(--muted);font-size:12px}
-.message{display:none;padding:12px 15px;margin-bottom:15px;border-radius:8px;font-weight:bold;font-size:12px;border:1px solid transparent}.message.show{display:block}.error{background:#f8d7da;color:#842029;border-color:#f1aeb5}.success-message{background:#d1e7dd;color:#0f5132;border-color:#a3cfbb}
-.dashboard{display:grid;grid-template-columns:repeat(4,1fr);gap:15px;margin-bottom:20px}.card,.chart-card{background:white;padding:18px;border-radius:11px;box-shadow:var(--shadow);border:1px solid #edf0f3;min-width:0}.card{position:relative;overflow:hidden}.card:after{content:"";position:absolute;right:-20px;bottom:-25px;width:80px;height:80px;border-radius:50%;background:var(--light)}.card h3{font-size:11px;color:#68717a;margin-bottom:9px;text-transform:uppercase;letter-spacing:.3px}.number{font-size:29px;font-weight:bold;color:var(--primary);position:relative;z-index:1}
-.payment-charts{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:15px;margin-bottom:20px}.chart-card h3{color:var(--primary);font-size:14px;margin-bottom:6px}.chart-card p{color:var(--muted);font-size:11px;margin-bottom:15px;line-height:1.5}.chart-container{position:relative;width:100%;height:260px}.chart-card.timeline{grid-column:1/-1}.chart-empty{color:var(--muted);font-size:12px;text-align:center;padding:12px}
-.controls{background:white;padding:16px;border-radius:11px;margin-bottom:20px;box-shadow:var(--shadow);border:1px solid #edf0f3}.controls-label{font-size:11px;color:#68717a;font-weight:bold;margin-bottom:10px}.controls-row{display:flex;flex-wrap:wrap;gap:9px}
-input,select{padding:10px 12px;border:1px solid #ccd2d8;border-radius:7px;font-size:12px;background:white;outline:none;color:#333}input:focus,select:focus{border-color:var(--primary);box-shadow:0 0 0 3px #073b7214}.search{flex:1;min-width:220px}
-button{border:0;border-radius:7px;padding:10px 14px;cursor:pointer;font-weight:bold;font-size:12px;transition:.15s}button:hover{transform:translateY(-1px);opacity:.93}button:active{transform:translateY(0)}.primary{background:var(--primary);color:white}.primary:hover{background:var(--dark)}.success,.restore-button{background:var(--success);color:white}.warning{background:var(--warning);color:white}.danger{background:var(--danger);color:white}.secondary{background:#6c757d;color:white}.archive-selected{display:none;background:var(--danger);color:white}.archive-selected.show{display:block}
-.table-box{background:white;border-radius:11px;overflow:hidden;box-shadow:var(--shadow);border:1px solid #edf0f3}.table-header{padding:17px 18px;display:flex;justify-content:space-between;align-items:center;border-bottom:1px solid var(--border)}.table-header h2{color:var(--primary);font-size:17px}.table-header-right{display:flex;align-items:center;gap:9px;color:#6c757d;font-size:11px}.record-pill{background:#f1f4f7;padding:6px 9px;border-radius:20px}.table-wrap{overflow-x:auto}table{width:100%;border-collapse:collapse;min-width:1150px}th{background:#073b72;color:white;padding:12px;text-align:left;font-size:11px;white-space:nowrap;letter-spacing:.2px}td{padding:11px 12px;border-bottom:1px solid #edf0f2;font-size:12px;vertical-align:middle}tr:hover{background:#f8fbff}.checkbox-cell{width:42px;text-align:center}.student-checkbox,#selectAll{width:16px;height:16px;cursor:pointer}.student-name{font-weight:bold;min-width:170px;color:#29313a}.thesis-cell{width:280px;max-width:280px;white-space:normal;word-break:break-word;overflow-wrap:anywhere;line-height:1.45;color:#454b52}.actions{display:flex;gap:5px;white-space:nowrap}.actions button{padding:7px 9px;font-size:10px}
-.badge{display:inline-block;padding:5px 9px;border-radius:15px;font-size:10px;font-weight:bold;white-space:nowrap}.complete{background:#d1e7dd;color:#0f5132}.pending{background:#f8d7da;color:#842029}.progress{background:#fff3cd;color:#664d03}.phd{background:#1976d2;color:white}.maed{background:#8ecae6;color:#123}.mba{background:#8e6bbf;color:white}.mpa{background:#176b3a;color:white}.mscj{background:#f5a6a6;color:#333}.group{background:#e8f0f8;color:#073b72;padding:5px 8px;border-radius:5px;font-size:10px;font-weight:bold;white-space:nowrap}
-.file-box{display:flex;align-items:center;gap:7px}.file-info{display:flex;flex-direction:column;gap:4px;min-width:0}.file-name{display:block;font-size:10px;color:#555;max-width:130px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.table-status-select{min-width:125px;padding:6px 8px;border-radius:15px;font-size:10px;font-weight:bold;cursor:pointer;outline:none}.complete-select{background:#d1e7dd;color:#0f5132;border:1px solid #a3cfbb}.pending-select{background:#f8d7da;color:#842029;border:1px solid #f1aeb5}
-.empty-state{padding:60px 20px!important;text-align:center;color:#777}.empty-icon{width:55px;height:55px;margin:0 auto 14px;border-radius:50%;background:#eef3f8;color:var(--primary);display:flex;justify-content:center;align-items:center;font-size:24px}.empty-state strong{display:block;color:#495057;font-size:14px;margin-bottom:5px}.empty-state span{font-size:11px;color:#8a9299}.archived-row{background:#fafafa}
-.modal{position:fixed;inset:0;background:#03142394;backdrop-filter:blur(2px);display:none;justify-content:center;align-items:center;padding:20px;z-index:999}.modal.show{display:flex}.modal-content{background:white;width:600px;max-width:100%;max-height:90vh;overflow-y:auto;border-radius:12px;padding:25px;box-shadow:0 15px 40px #0003}.modal-content h2{color:var(--primary);margin-bottom:20px;font-size:19px}.form-group{margin-bottom:15px}.form-group label{display:block;font-weight:bold;margin-bottom:6px;font-size:12px;color:#444}.form-group input,.form-group select{width:100%}.modal-buttons{display:flex;justify-content:flex-end;gap:10px;margin-top:20px}.confirm-icon{width:55px;height:55px;border-radius:50%;background:#f8d7da;color:#842029;display:flex;align-items:center;justify-content:center;font-size:25px;margin-bottom:15px}.confirm-text{color:#666;font-size:13px;line-height:1.5}
-::-webkit-scrollbar{width:8px;height:8px}::-webkit-scrollbar-track{background:#f1f3f5}::-webkit-scrollbar-thumb{background:#c5ccd3;border-radius:10px}
+.group-button:hover,.archive-button:hover{background:#f0f4f8}
+.group-button.active{background:var(--primary);color:white;box-shadow:0 3px 8px #073b7233}
+.group-icon{width:29px;height:29px;border-radius:8px;display:flex;align-items:center;justify-content:center;background:#e8f0f8;color:var(--primary);font-size:12px;font-weight:bold;flex-shrink:0}
+.group-button.active .group-icon{background:#ffffff2e;color:white}
+.group-name{flex:1}
+.group-count{min-width:25px;text-align:center;padding:3px 6px;border-radius:20px;background:#eef1f4;color:#555;font-size:10px}
+.group-button.active .group-count{background:#ffffff33;color:white}
+.sidebar-divider{border:0;border-top:1px solid var(--border);margin:17px 5px}
+.archive-button{background:#f8f9fa;color:#555}
+.archive-button.active{background:#fff3cd;color:#664d03}
+.content{flex:1;min-width:0;padding:25px}
+.container{max-width:1600px;margin:auto}
+.page-intro{margin-bottom:20px}
+.page-intro h2{color:var(--primary);font-size:23px;margin-bottom:5px}
+.page-intro p{color:var(--muted);font-size:12px}
+.message{display:none;padding:12px 15px;margin-bottom:15px;border-radius:8px;font-weight:bold;font-size:12px;border:1px solid transparent}
+.message.show{display:block}
+.error{background:#f8d7da;color:#842029;border-color:#f1aeb5}
+.success-message{background:#d1e7dd;color:#0f5132;border-color:#a3cfbb}
+.dashboard{display:grid;grid-template-columns:repeat(4,1fr);gap:15px;margin-bottom:20px}
+.card,.chart-card{background:white;padding:18px;border-radius:11px;box-shadow:var(--shadow);border:1px solid #edf0f3;min-width:0}
+.card{position:relative;overflow:hidden}
+.card:after{content:"";position:absolute;right:-20px;bottom:-25px;width:80px;height:80px;border-radius:50%;background:var(--light)}
+.card h3{font-size:11px;color:#68717a;margin-bottom:9px;text-transform:uppercase;letter-spacing:.3px}
+.number{font-size:29px;font-weight:bold;color:var(--primary);position:relative;z-index:1}
+.payment-charts{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:15px;margin-bottom:20px}
+.chart-card h3{color:var(--primary);font-size:14px;margin-bottom:6px}
+.chart-card p{color:var(--muted);font-size:11px;margin-bottom:15px;line-height:1.5}
+.chart-container{position:relative;width:100%;height:260px}
+.chart-card.timeline{grid-column:1/-1}
+.controls{background:white;padding:16px;border-radius:11px;margin-bottom:20px;box-shadow:var(--shadow);border:1px solid #edf0f3}
+.controls-label{font-size:11px;color:#68717a;font-weight:bold;margin-bottom:10px}
+.controls-row{display:flex;flex-wrap:wrap;gap:9px}
+input,select{padding:10px 12px;border:1px solid #ccd2d8;border-radius:7px;font-size:12px;background:white;outline:none;color:#333}
+input:focus,select:focus{border-color:var(--primary);box-shadow:0 0 0 3px #073b7214}
+.search{flex:1;min-width:220px}
+button{border:0;border-radius:7px;padding:10px 14px;cursor:pointer;font-weight:bold;font-size:12px;transition:.15s}
+button:hover{transform:translateY(-1px);opacity:.93}
+button:active{transform:translateY(0)}
+.primary{background:var(--primary);color:white}
+.primary:hover{background:var(--dark)}
+.success,.restore-button{background:var(--success);color:white}
+.warning{background:var(--warning);color:white}
+.danger{background:var(--danger);color:white}
+.secondary{background:#6c757d;color:white}
+.archive-selected{display:none;background:var(--danger);color:white}
+.archive-selected.show{display:block}
+.table-box{background:white;border-radius:11px;overflow:hidden;box-shadow:var(--shadow);border:1px solid #edf0f3}
+.table-header{padding:17px 18px;display:flex;justify-content:space-between;align-items:center;border-bottom:1px solid var(--border)}
+.table-header h2{color:var(--primary);font-size:17px}
+.table-header-right{display:flex;align-items:center;gap:9px;color:#6c757d;font-size:11px}
+.record-pill{background:#f1f4f7;padding:6px 9px;border-radius:20px}
+.table-wrap{overflow-x:auto}
+table{width:100%;border-collapse:collapse;min-width:1150px}
+th{background:#073b72;color:white;padding:12px;text-align:left;font-size:11px;white-space:nowrap;letter-spacing:.2px}
+td{padding:11px 12px;border-bottom:1px solid #edf0f2;font-size:12px;vertical-align:middle}
+tr:hover{background:#f8fbff}
+.checkbox-cell{width:42px;text-align:center}
+.student-checkbox,#selectAll{width:16px;height:16px;cursor:pointer}
+.student-name{font-weight:bold;min-width:170px;color:#29313a}
+.thesis-cell{width:280px;max-width:280px;white-space:normal;word-break:break-word;overflow-wrap:anywhere;line-height:1.45;color:#454b52}
+.actions{display:flex;gap:5px;white-space:nowrap}
+.actions button{padding:7px 9px;font-size:10px}
+.badge{display:inline-block;padding:5px 9px;border-radius:15px;font-size:10px;font-weight:bold;white-space:nowrap}
+.complete{background:#d1e7dd;color:#0f5132}
+.pending{background:#f8d7da;color:#842029}
+.progress{background:#fff3cd;color:#664d03}
+.phd{background:#1976d2;color:white}
+.maed{background:#8ecae6;color:#123}
+.mba{background:#8e6bbf;color:white}
+.mpa{background:#176b3a;color:white}
+.mscj{background:#f5a6a6;color:#333}
+.group{background:#e8f0f8;color:#073b72;padding:5px 8px;border-radius:5px;font-size:10px;font-weight:bold;white-space:nowrap}
+.file-box{display:flex;align-items:center;gap:7px}
+.file-info{display:flex;flex-direction:column;gap:4px;min-width:0}
+.table-status-select{min-width:125px;padding:6px 8px;border-radius:15px;font-size:10px;font-weight:bold;cursor:pointer;outline:none}
+.complete-select{background:#d1e7dd;color:#0f5132;border:1px solid #a3cfbb}
+.pending-select{background:#f8d7da;color:#842029;border:1px solid #f1aeb5}
+.empty-state{padding:60px 20px!important;text-align:center;color:#777}
+.empty-icon{width:55px;height:55px;margin:0 auto 14px;border-radius:50%;background:#eef3f8;color:var(--primary);display:flex;justify-content:center;align-items:center;font-size:24px}
+.empty-state strong{display:block;color:#495057;font-size:14px;margin-bottom:5px}
+.empty-state span{font-size:11px;color:#8a9299}
+.archived-row{background:#fafafa}
+.modal{position:fixed;inset:0;background:#03142394;backdrop-filter:blur(2px);display:none;justify-content:center;align-items:center;padding:20px;z-index:999}
+.modal.show{display:flex}
+.modal-content{background:white;width:600px;max-width:100%;max-height:90vh;overflow-y:auto;border-radius:12px;padding:25px;box-shadow:0 15px 40px #0003}
+.modal-content h2{color:var(--primary);margin-bottom:20px;font-size:19px}
+.form-group{margin-bottom:15px}
+.form-group label{display:block;font-weight:bold;margin-bottom:6px;font-size:12px;color:#444}
+.form-group input,.form-group select{width:100%}
+.modal-buttons{display:flex;justify-content:flex-end;gap:10px;margin-top:20px}
+.confirm-icon{width:55px;height:55px;border-radius:50%;background:#f8d7da;color:#842029;display:flex;align-items:center;justify-content:center;font-size:25px;margin-bottom:15px}
+.confirm-text{color:#666;font-size:13px;line-height:1.5}
+::-webkit-scrollbar{width:8px;height:8px}
+::-webkit-scrollbar-track{background:#f1f3f5}
+::-webkit-scrollbar-thumb{background:#c5ccd3;border-radius:10px}
 @media(max-width:1100px){.dashboard{grid-template-columns:repeat(2,1fr)}}
 @media(max-width:800px){.sidebar{width:190px}.content{padding:15px}}
-@media(max-width:600px){header{padding:13px}.header-left h1{font-size:16px}.header-left small{font-size:10px}.header-logo{width:36px;height:36px}.connection{font-size:9px;padding:6px 8px}.main-layout{display:block}.sidebar{position:static;width:100%;height:auto;border-right:0;border-bottom:1px solid var(--border);padding:10px}.sidebar-brand,.sidebar-title{display:none}.group-button{display:inline-flex;width:auto;margin-right:4px}.sidebar-divider{display:none}.archive-button{width:auto;display:inline-flex;margin-top:5px}.dashboard{grid-template-columns:1fr 1fr;gap:9px}.card{padding:14px}.number{font-size:24px}.content{padding:10px}.page-intro h2{font-size:19px}.controls-row{flex-direction:column}.search{width:100%;min-width:0}.payment-charts{grid-template-columns:1fr}.chart-card.timeline{grid-column:auto}.chart-container{height:240px}}
+@media(max-width:600px){
+ header{padding:13px}
+ .header-left h1{font-size:16px}
+ .header-left small{font-size:10px}
+ .header-logo{width:36px;height:36px}
+ .connection{font-size:9px;padding:6px 8px}
+ .main-layout{display:block}
+ .sidebar{position:static;width:100%;height:auto;border-right:0;border-bottom:1px solid var(--border);padding:10px}
+ .sidebar-brand,.sidebar-title{display:none}
+ .group-button{display:inline-flex;width:auto;margin-right:4px}
+ .sidebar-divider{display:none}
+ .archive-button{width:auto;display:inline-flex;margin-top:5px}
+ .dashboard{grid-template-columns:1fr 1fr;gap:9px}
+ .card{padding:14px}
+ .number{font-size:24px}
+ .content{padding:10px}
+ .page-intro h2{font-size:19px}
+ .controls-row{flex-direction:column}
+ .search{width:100%;min-width:0}
+ .payment-charts{grid-template-columns:1fr}
+ .chart-card.timeline{grid-column:auto}
+ .chart-container{height:240px}
+}
 </style>
 </head>
 <body>
+
 <header>
- <div class="header-left"><div class="header-logo">G</div><div><h1>Graduate Group Tracking System</h1><small>Graduate Student Monitoring System</small></div></div>
+ <div class="header-left">
+  <div class="header-logo">G</div>
+  <div>
+   <h1>Graduate Group Tracking System</h1>
+   <small>Graduate Student Monitoring System</small>
+  </div>
+ </div>
  <div class="connection" id="connectionStatus">Connecting...</div>
 </header>
+
 <div id="offlineBanner" class="offline-banner">OFFLINE MODE — Changes will be saved on this device and synchronized when internet returns.</div>
+
 <div class="main-layout">
 <aside class="sidebar">
  <div class="sidebar-brand"><strong>Graduate Records</strong><span>Student Management Portal</span></div>
  <div class="sidebar-title">Groups</div>
+
  <button class="group-button active" id="groupBtnAll" onclick="selectGroup('ALL')"><span class="group-icon">☰</span><span class="group-name">All Groups</span><span class="group-count" id="countAll">0</span></button>
  <button class="group-button" id="groupBtnTagaytay" onclick="selectGroup('TAGAYTAY GROUP')"><span class="group-icon">T</span><span class="group-name">TAGAYTAY GROUP</span><span class="group-count" id="countTagaytay">0</span></button>
  <button class="group-button" id="groupBtnGeline" onclick="selectGroup('GELINE GROUP')"><span class="group-icon">G</span><span class="group-name">GELINE GROUP</span><span class="group-count" id="countGeline">0</span></button>
  <button class="group-button" id="groupBtnBoracay" onclick="selectGroup('BORACAY GROUP')"><span class="group-icon">B</span><span class="group-name">BORACAY GROUP</span><span class="group-count" id="countBoracay">0</span></button>
+
  <hr class="sidebar-divider">
+
  <button class="archive-button" id="archiveViewButton" onclick="showArchived()"><span class="group-icon">▣</span><span class="group-name">Archived Students</span><span class="group-count" id="archiveCount">0</span></button>
+ <button class="archive-button" id="chartsDashboardButton" onclick="showChartsDashboard()"><span class="group-icon">📊</span><span class="group-name">Charts Dashboard</span></button>
 </aside>
-<main class="content"><div class="container">
- <div class="page-intro"><h2 id="pageTitle">Student Records</h2><p>Manage and monitor graduate student records and completion status.</p></div>
+
+<main class="content">
+<div class="container">
+
+ <div class="page-intro" id="recordsIntro">
+  <h2 id="pageTitle">Student Records</h2>
+  <p>Manage and monitor graduate student records and completion status.</p>
+ </div>
+
  <div id="message" class="message"></div>
- <div class="dashboard">
+
+ <!-- ORIGINAL SUMMARY DASHBOARD -->
+ <div class="dashboard" id="summaryDashboard">
   <div class="card"><h3>Total Students</h3><div class="number" id="totalCount">0</div></div>
   <div class="card"><h3>Tuition Fee Paid</h3><div class="number" id="filesComplete">0</div></div>
   <div class="card"><h3>Grad Fee Paid</h3><div class="number" id="thesisComplete">0</div></div>
   <div class="card"><h3>Overall Complete</h3><div class="number" id="overallComplete">0</div></div>
  </div>
- <section class="payment-charts">
-  <div class="chart-card"><h3>Tuition Fee Payment Status</h3><p>Paid and unpaid tuition fees for the selected group.</p><div class="chart-container"><canvas id="tuitionPaymentChart"></canvas></div></div>
-  <div class="chart-card"><h3>Graduation Fee Payment Status</h3><p>Paid and unpaid graduation fees for the selected group.</p><div class="chart-container"><canvas id="graduationPaymentChart"></canvas></div></div>
-  <div class="chart-card timeline"><h3>Payment Timeline</h3><p>Monthly fee payments recorded over the last 12 months. Payments are counted on the date the status changed to Paid.</p><div class="chart-container"><canvas id="paymentTimelineChart"></canvas></div></div>
- </section>
- <div class="controls"><div class="controls-label">SEARCH AND FILTERS</div><div class="controls-row">
-  <input type="text" id="searchInput" class="search" placeholder="Search student name or thesis title..." oninput="renderTable()">
-  <select id="programFilter" onchange="renderTable()"><option value="ALL">All Programs</option><option>MAEd</option><option>PhD</option><option>MBA</option><option>MPA</option><option>MSCJ</option></select>
-  <select id="fileFilter" onchange="renderTable()"><option value="ALL">All Tuition Fee Status</option><option>Paid</option><option>Not Yet Paid</option></select>
-  <select id="thesisFilter" onchange="renderTable()"><option value="ALL">All Grad Fee Status</option><option>Paid</option><option>Not Yet Paid</option></select>
-  <button class="primary" onclick="openAddModal()">+ Add Student</button><button class="secondary" onclick="loadData()">↻ Refresh</button><button class="archive-selected" id="archiveSelectedButton" onclick="archiveSelected()">Archive Selected</button>
- </div></div>
- <div class="table-box"><div class="table-header"><h2 id="tableTitle">Student Records</h2><div class="table-header-right"><span class="record-pill" id="selectedCount">0 selected</span><span class="record-pill" id="recordCount">0 records</span></div></div>
- <div class="table-wrap"><table><thead><tr><th class="checkbox-cell"><input type="checkbox" id="selectAll" onchange="toggleSelectAll()" title="Select all"></th><th>#</th><th>Student Name</th><th>Group</th><th>Program</th><th>Tuition Fee</th><th>Grad Fee</th><th>Overall</th><th>Thesis Title</th><th>Actions</th></tr></thead><tbody id="studentTableBody"></tbody></table></div></div>
-</div></main></div>
 
-<div class="modal" id="studentModal"><div class="modal-content">
- <h2 id="modalTitle">Add Student</h2><input type="hidden" id="studentId">
- <div class="form-group"><label>Student Name</label><input id="studentName" placeholder="Enter student name"></div>
- <div class="form-group"><label>Group</label><select id="studentGroup"><option>TAGAYTAY GROUP</option><option>GELINE GROUP</option><option>BORACAY GROUP</option></select></div>
- <div class="form-group"><label>Program</label><select id="studentProgram"><option>MAEd</option><option>PhD</option><option>MBA</option><option>MPA</option><option>MSCJ</option></select></div>
- <div class="form-group"><label>Tuition Fee</label><select id="studentFileStatus"><option>Not Yet Paid</option><option>Paid</option></select></div>
- <div class="form-group"><label>Grad Fee</label><select id="studentThesisStatus"><option>Not Yet Paid</option><option>Paid</option></select></div>
- <div class="form-group"><label>Overall Status</label><select id="studentOverallStatus"><option>Not Yet Done</option><option>Complete</option></select></div>
- <div class="form-group"><label>Thesis Title</label><input id="studentThesisTitle" placeholder="Enter thesis title"></div>
- <div class="modal-buttons"><button class="secondary" onclick="closeModal()">Cancel</button><button class="primary" onclick="saveStudent()">Save Student</button></div>
-</div></div>
+ <!-- SEPARATE CHARTS DASHBOARD -->
+ <div id="chartsDashboardPage" style="display:none">
+  <div class="page-intro">
+   <h2>Charts Dashboard</h2>
+   <p>View tuition fee payments, graduation fee payments, and monthly payment trends.</p>
+  </div>
 
-<div class="modal" id="deleteModal"><div class="modal-content"><div class="confirm-icon">!</div><h2>Delete Archived Student</h2><p class="confirm-text" id="deleteMessage">Are you sure you want to permanently delete this student?</p><div class="modal-buttons"><button class="secondary" onclick="closeDeleteModal()">Cancel</button><button class="danger" onclick="confirmDeleteArchived()">Delete Permanently</button></div></div></div>
+  <section class="payment-charts">
+   <div class="chart-card">
+    <h3>Tuition Fee Payment Status</h3>
+    <p>Paid and unpaid tuition fees for the selected group.</p>
+    <div class="chart-container"><canvas id="tuitionPaymentChart"></canvas></div>
+   </div>
+
+   <div class="chart-card">
+    <h3>Graduation Fee Payment Status</h3>
+    <p>Paid and unpaid graduation fees for the selected group.</p>
+    <div class="chart-container"><canvas id="graduationPaymentChart"></canvas></div>
+   </div>
+
+   <div class="chart-card timeline">
+    <h3>Payment Timeline</h3>
+    <p>Monthly fee payments recorded over the last 12 months.</p>
+    <div class="chart-container"><canvas id="paymentTimelineChart"></canvas></div>
+   </div>
+  </section>
+
+  <button class="secondary" onclick="showOriginalDashboard()">← Back to Student Records</button>
+ </div>
+
+ <div class="controls" id="recordsControls">
+  <div class="controls-label">SEARCH AND FILTERS</div>
+  <div class="controls-row">
+   <input type="text" id="searchInput" class="search" placeholder="Search student name or thesis title..." oninput="renderTable()">
+   <select id="programFilter" onchange="renderTable()"><option value="ALL">All Programs</option><option>MAEd</option><option>PhD</option><option>MBA</option><option>MPA</option><option>MSCJ</option></select>
+   <select id="fileFilter" onchange="renderTable()"><option value="ALL">All Tuition Fee Status</option><option>Paid</option><option>Not Yet Paid</option></select>
+   <select id="thesisFilter" onchange="renderTable()"><option value="ALL">All Grad Fee Status</option><option>Paid</option><option>Not Yet Paid</option></select>
+   <button class="primary" onclick="openAddModal()">+ Add Student</button>
+   <button class="secondary" onclick="loadData()">↻ Refresh</button>
+   <button class="archive-selected" id="archiveSelectedButton" onclick="archiveSelected()">Archive Selected</button>
+  </div>
+ </div>
+
+ <div class="table-box" id="recordsTable">
+  <div class="table-header">
+   <h2 id="tableTitle">Student Records</h2>
+   <div class="table-header-right">
+    <span class="record-pill" id="selectedCount">0 selected</span>
+    <span class="record-pill" id="recordCount">0 records</span>
+   </div>
+  </div>
+  <div class="table-wrap">
+   <table>
+    <thead>
+     <tr>
+      <th class="checkbox-cell"><input type="checkbox" id="selectAll" onchange="toggleSelectAll()" title="Select all"></th>
+      <th>#</th><th>Student Name</th><th>Group</th><th>Program</th><th>Tuition Fee</th><th>Grad Fee</th><th>Overall</th><th>Thesis Title</th><th>Actions</th>
+     </tr>
+    </thead>
+    <tbody id="studentTableBody"></tbody>
+   </table>
+  </div>
+ </div>
+
+</div>
+</main>
+</div>
+
+<div class="modal" id="studentModal">
+ <div class="modal-content">
+  <h2 id="modalTitle">Add Student</h2>
+  <input type="hidden" id="studentId">
+  <div class="form-group"><label>Student Name</label><input id="studentName" placeholder="Enter student name"></div>
+  <div class="form-group"><label>Group</label><select id="studentGroup"><option>TAGAYTAY GROUP</option><option>GELINE GROUP</option><option>BORACAY GROUP</option></select></div>
+  <div class="form-group"><label>Program</label><select id="studentProgram"><option>MAEd</option><option>PhD</option><option>MBA</option><option>MPA</option><option>MSCJ</option></select></div>
+  <div class="form-group"><label>Tuition Fee</label><select id="studentFileStatus"><option>Not Yet Paid</option><option>Paid</option></select></div>
+  <div class="form-group"><label>Grad Fee</label><select id="studentThesisStatus"><option>Not Yet Paid</option><option>Paid</option></select></div>
+  <div class="form-group"><label>Overall Status</label><select id="studentOverallStatus"><option>Not Yet Done</option><option>Complete</option></select></div>
+  <div class="form-group"><label>Thesis Title</label><input id="studentThesisTitle" placeholder="Enter thesis title"></div>
+  <div class="modal-buttons"><button class="secondary" onclick="closeModal()">Cancel</button><button class="primary" onclick="saveStudent()">Save Student</button></div>
+ </div>
+</div>
+
+<div class="modal" id="deleteModal">
+ <div class="modal-content">
+  <div class="confirm-icon">!</div>
+  <h2>Delete Archived Student</h2>
+  <p class="confirm-text" id="deleteMessage">Are you sure you want to permanently delete this student?</p>
+  <div class="modal-buttons"><button class="secondary" onclick="closeDeleteModal()">Cancel</button><button class="danger" onclick="confirmDeleteArchived()">Delete Permanently</button></div>
+ </div>
+</div>
 
 <script>
 const SUPABASE_URL="https://yiruvpikzntyiijapknt.supabase.co";
 const SUPABASE_KEY="sb_publishable_Z95aVweBRCPDWo1XH54GFQ_rrV9GIvk";
 const supabaseClient=window.supabase.createClient(SUPABASE_URL,SUPABASE_KEY);
 const LOCAL_KEY="graduateGroupStudents",PENDING_KEY="graduatePendingChanges",FILE_KEY="graduateStudentFiles";
-let students=[],pendingChanges=JSON.parse(localStorage.getItem(PENDING_KEY)||"[]"),studentFiles=JSON.parse(localStorage.getItem(FILE_KEY)||"{}"),selectedIds=new Set(),selectedGroup="ALL",showingArchived=false,deleteStudentId=null;
-let tuitionPaymentChart=null,graduationPaymentChart=null,paymentTimelineChart=null;
+
+let students=[];
+let pendingChanges=JSON.parse(localStorage.getItem(PENDING_KEY)||"[]");
+let studentFiles=JSON.parse(localStorage.getItem(FILE_KEY)||"{}");
+let selectedIds=new Set();
+let selectedGroup="ALL";
+let showingArchived=false;
+let showingChartsDashboard=false;
+let deleteStudentId=null;
+let tuitionPaymentChart=null;
+let graduationPaymentChart=null;
+let paymentTimelineChart=null;
 
 document.addEventListener("DOMContentLoaded",async()=>{
- updateConnection();initializePaymentCharts();loadLocalData();
+ updateConnection();
+ initializePaymentCharts();
+ loadLocalData();
  if(navigator.onLine)await loadOnlineData();
  if("serviceWorker" in navigator)navigator.serviceWorker.register("service-worker.js").catch(console.log);
 });
-window.addEventListener("online",async()=>{updateConnection();await syncPendingChanges();await loadOnlineData()});
-window.addEventListener("offline",()=>{updateConnection();saveLocalData()});
 
-function todayLocalDate(){const d=new Date();return `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,"0")}-${String(d.getDate()).padStart(2,"0")}`}
-function updateConnection(){const s=document.getElementById("connectionStatus"),b=document.getElementById("offlineBanner");if(navigator.onLine){s.textContent="● ONLINE";s.style.color="#b7f7c5";b.classList.remove("show")}else{s.textContent="● OFFLINE";s.style.color="#ffd166";b.classList.add("show")}}
-async function loadData(){loadLocalData();if(navigator.onLine)await loadOnlineData()}
-async function loadOnlineData(){try{await syncPendingChanges();const {data,error}=await supabaseClient.from("students").select("*").order("name",{ascending:true});if(error)throw error;if(Array.isArray(data)){students=data;saveLocalData();selectedIds.clear();renderTable();updateSidebarCounts()}}catch(e){console.log("Online loading failed:",e);loadLocalData();if(navigator.onLine)showMessage("Unable to update from Supabase. Your saved data was kept.","error")}}
-function loadLocalData(){try{const saved=localStorage.getItem(LOCAL_KEY);if(saved!==null){const p=JSON.parse(saved);if(Array.isArray(p))students=p}if(!Array.isArray(students))students=[]}catch(e){console.log(e);if(!Array.isArray(students))students=[]}renderTable();updateSidebarCounts()}
-function saveLocalData(){localStorage.setItem(LOCAL_KEY,JSON.stringify(students))}
-function saveStudentFiles(){localStorage.setItem(FILE_KEY,JSON.stringify(studentFiles))}
-function getFileStatus(s){return s.file_status==="Paid"?"Paid":"Not Yet Paid"}
-function getThesisStatus(s){return s.thesis_status==="Paid"?"Paid":"Not Yet Paid"}
-function getOverallStatus(s){return s.overall_status==="Complete"?"Complete":"Not Yet Done"}
+window.addEventListener("online",async()=>{
+ updateConnection();
+ await syncPendingChanges();
+ await loadOnlineData();
+});
 
+window.addEventListener("offline",()=>{
+ updateConnection();
+ saveLocalData();
+});
+
+function todayLocalDate(){
+ const d=new Date();
+ return `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,"0")}-${String(d.getDate()).padStart(2,"0")}`;
+}
+
+function updateConnection(){
+ const s=document.getElementById("connectionStatus");
+ const b=document.getElementById("offlineBanner");
+ if(navigator.onLine){
+  s.textContent="● ONLINE";
+  s.style.color="#b7f7c5";
+  b.classList.remove("show");
+ }else{
+  s.textContent="● OFFLINE";
+  s.style.color="#ffd166";
+  b.classList.add("show");
+ }
+}
+
+async function loadData(){
+ loadLocalData();
+ if(navigator.onLine)await loadOnlineData();
+}
+
+async function loadOnlineData(){
+ try{
+  await syncPendingChanges();
+  const {data,error}=await supabaseClient.from("students").select("*").order("name",{ascending:true});
+  if(error)throw error;
+  if(Array.isArray(data)){
+   students=data;
+   saveLocalData();
+   selectedIds.clear();
+   renderTable();
+   updateSidebarCounts();
+  }
+ }catch(e){
+  console.log("Online loading failed:",e);
+  loadLocalData();
+  if(navigator.onLine)showMessage("Unable to update from Supabase. Your saved data was kept.","error");
+ }
+}
+
+function loadLocalData(){
+ try{
+  const saved=localStorage.getItem(LOCAL_KEY);
+  if(saved!==null){
+   const p=JSON.parse(saved);
+   if(Array.isArray(p))students=p;
+  }
+  if(!Array.isArray(students))students=[];
+ }catch(e){
+  console.log(e);
+  if(!Array.isArray(students))students=[];
+ }
+ renderTable();
+ updateSidebarCounts();
+}
+
+function saveLocalData(){
+ localStorage.setItem(LOCAL_KEY,JSON.stringify(students));
+}
+
+function saveStudentFiles(){
+ localStorage.setItem(FILE_KEY,JSON.stringify(studentFiles));
+}
+
+function getFileStatus(s){
+ return s.file_status==="Paid"?"Paid":"Not Yet Paid";
+}
+
+function getThesisStatus(s){
+ return s.thesis_status==="Paid"?"Paid":"Not Yet Paid";
+}
+
+function getOverallStatus(s){
+ return s.overall_status==="Complete"?"Complete":"Not Yet Done";
+}
+
+/* CHARTS */
 function initializePaymentCharts(){
  if(typeof Chart==="undefined")return;
- const doughnutOptions={responsive:true,maintainAspectRatio:false,plugins:{legend:{position:"bottom"},tooltip:{callbacks:{label:ctx=>`${ctx.label}: ${ctx.parsed}`}}},cutout:"62%"};
- tuitionPaymentChart=new Chart(document.getElementById("tuitionPaymentChart"),{type:"doughnut",data:{labels:["Paid","Not Yet Paid"],datasets:[{data:[0,0],backgroundColor:["#198754","#dc3545"],borderWidth:0}]},options:doughnutOptions});
- graduationPaymentChart=new Chart(document.getElementById("graduationPaymentChart"),{type:"doughnut",data:{labels:["Paid","Not Yet Paid"],datasets:[{data:[0,0],backgroundColor:["#073b72","#f0ad4e"],borderWidth:0}]},options:doughnutOptions});
- paymentTimelineChart=new Chart(document.getElementById("paymentTimelineChart"),{type:"line",data:{labels:[],datasets:[{label:"Tuition Fee Paid",data:[],borderColor:"#198754",backgroundColor:"#19875422",tension:.3,fill:true},{label:"Graduation Fee Paid",data:[],borderColor:"#073b72",backgroundColor:"#073b7222",tension:.3,fill:true}]},options:{responsive:true,maintainAspectRatio:false,interaction:{mode:"index",intersect:false},plugins:{legend:{position:"bottom"}},scales:{y:{beginAtZero:true,ticks:{precision:0}}}}});
+
+ const doughnutOptions={
+  responsive:true,
+  maintainAspectRatio:false,
+  plugins:{
+   legend:{position:"bottom"},
+   tooltip:{callbacks:{label:ctx=>`${ctx.label}: ${ctx.parsed}`}}
+  },
+  cutout:"62%"
+ };
+
+ tuitionPaymentChart=new Chart(document.getElementById("tuitionPaymentChart"),{
+  type:"doughnut",
+  data:{
+   labels:["Paid","Not Yet Paid"],
+   datasets:[{data:[0,0],backgroundColor:["#198754","#dc3545"],borderWidth:0}]
+  },
+  options:doughnutOptions
+ });
+
+ graduationPaymentChart=new Chart(document.getElementById("graduationPaymentChart"),{
+  type:"doughnut",
+  data:{
+   labels:["Paid","Not Yet Paid"],
+   datasets:[{data:[0,0],backgroundColor:["#073b72","#f0ad4e"],borderWidth:0}]
+  },
+  options:doughnutOptions
+ });
+
+ paymentTimelineChart=new Chart(document.getElementById("paymentTimelineChart"),{
+  type:"line",
+  data:{
+   labels:[],
+   datasets:[
+    {label:"Tuition Fee Paid",data:[],borderColor:"#198754",backgroundColor:"#19875422",tension:.3,fill:true},
+    {label:"Graduation Fee Paid",data:[],borderColor:"#073b72",backgroundColor:"#073b7222",tension:.3,fill:true}
+   ]
+  },
+  options:{
+   responsive:true,
+   maintainAspectRatio:false,
+   interaction:{mode:"index",intersect:false},
+   plugins:{legend:{position:"bottom"}},
+   scales:{y:{beginAtZero:true,ticks:{precision:0}}}
+  }
+ });
+
  updatePaymentCharts();
 }
-function getPaymentChartStudents(){return students.filter(s=>!s.archived&&(selectedGroup==="ALL"||s.group===selectedGroup))}
+
+function getPaymentChartStudents(){
+ return students.filter(s=>!s.archived&&(selectedGroup==="ALL"||s.group===selectedGroup));
+}
+
 function updatePaymentCharts(){
  if(!tuitionPaymentChart||!graduationPaymentChart||!paymentTimelineChart)return;
+
  const data=getPaymentChartStudents();
  const tuitionPaid=data.filter(s=>getFileStatus(s)==="Paid").length;
  const tuitionUnpaid=data.length-tuitionPaid;
  const gradPaid=data.filter(s=>getThesisStatus(s)==="Paid").length;
  const gradUnpaid=data.length-gradPaid;
- tuitionPaymentChart.data.datasets[0].data=[tuitionPaid,tuitionUnpaid];tuitionPaymentChart.update();
- graduationPaymentChart.data.datasets[0].data=[gradPaid,gradUnpaid];graduationPaymentChart.update();
+
+ tuitionPaymentChart.data.datasets[0].data=[tuitionPaid,tuitionUnpaid];
+ tuitionPaymentChart.update();
+
+ graduationPaymentChart.data.datasets[0].data=[gradPaid,gradUnpaid];
+ graduationPaymentChart.update();
+
  const months=[],keys=[],now=new Date();
- for(let i=11;i>=0;i--){const d=new Date(now.getFullYear(),now.getMonth()-i,1);keys.push(`${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,"0")}`);months.push(d.toLocaleDateString(undefined,{month:"short",year:"numeric"}))}
+
+ for(let i=11;i>=0;i--){
+  const d=new Date(now.getFullYear(),now.getMonth()-i,1);
+  keys.push(`${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,"0")}`);
+  months.push(d.toLocaleDateString(undefined,{month:"short",year:"numeric"}));
+ }
+
  const tuitionCounts=keys.map(k=>data.filter(s=>s.tuition_paid_date&&String(s.tuition_paid_date).slice(0,7)===k).length);
  const gradCounts=keys.map(k=>data.filter(s=>s.grad_paid_date&&String(s.grad_paid_date).slice(0,7)===k).length);
- paymentTimelineChart.data.labels=months;paymentTimelineChart.data.datasets[0].data=tuitionCounts;paymentTimelineChart.data.datasets[1].data=gradCounts;paymentTimelineChart.update();
+
+ paymentTimelineChart.data.labels=months;
+ paymentTimelineChart.data.datasets[0].data=tuitionCounts;
+ paymentTimelineChart.data.datasets[1].data=gradCounts;
+ paymentTimelineChart.update();
 }
-function statusSelect(id,type,status){const safe=escapeAttribute(id),cls=status==="Paid"||status==="Complete"?"complete-select":"pending-select";const fn=type==="file"?"updateFileStatus":type==="thesis"?"updateThesisStatus":"updateOverallStatus";const opts=type==="overall"?["Complete","Not Yet Done"]:["Paid","Not Yet Paid"];return `<select class="table-status-select ${cls}" onchange="${fn}('${safe}',this.value)" onclick="event.stopPropagation()">${opts.map(v=>`<option value="${v}" ${status===v?"selected":""}>${v}</option>`).join("")}</select>`}
-function fileUploadButton(s){return `<div class="file-box"><div class="file-info">${statusSelect(s.id,"file",getFileStatus(s))}</div></div>`}
-async function updateFileStatus(id,status){if(["Paid","Not Yet Paid"].includes(status))await updateStudentStatus(id,"file_status",status,"Tuition Fee Status")}
-async function updateThesisStatus(id,status){if(["Paid","Not Yet Paid"].includes(status))await updateStudentStatus(id,"thesis_status",status,"Grad Fee Status")}
-async function updateOverallStatus(id,status){if(["Complete","Not Yet Done"].includes(status))await updateStudentStatus(id,"overall_status",status,"Overall Status")}
+
+/* SEPARATE CHARTS DASHBOARD */
+function showChartsDashboard(){
+ showingChartsDashboard=true;
+
+ document.getElementById("chartsDashboardPage").style.display="block";
+ document.getElementById("summaryDashboard").style.display="none";
+ document.getElementById("recordsControls").style.display="none";
+ document.getElementById("recordsTable").style.display="none";
+ document.getElementById("recordsIntro").style.display="none";
+
+ document.querySelectorAll(".group-button").forEach(button=>button.classList.remove("active"));
+ document.getElementById("archiveViewButton").classList.remove("active");
+ document.getElementById("chartsDashboardButton").classList.add("active");
+
+ updatePaymentCharts();
+}
+
+function showOriginalDashboard(){
+ showingChartsDashboard=false;
+
+ document.getElementById("chartsDashboardPage").style.display="none";
+ document.getElementById("summaryDashboard").style.display="grid";
+ document.getElementById("recordsControls").style.display="block";
+ document.getElementById("recordsTable").style.display="block";
+ document.getElementById("recordsIntro").style.display="block";
+ document.getElementById("chartsDashboardButton").classList.remove("active");
+
+ updateSidebarButtons();
+ renderTable();
+}
+
+/* STATUS DROPDOWNS */
+function statusSelect(id,type,status){
+ const safe=escapeAttribute(id);
+ const cls=status==="Paid"||status==="Complete"?"complete-select":"pending-select";
+ const fn=type==="file"?"updateFileStatus":type==="thesis"?"updateThesisStatus":"updateOverallStatus";
+ const opts=type==="overall"?["Complete","Not Yet Done"]:["Paid","Not Yet Paid"];
+
+ return `<select class="table-status-select ${cls}" onchange="${fn}('${safe}',this.value)" onclick="event.stopPropagation()">${opts.map(v=>`<option value="${v}" ${status===v?"selected":""}>${v}</option>`).join("")}</select>`;
+}
+
+function fileUploadButton(s){
+ return `<div class="file-box"><div class="file-info">${statusSelect(s.id,"file",getFileStatus(s))}</div></div>`;
+}
+
+async function updateFileStatus(id,status){
+ if(["Paid","Not Yet Paid"].includes(status))await updateStudentStatus(id,"file_status",status,"Tuition Fee Status");
+}
+
+async function updateThesisStatus(id,status){
+ if(["Paid","Not Yet Paid"].includes(status))await updateStudentStatus(id,"thesis_status",status,"Grad Fee Status");
+}
+
+async function updateOverallStatus(id,status){
+ if(["Complete","Not Yet Done"].includes(status))await updateStudentStatus(id,"overall_status",status,"Overall Status");
+}
 
 async function updateStudentStatus(id,field,status,label){
- const s=students.find(x=>String(x.id)===String(id));if(!s){showMessage("Student record not found.","error");return}
- const previous=s[field],updates={[field]:status};
- if(field==="file_status")updates.tuition_paid_date=status==="Paid"?(previous==="Paid"?(s.tuition_paid_date||todayLocalDate()):todayLocalDate()):null;
- if(field==="thesis_status")updates.grad_paid_date=status==="Paid"?(previous==="Paid"?(s.grad_paid_date||todayLocalDate()):todayLocalDate()):null;
- Object.assign(s,updates);saveLocalData();renderTable();updateDashboard();
- if(String(id).startsWith("offline-")){showMessage(label+" updated successfully.","success");return}
- if(navigator.onLine){try{const {error}=await supabaseClient.from("students").update(updates).eq("id",id);if(error)throw error;showMessage(label+" updated successfully.","success")}catch(e){addPendingChange({type:"update",id,data:updates});showMessage("Saved locally. It will sync when internet returns.","success")}}
- else{addPendingChange({type:"update",id,data:updates});showMessage("Saved offline. It will sync when internet returns.","success")}
+ const s=students.find(x=>String(x.id)===String(id));
+ if(!s){
+  showMessage("Student record not found.","error");
+  return;
+ }
+
+ const previous=s[field];
+ const updates={[field]:status};
+
+ if(field==="file_status"){
+  updates.tuition_paid_date=status==="Paid"?(previous==="Paid"?(s.tuition_paid_date||todayLocalDate()):todayLocalDate()):null;
+ }
+ if(field==="thesis_status"){
+  updates.grad_paid_date=status==="Paid"?(previous==="Paid"?(s.grad_paid_date||todayLocalDate()):todayLocalDate()):null;
+ }
+
+ Object.assign(s,updates);
+ saveLocalData();
+ renderTable();
+ updateDashboard();
+
+ if(String(id).startsWith("offline-")){
+  showMessage(label+" updated successfully.","success");
+  return;
+ }
+
+ if(navigator.onLine){
+  try{
+   const {error}=await supabaseClient.from("students").update(updates).eq("id",id);
+   if(error)throw error;
+   showMessage(label+" updated successfully.","success");
+  }catch(e){
+   addPendingChange({type:"update",id,data:updates});
+   showMessage("Saved locally. It will sync when internet returns.","success");
+  }
+ }else{
+  addPendingChange({type:"update",id,data:updates});
+  showMessage("Saved offline. It will sync when internet returns.","success");
+ }
 }
 
-/* Pending changes are retained until Supabase confirms each operation. */
-function savePending(){localStorage.setItem(PENDING_KEY,JSON.stringify(pendingChanges))}
+/* OFFLINE PENDING CHANGES */
+function savePending(){
+ localStorage.setItem(PENDING_KEY,JSON.stringify(pendingChanges));
+}
+
 function addPendingChange(change){
- if(change.type==="update"){const keys=JSON.stringify(Object.keys(change.data||{}).sort());const i=pendingChanges.findIndex(c=>c.type==="update"&&String(c.id)===String(change.id)&&JSON.stringify(Object.keys(c.data||{}).sort())===keys);if(i!==-1){pendingChanges[i]=change;savePending();return}}
- pendingChanges.push(change);savePending()
-}
-async function syncPendingChanges(){
- if(!navigator.onLine||!pendingChanges.length)return;const remaining=[];
- for(const c of pendingChanges){try{
-  if(c.type==="insert"){const {data,error}=await supabaseClient.from("students").insert([c.data]).select().single();if(error)throw error;const temp=c.tempId||c.data.id,i=students.findIndex(s=>String(s.id)===String(temp));if(i!==-1)students[i]=data;else students.push(data)}
-  else if(c.type==="update"){const {error}=await supabaseClient.from("students").update(c.data).eq("id",c.id);if(error)throw error}
-  else if(c.type==="delete"){const {error}=await supabaseClient.from("students").delete().eq("id",c.id);if(error)throw error}
- }catch(e){console.log("Sync failed:",e);remaining.push(c)}}
- pendingChanges=remaining;savePending();saveLocalData();renderTable();updateSidebarCounts()
+ if(change.type==="update"){
+  const keys=JSON.stringify(Object.keys(change.data||{}).sort());
+  const i=pendingChanges.findIndex(c=>c.type==="update"&&String(c.id)===String(change.id)&&JSON.stringify(Object.keys(c.data||{}).sort())===keys);
+  if(i!==-1){
+   pendingChanges[i]=change;
+   savePending();
+   return;
+  }
+ }
+ pendingChanges.push(change);
+ savePending();
 }
 
-function selectGroup(g){selectedGroup=g;showingArchived=false;selectedIds.clear();updateSidebarButtons();renderTable()}
-function showArchived(){showingArchived=true;selectedIds.clear();updateSidebarButtons();renderTable()}
+async function syncPendingChanges(){
+ if(!navigator.onLine||!pendingChanges.length)return;
+
+ const remaining=[];
+
+ for(const c of pendingChanges){
+  try{
+   if(c.type==="insert"){
+    const {data,error}=await supabaseClient.from("students").insert([c.data]).select().single();
+    if(error)throw error;
+    const temp=c.tempId||c.data.id;
+    const i=students.findIndex(s=>String(s.id)===String(temp));
+    if(i!==-1)students[i]=data;
+    else students.push(data);
+   }else if(c.type==="update"){
+    const {error}=await supabaseClient.from("students").update(c.data).eq("id",c.id);
+    if(error)throw error;
+   }else if(c.type==="delete"){
+    const {error}=await supabaseClient.from("students").delete().eq("id",c.id);
+    if(error)throw error;
+   }
+  }catch(e){
+   console.log("Sync failed:",e);
+   remaining.push(c);
+  }
+ }
+
+ pendingChanges=remaining;
+ savePending();
+ saveLocalData();
+ renderTable();
+ updateSidebarCounts();
+}
+
+/* GROUP NAVIGATION */
+function selectGroup(g){
+ showingChartsDashboard=false;
+
+ document.getElementById("chartsDashboardPage").style.display="none";
+ document.getElementById("summaryDashboard").style.display="grid";
+ document.getElementById("recordsControls").style.display="block";
+ document.getElementById("recordsTable").style.display="block";
+ document.getElementById("recordsIntro").style.display="block";
+ document.getElementById("chartsDashboardButton").classList.remove("active");
+
+ selectedGroup=g;
+ showingArchived=false;
+ selectedIds.clear();
+ updateSidebarButtons();
+ renderTable();
+}
+
+function showArchived(){
+ showingChartsDashboard=false;
+
+ document.getElementById("chartsDashboardPage").style.display="none";
+ document.getElementById("summaryDashboard").style.display="grid";
+ document.getElementById("recordsControls").style.display="block";
+ document.getElementById("recordsTable").style.display="block";
+ document.getElementById("recordsIntro").style.display="block";
+ document.getElementById("chartsDashboardButton").classList.remove("active");
+
+ showingArchived=true;
+ selectedIds.clear();
+ updateSidebarButtons();
+ renderTable();
+}
+
 function updateSidebarButtons(){
  ["groupBtnAll","groupBtnTagaytay","groupBtnGeline","groupBtnBoracay"].forEach(id=>document.getElementById(id).classList.remove("active"));
  document.getElementById("archiveViewButton").classList.remove("active");
- if(showingArchived){document.getElementById("archiveViewButton").classList.add("active");return}
- const map={"ALL":"groupBtnAll","TAGAYTAY GROUP":"groupBtnTagaytay","GELINE GROUP":"groupBtnGeline","BORACAY GROUP":"groupBtnBoracay"};
- if(map[selectedGroup])document.getElementById(map[selectedGroup]).classList.add("active")
+ document.getElementById("chartsDashboardButton").classList.remove("active");
+
+ if(showingArchived){
+  document.getElementById("archiveViewButton").classList.add("active");
+  return;
+ }
+
+ const map={
+  "ALL":"groupBtnAll",
+  "TAGAYTAY GROUP":"groupBtnTagaytay",
+  "GELINE GROUP":"groupBtnGeline",
+  "BORACAY GROUP":"groupBtnBoracay"
+ };
+
+ if(map[selectedGroup])document.getElementById(map[selectedGroup]).classList.add("active");
 }
+
+/* FILTERS AND TABLE */
 function getFilteredStudents(){
- const search=document.getElementById("searchInput").value.toLowerCase().trim(),program=document.getElementById("programFilter").value,file=document.getElementById("fileFilter").value,thesis=document.getElementById("thesisFilter").value;
+ const search=document.getElementById("searchInput").value.toLowerCase().trim();
+ const program=document.getElementById("programFilter").value;
+ const file=document.getElementById("fileFilter").value;
+ const thesis=document.getElementById("thesisFilter").value;
+
  return students.filter(s=>{
   if(showingArchived?!s.archived:!!s.archived)return false;
   if(!showingArchived&&selectedGroup!=="ALL"&&s.group!==selectedGroup)return false;
@@ -197,104 +718,395 @@ function getFilteredStudents(){
   if(program!=="ALL"&&s.program!==program)return false;
   if(file!=="ALL"&&getFileStatus(s)!==file)return false;
   if(thesis!=="ALL"&&getThesisStatus(s)!==thesis)return false;
-  return true
- }).sort((a,b)=>(a.name||"").localeCompare(b.name||"",undefined,{sensitivity:"base"}))
+  return true;
+ }).sort((a,b)=>(a.name||"").localeCompare(b.name||"",undefined,{sensitivity:"base"}));
 }
+
 function renderTable(){
- const tbody=document.getElementById("studentTableBody"),filtered=getFilteredStudents();tbody.innerHTML="";
- document.getElementById("pageTitle").textContent=showingArchived?"Archived Students":"Student Records";
- document.getElementById("tableTitle").textContent=showingArchived?"Archived Student Records":"Student Records";
- if(!filtered.length){tbody.innerHTML=`<tr><td colspan="10" class="empty-state"><div class="empty-icon">${showingArchived?"▣":"＋"}</div><strong>${showingArchived?"No archived students found":"No student records found"}</strong><span>${showingArchived?"Archived records will appear here.":"Add a student to begin tracking graduate records."}</span></td></tr>`}
- else filtered.forEach((s,i)=>{
-  const row=document.createElement("tr");if(s.archived)row.classList.add("archived-row");
-  const checked=selectedIds.has(String(s.id))?"checked":"";
-  const actions=showingArchived?`<button class="restore-button" onclick="restoreStudent('${escapeAttribute(s.id)}')">Restore</button><button class="danger" onclick="deleteArchivedStudent('${escapeAttribute(s.id)}')">Delete</button>`:`<button class="warning" onclick="editStudent('${escapeAttribute(s.id)}')">Edit</button><button class="danger" onclick="archiveStudent('${escapeAttribute(s.id)}')">Archive</button>`;
-  row.innerHTML=`<td class="checkbox-cell"><input type="checkbox" class="student-checkbox" value="${escapeAttribute(s.id)}" ${checked} onchange="toggleStudentSelection('${escapeAttribute(s.id)}')"></td><td>${i+1}</td><td class="student-name">${escapeHtml(s.name||"")}</td><td><span class="group">${escapeHtml(s.group||"")}</span></td><td>${programBadge(s.program)}</td><td>${fileUploadButton(s)}</td><td>${statusSelect(s.id,"thesis",getThesisStatus(s))}</td><td>${statusSelect(s.id,"overall",getOverallStatus(s))}</td><td class="thesis-cell">${escapeHtml(s.thesis_title||"-")}</td><td><div class="actions">${actions}</div></td>`;
-  tbody.appendChild(row)
- });
- document.getElementById("recordCount").textContent=filtered.length+(filtered.length===1?" record":" records");updateSelectAllState();updateDashboard();updateSelectedCount()
+ const tbody=document.getElementById("studentTableBody");
+ const filtered=getFilteredStudents();
+ tbody.innerHTML="";
+
+ if(!showingChartsDashboard){
+  document.getElementById("pageTitle").textContent=showingArchived?"Archived Students":"Student Records";
+  document.getElementById("tableTitle").textContent=showingArchived?"Archived Student Records":"Student Records";
+ }
+
+ if(!filtered.length){
+  tbody.innerHTML=`<tr><td colspan="10" class="empty-state"><div class="empty-icon">${showingArchived?"▣":"＋"}</div><strong>${showingArchived?"No archived students found":"No student records found"}</strong><span>${showingArchived?"Archived records will appear here.":"Add a student to begin tracking graduate records."}</span></td></tr>`;
+ }else{
+  filtered.forEach((s,i)=>{
+   const row=document.createElement("tr");
+   if(s.archived)row.classList.add("archived-row");
+
+   const checked=selectedIds.has(String(s.id))?"checked":"";
+   const actions=showingArchived
+    ?`<button class="restore-button" onclick="restoreStudent('${escapeAttribute(s.id)}')">Restore</button><button class="danger" onclick="deleteArchivedStudent('${escapeAttribute(s.id)}')">Delete</button>`
+    :`<button class="warning" onclick="editStudent('${escapeAttribute(s.id)}')">Edit</button><button class="danger" onclick="archiveStudent('${escapeAttribute(s.id)}')">Archive</button>`;
+
+   row.innerHTML=`<td class="checkbox-cell"><input type="checkbox" class="student-checkbox" value="${escapeAttribute(s.id)}" ${checked} onchange="toggleStudentSelection('${escapeAttribute(s.id)}')"></td><td>${i+1}</td><td class="student-name">${escapeHtml(s.name||"")}</td><td><span class="group">${escapeHtml(s.group||"")}</span></td><td>${programBadge(s.program)}</td><td>${fileUploadButton(s)}</td><td>${statusSelect(s.id,"thesis",getThesisStatus(s))}</td><td>${statusSelect(s.id,"overall",getOverallStatus(s))}</td><td class="thesis-cell">${escapeHtml(s.thesis_title||"-")}</td><td><div class="actions">${actions}</div></td>`;
+
+   tbody.appendChild(row);
+  });
+ }
+
+ document.getElementById("recordCount").textContent=filtered.length+(filtered.length===1?" record":" records");
+ updateSelectAllState();
+ updateDashboard();
+ updateSelectedCount();
 }
-function toggleSelectAll(){const visible=getFilteredStudents(),checked=document.getElementById("selectAll").checked;visible.forEach(s=>checked?selectedIds.add(String(s.id)):selectedIds.delete(String(s.id)));renderTable()}
-function toggleStudentSelection(id){id=String(id);selectedIds.has(id)?selectedIds.delete(id):selectedIds.add(id);updateSelectAllState();updateSelectedCount()}
-function updateSelectAllState(){const box=document.getElementById("selectAll"),visible=getFilteredStudents();if(!visible.length){box.checked=false;box.indeterminate=false;return}const n=visible.filter(s=>selectedIds.has(String(s.id))).length;box.checked=n===visible.length;box.indeterminate=n>0&&n<visible.length}
-function updateSelectedCount(){document.getElementById("selectedCount").textContent=selectedIds.size+" selected";document.getElementById("archiveSelectedButton").classList.toggle("show",selectedIds.size>0&&!showingArchived)}
-async function archiveSelected(){const ids=[...selectedIds];if(!ids.length)return;if(!confirm(`Archive ${ids.length} selected student(s)?`))return;for(const id of ids)await archiveStudent(id,true);selectedIds.clear();renderTable();updateSidebarCounts();showMessage(ids.length+" student(s) archived successfully.","success")}
+
+function toggleSelectAll(){
+ const visible=getFilteredStudents();
+ const checked=document.getElementById("selectAll").checked;
+ visible.forEach(s=>checked?selectedIds.add(String(s.id)):selectedIds.delete(String(s.id)));
+ renderTable();
+}
+
+function toggleStudentSelection(id){
+ id=String(id);
+ selectedIds.has(id)?selectedIds.delete(id):selectedIds.add(id);
+ updateSelectAllState();
+ updateSelectedCount();
+}
+
+function updateSelectAllState(){
+ const box=document.getElementById("selectAll");
+ const visible=getFilteredStudents();
+
+ if(!visible.length){
+  box.checked=false;
+  box.indeterminate=false;
+  return;
+ }
+
+ const n=visible.filter(s=>selectedIds.has(String(s.id))).length;
+ box.checked=n===visible.length;
+ box.indeterminate=n>0&&n<visible.length;
+}
+
+function updateSelectedCount(){
+ document.getElementById("selectedCount").textContent=selectedIds.size+" selected";
+ document.getElementById("archiveSelectedButton").classList.toggle("show",selectedIds.size>0&&!showingArchived);
+}
+
+async function archiveSelected(){
+ const ids=[...selectedIds];
+ if(!ids.length)return;
+ if(!confirm(`Archive ${ids.length} selected student(s)?`))return;
+
+ for(const id of ids)await archiveStudent(id,true);
+
+ selectedIds.clear();
+ renderTable();
+ updateSidebarCounts();
+ showMessage(ids.length+" student(s) archived successfully.","success");
+}
+
 async function archiveStudent(id,bulk=false){
- const s=students.find(x=>String(x.id)===String(id));if(!s)return;if(!bulk&&!confirm("Archive "+s.name+"?"))return;
- s.archived=true;saveLocalData();selectedIds.delete(String(id));
- if(!String(id).startsWith("offline-")){const change={type:"update",id,data:{archived:true}};if(navigator.onLine){try{const {error}=await supabaseClient.from("students").update(change.data).eq("id",id);if(error)throw error}catch(e){addPendingChange(change)}}else addPendingChange(change)}
- renderTable();updateSidebarCounts()
+ const s=students.find(x=>String(x.id)===String(id));
+ if(!s)return;
+ if(!bulk&&!confirm("Archive "+s.name+"?"))return;
+
+ s.archived=true;
+ saveLocalData();
+ selectedIds.delete(String(id));
+
+ if(!String(id).startsWith("offline-")){
+  const change={type:"update",id,data:{archived:true}};
+  if(navigator.onLine){
+   try{
+    const {error}=await supabaseClient.from("students").update(change.data).eq("id",id);
+    if(error)throw error;
+   }catch(e){
+    addPendingChange(change);
+   }
+  }else{
+   addPendingChange(change);
+  }
+ }
+
+ renderTable();
+ updateSidebarCounts();
 }
+
 async function restoreStudent(id){
- const s=students.find(x=>String(x.id)===String(id));if(!s)return;if(!confirm("Restore "+s.name+"?"))return;s.archived=false;saveLocalData();
- if(!String(id).startsWith("offline-")){const change={type:"update",id,data:{archived:false}};if(navigator.onLine){try{const {error}=await supabaseClient.from("students").update(change.data).eq("id",id);if(error)throw error}catch(e){addPendingChange(change)}}else addPendingChange(change)}
- renderTable();updateSidebarCounts();showMessage("Student restored.","success")
+ const s=students.find(x=>String(x.id)===String(id));
+ if(!s)return;
+ if(!confirm("Restore "+s.name+"?"))return;
+
+ s.archived=false;
+ saveLocalData();
+
+ if(!String(id).startsWith("offline-")){
+  const change={type:"update",id,data:{archived:false}};
+  if(navigator.onLine){
+   try{
+    const {error}=await supabaseClient.from("students").update(change.data).eq("id",id);
+    if(error)throw error;
+   }catch(e){
+    addPendingChange(change);
+   }
+  }else{
+   addPendingChange(change);
+  }
+ }
+
+ renderTable();
+ updateSidebarCounts();
+ showMessage("Student restored.","success");
 }
-function deleteArchivedStudent(id){const s=students.find(x=>String(x.id)===String(id));if(!s)return;if(!s.archived){showMessage("Only archived students can be deleted.","error");return}deleteStudentId=String(id);document.getElementById("deleteMessage").textContent="Permanently delete "+s.name+"? This action cannot be undone.";document.getElementById("deleteModal").classList.add("show")}
+
+function deleteArchivedStudent(id){
+ const s=students.find(x=>String(x.id)===String(id));
+ if(!s)return;
+ if(!s.archived){
+  showMessage("Only archived students can be deleted.","error");
+  return;
+ }
+
+ deleteStudentId=String(id);
+ document.getElementById("deleteMessage").textContent="Permanently delete "+s.name+"? This action cannot be undone.";
+ document.getElementById("deleteModal").classList.add("show");
+}
+
 async function confirmDeleteArchived(){
- if(!deleteStudentId)return;const id=deleteStudentId,s=students.find(x=>String(x.id)===String(id));if(!s||!s.archived){closeDeleteModal();return}
- if(!String(id).startsWith("offline-")&&!navigator.onLine){showMessage("You must be online to permanently delete an archived student.","error");closeDeleteModal();return}
- students=students.filter(x=>String(x.id)!==String(id));delete studentFiles[id];saveLocalData();saveStudentFiles();closeDeleteModal();
- if(!String(id).startsWith("offline-")){try{const {error}=await supabaseClient.from("students").delete().eq("id",id);if(error)throw error}catch(e){students.push(s);saveLocalData();renderTable();showMessage("Could not delete the student from the database: "+e.message,"error");return}}
- renderTable();updateSidebarCounts();showMessage("Archived student deleted permanently.","success")
+ if(!deleteStudentId)return;
+
+ const id=deleteStudentId;
+ const s=students.find(x=>String(x.id)===String(id));
+
+ if(!s||!s.archived){
+  closeDeleteModal();
+  return;
+ }
+
+ if(!String(id).startsWith("offline-")&&!navigator.onLine){
+  showMessage("You must be online to permanently delete an archived student.","error");
+  closeDeleteModal();
+  return;
+ }
+
+ students=students.filter(x=>String(x.id)!==String(id));
+ delete studentFiles[id];
+ saveLocalData();
+ saveStudentFiles();
+ closeDeleteModal();
+
+ if(!String(id).startsWith("offline-")){
+  try{
+   const {error}=await supabaseClient.from("students").delete().eq("id",id);
+   if(error)throw error;
+  }catch(e){
+   students.push(s);
+   saveLocalData();
+   renderTable();
+   showMessage("Could not delete the student from the database: "+e.message,"error");
+   return;
+  }
+ }
+
+ renderTable();
+ updateSidebarCounts();
+ showMessage("Archived student deleted permanently.","success");
 }
-function closeDeleteModal(){deleteStudentId=null;document.getElementById("deleteModal").classList.remove("show")}
-function programBadge(p){const classes={PhD:"phd",MAEd:"maed",MBA:"mba",MPA:"mpa",MSCJ:"mscj"};return `<span class="badge ${classes[p]||""}">${escapeHtml(p||"")}</span>`}
+
+function closeDeleteModal(){
+ deleteStudentId=null;
+ document.getElementById("deleteModal").classList.remove("show");
+}
+
+function programBadge(p){
+ const classes={PhD:"phd",MAEd:"maed",MBA:"mba",MPA:"mpa",MSCJ:"mscj"};
+ return `<span class="badge ${classes[p]||""}">${escapeHtml(p||"")}</span>`;
+}
+
 function updateDashboard(){
- let data=students.filter(s=>!s.archived);if(selectedGroup!=="ALL")data=data.filter(s=>s.group===selectedGroup);
+ let data=students.filter(s=>!s.archived);
+ if(selectedGroup!=="ALL")data=data.filter(s=>s.group===selectedGroup);
+
  document.getElementById("totalCount").textContent=data.length;
  document.getElementById("filesComplete").textContent=data.filter(s=>getFileStatus(s)==="Paid").length;
  document.getElementById("thesisComplete").textContent=data.filter(s=>getThesisStatus(s)==="Paid").length;
  document.getElementById("overallComplete").textContent=data.filter(s=>getOverallStatus(s)==="Complete").length;
- updatePaymentCharts()
+
+ updatePaymentCharts();
 }
+
 function updateSidebarCounts(){
  const active=students.filter(s=>!s.archived);
  document.getElementById("countAll").textContent=active.length;
  document.getElementById("countTagaytay").textContent=active.filter(s=>s.group==="TAGAYTAY GROUP").length;
  document.getElementById("countGeline").textContent=active.filter(s=>s.group==="GELINE GROUP").length;
  document.getElementById("countBoracay").textContent=active.filter(s=>s.group==="BORACAY GROUP").length;
- document.getElementById("archiveCount").textContent=students.filter(s=>s.archived).length
+ document.getElementById("archiveCount").textContent=students.filter(s=>s.archived).length;
 }
+
+/* ADD STUDENT */
 function openAddModal(){
- document.getElementById("modalTitle").textContent="Add Student";document.getElementById("studentId").value="";document.getElementById("studentName").value="";
+ document.getElementById("modalTitle").textContent="Add Student";
+ document.getElementById("studentId").value="";
+ document.getElementById("studentName").value="";
  document.getElementById("studentGroup").value=selectedGroup!=="ALL"&&!showingArchived?selectedGroup:"TAGAYTAY GROUP";
- document.getElementById("studentProgram").value="MAEd";document.getElementById("studentFileStatus").value="Not Yet Paid";document.getElementById("studentThesisStatus").value="Not Yet Paid";document.getElementById("studentOverallStatus").value="Not Yet Done";document.getElementById("studentThesisTitle").value="";document.getElementById("studentModal").classList.add("show")
+ document.getElementById("studentProgram").value="MAEd";
+ document.getElementById("studentFileStatus").value="Not Yet Paid";
+ document.getElementById("studentThesisStatus").value="Not Yet Paid";
+ document.getElementById("studentOverallStatus").value="Not Yet Done";
+ document.getElementById("studentThesisTitle").value="";
+ document.getElementById("studentModal").classList.add("show");
 }
+
+/* EDIT STUDENT */
 function editStudent(id){
- const s=students.find(x=>String(x.id)===String(id));if(!s)return;
- document.getElementById("modalTitle").textContent="Edit Student";document.getElementById("studentId").value=s.id;document.getElementById("studentName").value=s.name||"";document.getElementById("studentGroup").value=s.group||"TAGAYTAY GROUP";document.getElementById("studentProgram").value=s.program||"MAEd";document.getElementById("studentFileStatus").value=getFileStatus(s);document.getElementById("studentThesisStatus").value=getThesisStatus(s);document.getElementById("studentOverallStatus").value=getOverallStatus(s);document.getElementById("studentThesisTitle").value=s.thesis_title||"";document.getElementById("studentModal").classList.add("show")
+ const s=students.find(x=>String(x.id)===String(id));
+ if(!s)return;
+
+ document.getElementById("modalTitle").textContent="Edit Student";
+ document.getElementById("studentId").value=s.id;
+ document.getElementById("studentName").value=s.name||"";
+ document.getElementById("studentGroup").value=s.group||"TAGAYTAY GROUP";
+ document.getElementById("studentProgram").value=s.program||"MAEd";
+ document.getElementById("studentFileStatus").value=getFileStatus(s);
+ document.getElementById("studentThesisStatus").value=getThesisStatus(s);
+ document.getElementById("studentOverallStatus").value=getOverallStatus(s);
+ document.getElementById("studentThesisTitle").value=s.thesis_title||"";
+ document.getElementById("studentModal").classList.add("show");
 }
+
+/* SAVE STUDENT */
 async function saveStudent(){
- const id=document.getElementById("studentId").value,name=document.getElementById("studentName").value.trim();if(!name){showMessage("Please enter the student name.","error");return}
- if(students.some(s=>String(s.name||"").trim().toLowerCase()===name.toLowerCase()&&String(s.id)!==String(id))){showMessage("Student name already exists.","error");return}
- const existing=students.find(s=>String(s.id)===String(id)),tuitionStatus=document.getElementById("studentFileStatus").value,gradStatus=document.getElementById("studentThesisStatus").value,today=todayLocalDate();
+ const id=document.getElementById("studentId").value;
+ const name=document.getElementById("studentName").value.trim();
+
+ if(!name){
+  showMessage("Please enter the student name.","error");
+  return;
+ }
+
+ if(students.some(s=>String(s.name||"").trim().toLowerCase()===name.toLowerCase()&&String(s.id)!==String(id))){
+  showMessage("Student name already exists.","error");
+  return;
+ }
+
+ const existing=students.find(s=>String(s.id)===String(id));
+ const tuitionStatus=document.getElementById("studentFileStatus").value;
+ const gradStatus=document.getElementById("studentThesisStatus").value;
+ const today=todayLocalDate();
+
  const data={
-  name,group:document.getElementById("studentGroup").value,program:document.getElementById("studentProgram").value,
-  file_status:tuitionStatus,thesis_status:gradStatus,overall_status:document.getElementById("studentOverallStatus").value,
+  name,
+  group:document.getElementById("studentGroup").value,
+  program:document.getElementById("studentProgram").value,
+  file_status:tuitionStatus,
+  thesis_status:gradStatus,
+  overall_status:document.getElementById("studentOverallStatus").value,
   thesis_title:document.getElementById("studentThesisTitle").value.trim(),
   tuition_paid_date:tuitionStatus==="Paid"?(existing?.file_status==="Paid"?(existing.tuition_paid_date||today):today):null,
   grad_paid_date:gradStatus==="Paid"?(existing?.thesis_status==="Paid"?(existing.grad_paid_date||today):today):null
  };
+
  if(id){
-  const i=students.findIndex(s=>String(s.id)===String(id));if(i!==-1)students[i]={...students[i],...data};saveLocalData();renderTable();updateSidebarCounts();closeModal();
-  if(String(id).startsWith("offline-")){showMessage("Student updated successfully.","success");return}
+  const i=students.findIndex(s=>String(s.id)===String(id));
+  if(i!==-1)students[i]={...students[i],...data};
+
+  saveLocalData();
+  renderTable();
+  updateSidebarCounts();
+  closeModal();
+
+  if(String(id).startsWith("offline-")){
+   showMessage("Student updated successfully.","success");
+   return;
+  }
+
   const change={type:"update",id,data};
-  if(navigator.onLine){try{const {error}=await supabaseClient.from("students").update(data).eq("id",id);if(error)throw error;showMessage("Student updated successfully.","success")}catch(e){addPendingChange(change);showMessage("Saved locally. It will sync when internet returns.","success")}}
-  else{addPendingChange(change);showMessage("Saved offline. It will sync when internet returns.","success")}
-  return
+
+  if(navigator.onLine){
+   try{
+    const {error}=await supabaseClient.from("students").update(data).eq("id",id);
+    if(error)throw error;
+    showMessage("Student updated successfully.","success");
+   }catch(e){
+    addPendingChange(change);
+    showMessage("Saved locally. It will sync when internet returns.","success");
+   }
+  }else{
+   addPendingChange(change);
+   showMessage("Saved offline. It will sync when internet returns.","success");
+  }
+
+  return;
  }
- const temp="offline-"+Date.now()+"-"+Math.random().toString(36).substring(2,8),newStudent={id:temp,archived:false,...data};students.push(newStudent);saveLocalData();renderTable();updateSidebarCounts();closeModal();
- if(navigator.onLine){try{const {data:inserted,error}=await supabaseClient.from("students").insert([data]).select().single();if(error)throw error;const i=students.findIndex(s=>s.id===temp);if(i!==-1)students[i]=inserted;saveLocalData();renderTable();updateSidebarCounts();showMessage("Student added successfully.","success")}catch(e){addPendingChange({type:"insert",tempId:temp,data});showMessage("Saved locally. It will sync when internet returns.","success")}}
- else{addPendingChange({type:"insert",tempId:temp,data});showMessage("Saved offline. It will sync when internet returns.","success")}
+
+ const temp="offline-"+Date.now()+"-"+Math.random().toString(36).substring(2,8);
+ const newStudent={id:temp,archived:false,...data};
+
+ students.push(newStudent);
+ saveLocalData();
+ renderTable();
+ updateSidebarCounts();
+ closeModal();
+
+ if(navigator.onLine){
+  try{
+   const {data:inserted,error}=await supabaseClient.from("students").insert([data]).select().single();
+   if(error)throw error;
+
+   const i=students.findIndex(s=>s.id===temp);
+   if(i!==-1)students[i]=inserted;
+
+   saveLocalData();
+   renderTable();
+   updateSidebarCounts();
+   showMessage("Student added successfully.","success");
+  }catch(e){
+   addPendingChange({type:"insert",tempId:temp,data});
+   showMessage("Saved locally. It will sync when internet returns.","success");
+  }
+ }else{
+  addPendingChange({type:"insert",tempId:temp,data});
+  showMessage("Saved offline. It will sync when internet returns.","success");
+ }
 }
-function closeModal(){document.getElementById("studentModal").classList.remove("show")}
-function showMessage(message,type){const box=document.getElementById("message");box.textContent=message;box.className="message show "+(type==="error"?"error":"success-message");setTimeout(()=>box.classList.remove("show"),4000)}
-function escapeHtml(v){return String(v).replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;").replace(/"/g,"&quot;").replace(/'/g,"&#039;")}
-function escapeAttribute(v){return String(v).replace(/\\/g,"\\\\").replace(/'/g,"\\'").replace(/"/g,"&quot;")}
-document.getElementById("studentModal").addEventListener("click",function(e){if(e.target===this)closeModal()});
-document.getElementById("deleteModal").addEventListener("click",function(e){if(e.target===this)closeDeleteModal()});
-if("serviceWorker" in navigator)window.addEventListener("load",()=>navigator.serviceWorker.register("service-worker.js").catch(console.log));
+
+function closeModal(){
+ document.getElementById("studentModal").classList.remove("show");
+}
+
+function showMessage(message,type){
+ const box=document.getElementById("message");
+ box.textContent=message;
+ box.className="message show "+(type==="error"?"error":"success-message");
+ setTimeout(()=>box.classList.remove("show"),4000);
+}
+
+function escapeHtml(v){
+ return String(v)
+  .replace(/&/g,"&amp;")
+  .replace(/</g,"&lt;")
+  .replace(/>/g,"&gt;")
+  .replace(/"/g,"&quot;")
+  .replace(/'/g,"&#039;");
+}
+
+function escapeAttribute(v){
+ return String(v)
+  .replace(/\\/g,"\\\\")
+  .replace(/'/g,"\\'")
+  .replace(/"/g,"&quot;");
+}
+
+document.getElementById("studentModal").addEventListener("click",function(e){
+ if(e.target===this)closeModal();
+});
+
+document.getElementById("deleteModal").addEventListener("click",function(e){
+ if(e.target===this)closeDeleteModal();
+});
+
+if("serviceWorker" in navigator){
+ window.addEventListener("load",()=>navigator.serviceWorker.register("service-worker.js").catch(console.log));
+}
 </script>
 </body>
 </html>
